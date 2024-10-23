@@ -21,9 +21,13 @@ Feature: Title of your feature
   I want to use this template for my feature file
 
   @tag1
-  Scenario: Title of your scenario
+  Scenario Outline: Title of your scenario
     Given Admin is in login Page
-    When Admin enter valid credentials  and clicks login button 
-    Then Admin should land on dashboard page ( centre of the page will be empty , menu bar is present).  
- 
+    When Admin enter valid credentials "<testcase>" and clicks login button          
+     Then Admin should land on dashboard page ( centre of the page will be empty , menu bar is present).  
+     
+     Examples:
+     |testcase|
+     |ValidCredentials|
+     |InvalidCredentials|
 
