@@ -1,10 +1,17 @@
 package com.lms.stepDefinition;
 
 import java.time.Duration;
+import java.util.Map;
+
+//import static com.lms.utilities.LMSUIConstants.LOGIN_SHEET_NAME;
+import static com.lms.utilities.LMSUIConstants.applicationData;
 
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.lms.utilities.LMSUIConstants;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,16 +22,15 @@ public class Login_SD {
 	public void admin_is_in_login_page() {
 	    // Write code here that turns the phrase above into concrete actions
 	  
-	    WebDriver driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.get("https://lms-frontend-hackathon-oct24-173fe394c071.herokuapp.com/login");
-		driver.manage().window().maximize();
+	   System.out.println("at given");
 	}
-
-	@When("Admin enter valid credentials  and clicks login button")
-	public void admin_enter_valid_credentials_and_clicks_login_button() {
+	
+	@When("Admin enter valid credentials {string} and clicks login button")
+	public void admin_enter_valid_credentials_and_clicks_login_button(String testcase) {
 	    // Write code here that turns the phrase above into concrete actions
 	   // throw new io.cucumber.java.PendingException();
+//		Map<String,String> testRow = applicationData.getData(LMSUIConstants.LOGIN_SHEET_NAME,testcase);
+//		System.out.println("check test data " + testRow.toString());
 	}
 
 	@Then("Admin should land on dashboard page \\( centre of the page will be empty , menu bar is present).")
