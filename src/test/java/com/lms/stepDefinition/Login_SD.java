@@ -15,10 +15,7 @@ public class Login_SD {
 	public void admin_is_in_login_page() {
 	    // Write code here that turns the phrase above into concrete actions
 	  
-	    WebDriver driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.get("https://lms-frontend-hackathon-oct24-173fe394c071.herokuapp.com/login");
-		driver.manage().window().maximize();
+	   System.out.println("at given");
 	}
 
 	@When("Admin enter valid credentials  and clicks login button")
