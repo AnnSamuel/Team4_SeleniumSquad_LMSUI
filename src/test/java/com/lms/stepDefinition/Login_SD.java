@@ -2,31 +2,72 @@ package com.lms.stepDefinition;
 
 import java.time.Duration;
 
-
+import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.lms.driverManager.WebDriverFactory;
+import com.lms.pageObjects.LoginPage;
+import com.lms.utilities.ExcelReader;
+import com.lms.utilities.LoggerLoad;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Login_SD {
-
-	@Given("Admin is in login Page")
-	public void admin_is_in_login_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	  
-	   System.out.println("at given");
+	WebDriverFactory driverFactory;
+	WebDriver driver;
+	LoginPage lp;
+	
+	public Login_SD() {
+        // You can initialize driver or other components here if needed.
+    }
+	
+	public Login_SD(WebDriverFactory driverFactory) {
+		this.driverFactory=driverFactory;
+		this.driver=driverFactory.getDriver();
+		this.lp=driverFactory.getLoginPage();
+		if (lp == null) {
+		    System.out.println("LoginPage object is null!");
+		} else {
+		    System.out.println("LoginPage object is NOT null.");
+		}
 	}
-
-	@When("Admin enter valid credentials  and clicks login button")
-	public void admin_enter_valid_credentials_and_clicks_login_button() {
-	    // Write code here that turns the phrase above into concrete actions
-	   // throw new io.cucumber.java.PendingException();
+	ExcelReader reader = new ExcelReader();
+	@Given("Admin launch the browser")
+	public void admin_launch_the_browser() {
+		  WebDriverFactory.initializeDriver("chrome");
+		    
+		    // Retrieve LoginPage through WebDriverFactory
+		    lp = WebDriverFactory.getLoginPage();
+		    
+		    LoggerLoad.info("Admin Launch the Browser");
 	}
+@When("Admin gives the correct LMS portal URL")
+	public void admin_gives_the_correct_lms_portal_url() {
+		
+	    Map<String, List<Map<String, String>>> excelData = ExcelReader.loadExcelData();
 
-	@Then("Admin should land on dashboard page \\( centre of the page will be empty , menu bar is present).")
-	public void admin_should_land_on_dashboard_page_centre_of_the_page_will_be_empty_menu_bar_is_present() {
-	    // Write code here that turns the phrase above into concrete actions
-	    //throw new io.cucumber.java.PendingException();
+	    List<Map<String, String>> testData = excelData.get("Login");
+
+	    // Retrieve specific data from the sheet, assuming you want to use the first row (0-indexed)
+	    String userName = testData.get(0).get("Username");  // Changed "User" to "Username"
+	    String passWord = testData.get(0).get("Password");
+
+	    System.out.println(userName);
+	    System.out.println(passWord);
+	    // Use the data to interact with the login page
+	    lp.url();
+	    lp.loginUser(userName);
+	    lp.loginPassword(passWord);
+	    lp.signIn();
+	    
+	}
+	@Then("Admin should land on the login page")
+	public void admin_should_land_on_the_login_page() {
+		System.out.println("Success");
+		
 	}
 }

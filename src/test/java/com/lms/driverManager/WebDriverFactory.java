@@ -1,3 +1,4 @@
+
 package com.lms.driverManager;
 
 import java.time.Duration;
@@ -8,10 +9,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 
+import com.lms.pageObjects.LoginPage;
 import com.lms.utilities.LoggerLoad;
 
 public class WebDriverFactory {
 	public static WebDriver driver;
+	private static LoginPage loginPage;
 
 	public  static WebDriver initializeDriver(String browser) {
 
@@ -44,19 +47,32 @@ public class WebDriverFactory {
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
 			driver.manage().deleteAllCookies();
 			driver.manage().window().maximize();
-			return driver;
+			loginPage = new LoginPage(driver);
+	        return driver;
+			
 		}
 
 	public static WebDriver getDriver() {
 		return driver;
 	}
+	public static LoginPage getLoginPage() {
+        return loginPage;
+    }
+
 	
 	public static void closeDriver()
 	{
 		if (driver != null) {
-			driver.quit();
+			  try {
+		            // Wait for 2 minutes (120,000 milliseconds)
+		            Thread.sleep(120000); 
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+			  
+			
+			//driver.quit();
 			driver = null;
 		}
 	}
 }
-
