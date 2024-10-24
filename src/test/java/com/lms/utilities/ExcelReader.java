@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelReader {
 	public static Map<String, List<Map<String, String>>> loadExcelData() {
-		String filePath = ConfigReader.getProp(LMSUIConstants.EXCELFILEPATH);
+		String filePath = ConfigReader.getProp(LMSUIConstants.EXCEL_FILE_PATH);
 		Workbook wb = null;
 		Map<String, List<Map<String, String>>> sheetNameRowsMap = new HashMap<>();
 		try {
