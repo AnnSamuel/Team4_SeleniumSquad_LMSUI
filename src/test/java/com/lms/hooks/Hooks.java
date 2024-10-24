@@ -18,7 +18,7 @@ import io.cucumber.java.Scenario;
 
 public class Hooks {
 
-	public static WebDriver driver;
+	public WebDriver driver;
 	
 
 	@BeforeAll
@@ -31,13 +31,11 @@ public class Hooks {
 	}
 
 	@Before
-	public static void setUp() {
+	public void setUp() {
 
 		if (driver == null) {
 			driver = WebDriverFactory.initializeDriver(ConfigReader.getProp("browser"));
 			System.out.println("driver details --->" + driver.toString());
-			driver.get(ConfigReader.getProp("baseUrl"));
-			System.out.println("url opened");
 		}
 	}
 
@@ -52,9 +50,16 @@ public class Hooks {
 
 	@After
 	public void after() {
+		
 		// TestDataCleanup();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		WebDriverFactory.closeDriver();
 		System.out.println("driver closed");
+		
 		// private void TestDataCleanup(){
 		// }
 

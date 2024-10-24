@@ -17,7 +17,7 @@ public class WebDriverFactory {
 
 		switch (browser.toLowerCase()) {
 		case "chrome":
-			driver = new ChromeDriver();// initialize chrome driver
+			driver = new ChromeDriver();
 
 			LoggerLoad.info("testing on chrome");
 			break;
