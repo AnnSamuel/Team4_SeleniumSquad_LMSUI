@@ -13,7 +13,7 @@ import com.lms.utilities.LoggerLoad;
 public class WebDriverFactory {
 	public static WebDriver driver;
 
-	public  static WebDriver initializeDriver(String browser) {
+	public static WebDriver initializeDriver(String browser) {
 
 		switch (browser.toLowerCase()) {
 		case "chrome":
@@ -34,29 +34,27 @@ public class WebDriverFactory {
 
 		case "safari":
 			driver = new SafariDriver();
-			LoggerLoad.info("testing on safari");	
+			LoggerLoad.info("testing on safari");
 			break;
-		
-	     default:
+
+		default:
 			throw new RuntimeException("Please pass the correct browser value: " + browser);
-			
+
 		}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
-			driver.manage().deleteAllCookies();
-			driver.manage().window().maximize();
-			return driver;
-		}
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
+		driver.manage().deleteAllCookies();
+		driver.manage().window().maximize();
+		return driver;
+	}
 
 	public static WebDriver getDriver() {
 		return driver;
 	}
-	
-	public static void closeDriver()
-	{
+
+	public static void closeDriver() {
 		if (driver != null) {
 			driver.quit();
 			driver = null;
 		}
 	}
 }
-
