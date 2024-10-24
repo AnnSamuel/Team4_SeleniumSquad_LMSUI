@@ -1,10 +1,16 @@
 package com.lms.stepDefinition;
 
+import org.openqa.selenium.WebDriver;
+
+import com.lms.driverManager.WebDriverFactory;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Batch_SD {
+	
+	WebDriver driver = WebDriverFactory.getDriver();
 	
 	@Given("Admin is on the Dashboard Page")
 	public void admin_is_on_the_dashboard_page() {
