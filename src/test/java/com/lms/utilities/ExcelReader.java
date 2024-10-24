@@ -1,11 +1,11 @@
 package com.lms.utilities;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -16,11 +16,14 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelReader {
 	public static Map<String, List<Map<String, String>>> loadExcelData() {
-		String filePath = ConfigReader.getProp(LMSUIConstants.EXCEL_FILE_PATH);
+		
 		Workbook wb = null;
 		Map<String, List<Map<String, String>>> sheetNameRowsMap = new HashMap<>();
+		
 		try {
-			wb = WorkbookFactory.create(new File(filePath));
+			
+			wb = WorkbookFactory.create(ExcelReader.class.getResourceAsStream("/testData/LMSData.xlsx"));
+			
 			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 				Sheet sheet = wb.getSheetAt(i);
 				List<Map<String, String>> recordList = new ArrayList<>();
