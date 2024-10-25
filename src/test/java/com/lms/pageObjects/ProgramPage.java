@@ -1,5 +1,6 @@
 package com.lms.pageObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,6 +19,8 @@ public class ProgramPage {
 	WebDriver driver = WebDriverFactory.getDriver();
 	String programName = "Micro services";
 	
+	
+	
 	 @FindBy (id = "username") WebElement userName;
 	 @FindBy (id= "password") WebElement password;
 	 @FindBy (id="login") WebElement loginBtn;
@@ -34,6 +37,10 @@ public class ProgramPage {
 	@FindBy (xpath = "//button[text() = 'Add New Program']") WebElement addProgramBtn;
 	
 	@FindBy (xpath = "//table/tbody") WebElement programTable;
+	
+	@FindAll (value = {@FindBy (xpath = "//table/tbody//tr")}) List<WebElement> programData;
+	
+	@FindBy (xpath = "//table/tbody//tr//td[2]") WebElement progName;
 
 	@FindBy(id = "editProgram") WebElement editProgram;
 	
@@ -44,6 +51,12 @@ public class ProgramPage {
 	@FindBy(xpath="//td//div[@role='checkbox']") WebElement programCheckBox;
 	
 	
+	//init elements
+	public ProgramPage() {
+		PageFactory.initElements(driver, this);
+	}
+	
+	
 	public void login() {
 		userName.sendKeys("Sdet@gmail.com");
 		password.sendKeys("LmsHackathon@2024");
@@ -52,8 +65,9 @@ public class ProgramPage {
 	public String getProgramHeading() {
 		return programHeading.getText();
 	}
-	public void setSearchText() {
-		searchBtn.sendKeys("Test");
+	
+	public void setSearchText(String searchInput) {
+		searchBtn.sendKeys(searchInput);
 	}
 	
 	public void clickProgramBtn() {
@@ -72,6 +86,7 @@ public class ProgramPage {
 		 return programTable.findElement(By.xpath("//tr/td[contains(text(),'"+programName+"')]/.."));
 		  
 	}
+	
 	
 	public void clickProgramcheckbox(String programName) {
 		WebElement checkBox = getProgramRowElement(programName).findElement(By.xpath("//td//div[@role='checkbox']"));
@@ -95,10 +110,29 @@ public class ProgramPage {
 	}
 	
 	
-	//init elements
-	public ProgramPage() {
-		PageFactory.initElements(driver, this);
+    public ArrayList<String> getProgramNames() {
+    	ArrayList<String>programNamesList = new ArrayList<String>();
+		
+		int rows = programData.size();
+		for(int row=1; row<=rows; row++) {
+			String name = progName.getText();
+			programNamesList.add(name);
+		}
+		return programNamesList;
+		 
 	}
+    
+    public boolean validateSearch(ArrayList<String>dataInputsList, String searchInput) {
+    	
+		for(int i=0;i<dataInputsList.size();i++) {
+			if(dataInputsList.get(i).toLowerCase().contains(searchInput.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+
 	
 	
 
