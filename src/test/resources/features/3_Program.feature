@@ -1,53 +1,47 @@
 @Program
 Feature: LMSprogram Functionality
 
-  Background: Admin logged on the Dashboard page 
-	Given Admin is on the Dashboard Page 
+  Background: Admin logged on the Dashboard page
+    Given Admin is on the Dashboard Page
 
-  @ProgramTC01	
-  Scenario Outline: Validating the class manage page 
-	  When Admin clicks the "<pagename>" in the Header 
-	  Then Admin should land on the "<expected page>" 
-	
-	  Examples: 
-		  |pagename|expected page|
-		  |Program |Manage Program|
-		
-		
-  @programNavigation @programTC001
+  #@ProgramTC01
+  #Scenario Outline: Validating the class manage page
+  #	  When Admin clicks the "<pagename>" in the Header
+  #	  Then Admin should land on the "<expected page>"
+  #
+  #	  Examples:
+  #		  |pagename|expected page|
+  #		  |Program |Manage Program|
+  
+  
+  @programNavigation @programTC01
   Scenario: Verify that Admin is able to navigate to Program module
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should be navigated to Program module
 
   #Menu bar
-  @programMenu @programTC001
+  @programMenu @programTC02
   Scenario: Verify any broken links on program page
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should not have any broken links for Program module
 
-  @programMenu @programTC001
+  @programMenu @programTC003
   Scenario: Verify heading in menu bar
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should see the heading "LMS - Learning Management System"
 
   @programMenu @programTC001
   Scenario: Verify other modules name displayed in menu bar
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should see the module names as in order
 
   @programMenu @programTC001
   Scenario: Verify Logout displayed in menu bar
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should see "Logout" in menu bar
 
   @programMenu @programTC001
   Scenario: Verify sub menu displayed in program menu bar
-    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
     Then Admin should see sub menu in menu bar as "Add New Program"
 
@@ -279,3 +273,16 @@ Feature: LMSprogram Functionality
     Given Admin is on Program Confirm Deletion Page after selecting a program to delete
     When Admin Click on "X" button
     Then Admin can see Confirm Deletion form disappear
+
+  #Program Search
+  @searchProgram
+  Scenario Outline: Verify Admin is able to search results found for program details
+    Given Admin is on Program module
+    When Admin enter the program to search By program details "<input>"
+    Then Admin should able to see Program name, description, and status for searched program name
+
+    Examples: 
+      | input   |
+      | testss    |
+      | sample  |
+      | invalid |
