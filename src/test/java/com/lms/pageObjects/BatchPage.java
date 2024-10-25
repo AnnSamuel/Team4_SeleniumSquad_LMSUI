@@ -11,6 +11,18 @@ public class BatchPage extends BasePage {
 	@FindBy(className = "box")
 	WebElement heading;
 	
+	@FindBy(xpath  = "//mat-toolbar/span[1]")
+	WebElement title;
+	
+	@FindBy(id = "filterGlobal")
+	WebElement searchBox;
+	
+	@FindBy(className = "mat-menu-item")
+	WebElement menuItem;
+	
+	@FindBy(className = "p-dialog-title")
+	WebElement popupWindowTitle;
+	
 	public void clickOnBatchBtn() {
 		batchBtn.click();
 	}
@@ -21,8 +33,23 @@ public class BatchPage extends BasePage {
 	}
 	
 	public String getTitle() {
-		return driver.getTitle();
+		return title.getText();
 	}
-
+	
+	
+	public void clickOnMenuItem() {
+		menuItem.click();
+	}
+	
+	public String getMenuItemText() {
+		return menuItem.getText();
+	}
+	
+	public String getPopUpWindowTitle() {
+		driver.switchTo().activeElement();	
+		return popupWindowTitle.getText();
+		
+	}
+	
 }
 
