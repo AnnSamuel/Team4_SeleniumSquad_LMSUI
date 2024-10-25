@@ -11,9 +11,21 @@ import org.openqa.selenium.edge.EdgeDriver;
 import com.lms.utilities.LoggerLoad;
 
 public class WebDriverFactory {
-	public static WebDriver driver;
+	private WebDriver driver;
+	private static WebDriverFactory instance; //Singleton Instance
 
-	public  static WebDriver initializeDriver(String browser) {
+	// Private constructor to prevent instantiation
+    private WebDriverFactory() {}
+
+    // Public method to provide access to the singleton instance
+    public static synchronized WebDriverFactory getInstance() {
+        if (instance == null) {
+            instance = new WebDriverFactory();
+        }
+        return instance;
+    }
+
+	public WebDriver initializeDriver(String browser) {
 
 		switch (browser.toLowerCase()) {
 		case "chrome":
@@ -47,11 +59,11 @@ public class WebDriverFactory {
 			return driver;
 		}
 
-	public static WebDriver getDriver() {
+	public WebDriver getDriver() {
 		return driver;
 	}
 	
-	public static void closeDriver()
+	public void closeDriver()
 	{
 		if (driver != null) {
 			driver.quit();

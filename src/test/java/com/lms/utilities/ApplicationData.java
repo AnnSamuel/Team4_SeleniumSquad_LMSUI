@@ -6,7 +6,16 @@ import java.util.Map;
 public class ApplicationData {
 	
 	private Map<String, List<Map<String,String>>> moduleNameTestDataMap;
+	private boolean isLoggedIn;
 	
+
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
 
 	public void setModuleNameTestDataMap(Map<String, List<Map<String, String>>> moduleNameTestDataMap) {
 		this.moduleNameTestDataMap = moduleNameTestDataMap;

@@ -7,8 +7,15 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Login_SD {
+	
+	LoginPage lp;
+	
+	public Login_SD(LoginPage lp) {
+		this.lp = lp;
+		this.lp.initElements();
+	}
 
-	LoginPage lp = new LoginPage();
+	
 	
 	@Given("Admin is in login Page")
 	public void admin_is_in_login_page() {
