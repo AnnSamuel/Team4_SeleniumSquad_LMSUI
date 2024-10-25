@@ -4,6 +4,7 @@ import org.testng.Assert;
 
 import com.lms.pageObjects.ClassPage;
 import com.lms.pageObjects.LoginPage;
+import com.lms.pageObjects.PageObjectFactory;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,16 +16,12 @@ public class Class_SD {
 
 	// #####################################Febi########################################################
 
-	LoginPage lp;
-	ClassPage cp;
+//	LoginPage lp = new LoginPage();
+//	ClassPage cp = new ClassPage();
 
-	public Class_SD(LoginPage lp, ClassPage cp) {
-		this.lp = lp;
-		this.cp = cp;
-		this.lp.initElements();
-		this.cp.initElements();
-	}
-
+	LoginPage lp = PageObjectFactory.getLoginPage();
+	ClassPage cp = PageObjectFactory.getClassPage();
+	
 	@Given("Admin is on the Dashboard Page")
 	public void admin_is_on_the_dashboard_page() {
 		System.out.println("Class Dashboard======> " + cp + "loginPage " + lp);

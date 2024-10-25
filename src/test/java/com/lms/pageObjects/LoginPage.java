@@ -9,10 +9,7 @@ import static com.lms.utilities.LMSUIConstants.*;
 
 public class LoginPage extends BasePage {
 
-
 	Map<String, String> loginData;
-	
-	//private static LoginPage instance; 
 
 	@FindBy(xpath = "//form//button[@id='login']")
 	WebElement loginBtn;
@@ -21,17 +18,8 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//div//input[@id='password']")
 	WebElement passwordTextLogin;
 	
-	/* private LoginPage() {} */
-	
-	/*
-	 * public static LoginPage getInstance() { if(instance == null) { instance = new
-	 * LoginPage(); } return instance; }
-	 */
-
-	
 	public void openPage() {
 		driver.get(BASE_URL + "login");
-				
 	}
 
 	public void login(String testcase) {

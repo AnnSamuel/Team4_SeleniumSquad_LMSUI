@@ -11,6 +11,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import com.lms.utilities.LoggerLoad;
 
 public class WebDriverFactory {
+	
 	private WebDriver driver;
 	private static WebDriverFactory instance; //Singleton Instance
 
