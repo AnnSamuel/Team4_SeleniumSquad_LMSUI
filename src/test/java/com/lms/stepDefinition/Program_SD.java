@@ -1,11 +1,14 @@
 package com.lms.stepDefinition;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import com.lms.driverManager.WebDriverFactory;
+import com.lms.pageObjects.BasePage;
 import com.lms.pageObjects.ProgramPage;
 import com.lms.utilities.LoggerLoad;
 
@@ -17,6 +20,7 @@ public class Program_SD {
 	
 	WebDriver driver = WebDriverFactory.getDriver();
 	ProgramPage programObj = new ProgramPage();
+	BasePage baseObj = new BasePage();
 	String searchText = "";
 	
 	@Given("Admin is on the Dashboard Page")
@@ -67,25 +71,37 @@ public class Program_SD {
 		programObj.clickProgramBtn();
 	    
 	}
-	@When("Admin enter the program to search By program details {string}")
-	public void admin_enter_the_program_to_search_by_program_details(String searchInput) {
-		
+	@When("Admin enter the program to search by {string}")
+	public void admin_enter_the_program_to_search_by_valid(String searchInput) {
 		programObj.setSearchText(searchInput);
-		searchText = searchInput;
-		
-		
 	    
 	}
+	
 	@Then("Admin should able to see Program name, description, and status for searched program name")
-	public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_name() {
-		ArrayList<String> programNames = programObj.getProgramNames();
-		if(programObj.validateSearch(programNames,searchText)) {
-			LoggerLoad.info(programNames.size()+"");
-			LoggerLoad.info("matches");
-		}
-		else {
-			LoggerLoad.info("not matches");
-		}
+	    public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_name() {
+	    
 	}
+
+	@Then("Admin should able to see multiple program results for searched program name")
+	public void admin_should_able_to_see_multiple_program_results_for_searched_program_name() {
+	    
+	}
+
+	@Then("Admin should able to see Program name, description, and status for searched program description")
+	public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_description() {
+	    
+	}
+
+	@Then("Admin should able to see multiple program results for searched program description")
+	public void admin_should_able_to_see_multiple_program_results_for_searched_program_description() {
+	    
+	}
+	
+	@Then("Admin should not view any search results")
+	public void admin_should_not_view_any_search_results() {
+	   
+	}
+	
+
 
 }

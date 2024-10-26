@@ -1,7 +1,9 @@
 package com.lms.pageObjects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -14,7 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.lms.driverManager.WebDriverFactory;
 
-public class ProgramPage {
+public class ProgramPage extends BasePage {
 
 	WebDriver driver = WebDriverFactory.getDriver();
 	String programName = "Micro services";
@@ -41,6 +43,8 @@ public class ProgramPage {
 	@FindAll (value = {@FindBy (xpath = "//table/tbody//tr")}) List<WebElement> programData;
 	
 	@FindBy (xpath = "//table/tbody//tr//td[2]") WebElement progName;
+	@FindBy (xpath = "//table/tbody//tr//td[3]") WebElement progDesc;
+	@FindBy (xpath = "//table/tbody//tr//td[4]") WebElement progStatus;
 
 	@FindBy(id = "editProgram") WebElement editProgram;
 	
@@ -110,7 +114,7 @@ public class ProgramPage {
 	}
 	
 	
-    public ArrayList<String> getProgramNames() {
+    public ArrayList<String> getProgramNamesList() {
     	ArrayList<String>programNamesList = new ArrayList<String>();
 		
 		int rows = programData.size();
@@ -119,6 +123,18 @@ public class ProgramPage {
 			programNamesList.add(name);
 		}
 		return programNamesList;
+		 
+	}
+    
+    public ArrayList<String> getProgramDescriptionsList() {
+    	ArrayList<String>programDescList = new ArrayList<String>();
+		
+		int rows = programData.size();
+		for(int row=1; row<=rows; row++) {
+			String name = progDesc.getText();
+			programDescList.add(name);
+		}
+		return programDescList;
 		 
 	}
     
@@ -131,6 +147,20 @@ public class ProgramPage {
 		}
 		return false;
 	}
+    
+    public List<Map<String, String>> validateSearchResult() {
+    	List<Map<String, String>> programDataSearchResults = new ArrayList<>();
+    	for(int i=0;i<programData.size();i++) {
+    		Map<String,String>programRow = new HashMap<>();
+    		programRow.put("programName", progName.getText());
+    		programRow.put("programDescription", progDesc.getText());
+    		programRow.put("programStatus", progStatus.getText());
+    		programDataSearchResults.add(programRow);
+    		
+    	}
+    	return programDataSearchResults;
+    	
+    }
 	
 
 	
