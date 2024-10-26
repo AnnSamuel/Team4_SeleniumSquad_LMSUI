@@ -14,6 +14,21 @@ Feature: This feature file contain scenario for the Batch module
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see a title with text as "LMS - Learning Management System"
 
+  @BatchPageValidation-heading
+  Scenario: Validate "heading" in the Batch Page
+    When Admin Clicks on the "Batch" menu from the header
+    Then Admin should see the "Manage Batch" Heading
+
+  @BatchPageValidation-DisabledDeleteIcon
+  Scenario: Validate disabled "Delete Icon" under the header in the Batch Page
+    When Admin Clicks on the "Batch" menu from the header
+    Then Admin should see the "disabled" "Delete Icon" under the header
+    
+    
+    
+    
+    
+
   @VerifySubMenu
   Scenario: Verify sub menu displayed in batch menu bar
     Given Admin is on batch page

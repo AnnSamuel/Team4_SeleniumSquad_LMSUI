@@ -38,10 +38,26 @@ public class Batch_SD {
 
 	}
 
+	@Then("Admin should see the {string} Heading")
+	public void admin_should_see_the_heading(String string) {
+		Assert.assertEquals(batchPage.getHeading(), string);
+	}
+
 	@Then("Admin should see sub menu in menu bar as {string}")
 	public void admin_should_see_sub_menu_in_menu_bar_as(String string) {
 		Assert.assertEquals(batchPage.getMenuItemText(), string);
 
+	}
+
+	@Then("Admin should see the {string} {string} under the header")
+	public void admin_should_see_the_under_the_header(String string, String string2) {
+		boolean isEnabled = false;
+		if("enabled".equalsIgnoreCase(string)) {
+			isEnabled = true;
+		} 
+		
+		Assert.assertEquals(batchPage.isTopDeleteButtonEnabled(), isEnabled);
+		
 	}
 
 	@When("Admin clicks on {string} under the {string} menu bar")

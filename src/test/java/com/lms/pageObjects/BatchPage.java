@@ -23,6 +23,10 @@ public class BatchPage extends BasePage {
 	@FindBy(className = "p-dialog-title")
 	WebElement popupWindowTitle;
 	
+	@FindBy(xpath = "//mat-card-title//button[@icon='pi pi-trash']")
+	WebElement topDeletebtn;
+	
+	
 	public void clickOnBatchBtn() {
 		batchBtn.click();
 	}
@@ -48,8 +52,12 @@ public class BatchPage extends BasePage {
 	public String getPopUpWindowTitle() {
 		driver.switchTo().activeElement();	
 		return popupWindowTitle.getText();
-		
+	}
+	
+	public boolean isTopDeleteButtonEnabled() {
+		return topDeletebtn.isEnabled();
 	}
 	
 }
+
 
