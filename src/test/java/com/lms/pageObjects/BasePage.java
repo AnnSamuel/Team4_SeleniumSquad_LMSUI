@@ -9,13 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.lms.driverManager.WebDriverFactory;
 import com.lms.utilities.ConfigReader;
 
 public class BasePage {
-
 
 	protected WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	protected String BASE_URL = ConfigReader.getProp("baseUrl");
@@ -32,13 +32,34 @@ public class BasePage {
 	public BasePage() {
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	public void initElements() {
 		PageFactory.initElements(driver, this);
 	}
 
 	public void openPage(String pagename) {
 		driver.get(BASE_URL + pagename);
+
+	}
+
+	public boolean dropDownSelect(WebElement element) {
+
+		try {
+			WebElement eleDD = new WebDriverWait(driver, Duration.ofSeconds(IMPLICIT_WAIT))
+					.until(ExpectedConditions.visibilityOf(element));
+
+			if (eleDD.isEnabled()) {
+
+				Select ddObjSelect = new Select(element);
+				ddObjSelect.selectByIndex(1);
+				return true;
+			} else {
+				throw new IllegalStateException("Element is not enabled");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 
 	}
 

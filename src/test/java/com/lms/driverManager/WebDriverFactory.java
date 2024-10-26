@@ -13,12 +13,10 @@ import com.lms.utilities.LoggerLoad;
 public class WebDriverFactory {
 	
 	private WebDriver driver;
-	private static WebDriverFactory instance; //Singleton Instance
+	private static WebDriverFactory instance; 
 
-	// Private constructor to prevent instantiation
     private WebDriverFactory() {}
 
-    // Public method to provide access to the singleton instance
     public static synchronized WebDriverFactory getInstance() {
         if (instance == null) {
             instance = new WebDriverFactory();

@@ -27,7 +27,6 @@ public class Hooks {
 		ConfigReader.load_prop();
 		appData.setModuleNameTestDataMap(ExcelReader.loadExcelData());
 		LMSUIConstants.applicationData = appData;
-		
 	}
 
 	@Before
