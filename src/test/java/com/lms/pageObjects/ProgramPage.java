@@ -15,17 +15,21 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.lms.driverManager.WebDriverFactory;
+import com.lms.utilities.LMSUIConstants;
+import com.lms.utilities.LoggerLoad;
 
 public class ProgramPage extends BasePage {
 
-	WebDriver driver = WebDriverFactory.getDriver();
+	WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	String programName = "Micro services";
+	Map<String, String> programdata;
 	
 	
 	
 	 @FindBy (id = "username") WebElement userName;
 	 @FindBy (id= "password") WebElement password;
 	 @FindBy (id="login") WebElement loginBtn;
+	 @FindBy(xpath = "//span[text()=' LMS - Learning Management System ']") WebElement headerTitle;
 	 @FindBy (xpath = "//*[text() = 'Program Details']") WebElement editProgramHeading;
 	
 	@FindBy(xpath = "//*[contains(text(),'Manage Program')]")WebElement programHeading;
@@ -34,9 +38,8 @@ public class ProgramPage extends BasePage {
 
 	@FindBy(id = "filterGlobal") WebElement searchBtn;
 	
-	@FindBy(xpath = "//*[text()='Program']/..") WebElement programBtn;
+	@FindBy(xpath = "//*[text()='Program']/..") WebElement programLink;
 	
-	@FindBy (xpath = "//button[text() = 'Add New Program']") WebElement addProgramBtn;
 	
 	@FindBy (xpath = "//table/tbody") WebElement programTable;
 	
@@ -54,18 +57,74 @@ public class ProgramPage extends BasePage {
 	
 	@FindBy(xpath="//td//div[@role='checkbox']") WebElement programCheckBox;
 	
+	//Addprogram
+	@FindBy(xpath = "//button[text()='Add New Program']") WebElement addProgramBtn;
+	@FindBy(id="programName") WebElement programNameInput;
+	@FindBy(id="programDescription") WebElement programDescInput;
+	@FindBy(xpath="//*[@ng-reflect-value = 'Active']") WebElement activeStatusInput;
+	@FindBy(xpath="//*[@ng-reflect-value = 'Inactive']") WebElement inactiveStatusInput;
+	@FindBy(xpath="//*[text()='Cancel']/..")WebElement cancelBtn;
+	@FindBy(xpath="//*[text()='Save']/..")WebElement saveBtn;
+	@FindBy(xpath="//span[contains(@class,'p-dialog-header-close-icon ng-tns')]/..") WebElement closeBtn;
+	@FindBy(xpath = "//div[contains(@role, 'dialog')]") WebElement addNewPopup; 
+	@FindBy(xpath = "//span[@id='pr_id_85-label']") WebElement PopupTitle;
+	@FindBy(xpath="//*[contains(@class, 'p-invalid ng-star-inserted')]") WebElement errorText;
 	
-	//init elements
-	public ProgramPage() {
-		PageFactory.initElements(driver, this);
+	
+	public void openPage() {
+		driver.get(BASE_URL + "program");
+				
 	}
 	
-	
-	public void login() {
-		userName.sendKeys("Sdet@gmail.com");
-		password.sendKeys("LmsHackathon@2024");
-		loginBtn.click();
+	public boolean isOnProgramPage() {
+		if(driver.getCurrentUrl().contains("program")) {
+			return true;
+		}
+		return false;
 	}
+	
+    public void validateInputMandatoryFields(String testcase) {
+		
+		programdata = LMSUIConstants.applicationData.getData("Program", testcase);
+		LoggerLoad.info(programdata.get("ProgramName"));
+		
+		sendKeys(programNameInput, programdata.get("ProgramName"));
+		sendKeys(programDescInput, programdata.get("ProgramDescription"));
+		if(programdata.get("ProgramStatus").equalsIgnoreCase("active")) {
+			click(activeStatusInput);
+		}
+		else {
+			click(inactiveStatusInput);
+		}
+		
+	}
+    
+    public boolean verifyPopupTextField() {
+		
+		if (isDisplayed(programNameInput) && isDisplayed(programDescInput) && isDisplayed(activeStatusInput)
+				&& isDisplayed(inactiveStatusInput)) {
+			return true;
+		}
+		return false;
+	}
+    
+    public void clickAddNewProgramBtn() {
+		 click(addProgramBtn);
+	}
+    
+    public boolean verifyPopup() {
+		if(isDisplayed(cancelBtn) && isDisplayed(saveBtn) && isDisplayed(closeBtn)){
+			return true;
+		}
+		return false;
+	}
+    
+    public void clickSaveBtn() {
+    	click(saveBtn);
+    }
+	
+	
+
 	public String getProgramHeading() {
 		return programHeading.getText();
 	}
@@ -75,7 +134,38 @@ public class ProgramPage extends BasePage {
 	}
 	
 	public void clickProgramBtn() {
-		programBtn.click();
+		click(programLink);
+	}
+	
+	public boolean verifyPageTitle(String expected) {
+		
+		if (getText(programHeading).equals(expected)) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	public boolean verifyHeaderTitle(String expected) {
+		
+		if (getText(headerTitle).equals(expected)) {
+			return true;
+		}
+
+		return false;
+	}
+	public String validateAddNewPopupTitle() {
+	    if (addNewPopup.isDisplayed()) {
+	    	String poptitle = PopupTitle.getText();
+	    	System.out.println("popup title text is: " +poptitle);
+	        return PopupTitle.getText();
+	    } else {
+	        return "";
+	    	}
+	}
+	
+	public String validateErrorText() {
+	    return errorText.getText();
 	}
 	
 	public void clickAddProgramBtn() {
@@ -161,10 +251,6 @@ public class ProgramPage extends BasePage {
     	return programDataSearchResults;
     	
     }
-	
-
-	
-	
 
 }
 
