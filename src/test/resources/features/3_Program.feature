@@ -4,19 +4,52 @@ Feature: LMSprogram Functionality
   Background: Admin logged on the Dashboard page
     Given Admin is on the Dashboard Page
 
-  @TC_Program_01
-  Scenario: Validating the class manage page
+  @manageProgram @TC_Program_01
+  Scenario: Validating the Manage Program page
     When Admin clicks the "Program" in the Header
-    Then Admin should land on the "Manage Program"
+    Then Admin should land on the "Manage Program" page on Program module
     And Admin should see the "LMS - Learning Management System" Title
     And Admin should see the Searchbar
 
-  @TC_Program_02
+  @addProgram @TC_Program_02
   Scenario: Add New Program Validation
-    Given Admin is on the Manage class page
+    Given Admin is on the Manage Program page
     When Admin clicks add new program under the program menu bar
     Then Admin should see a manage program pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
-    Then Admin should see few input fields and their respective text boxes in the program details window
+    Then Admin should see program name description and status fields in the program details window
+
+  @addProgram @TC_Program_03
+  Scenario: Program Details pop up Validation for valid inputs
+    Given Admin is on the program Popup window
+    When Admin enters "validInputAll" mandatory fields in the add program form and clicks on save button
+    Then Admin gets message program added Successfully
+    
+  @addProgram @TC_Program_04
+  Scenario: Program Details pop up Validation for blank program name input
+    Given Admin is on the program Popup window
+    When Admin enters "BlankProgramName" mandatory fields in the add program form and clicks on save button
+    Then Admin gets error text on program details popup
+    
+  @addProgram @TC_Program_05
+  Scenario: Program Details pop up Validation for invalid program name input
+    Given Admin is on the program Popup window
+    When Admin enters "InvalidProgramName" mandatory fields in the add program form and clicks on save button
+    Then Admin gets error text on program details popup
+    
+  @addProgram @TC_Program_06
+  Scenario: Program Details pop up Validation for blank program description input
+    Given Admin is on the program Popup window
+    When Admin enters "BlankDescriptionName" mandatory fields in the add program form and clicks on save button
+    Then Admin gets error text on program details popup
+    
+  @addProgram @TC_Program_07
+  Scenario: Program Details pop up Validation for blank program status input
+    Given Admin is on the program Popup window
+    When Admin enters "BlankStatus" mandatory fields in the add program form and clicks on save button
+    Then Admin gets error text on program details popup
+    
+    
+    
 
   #
   #Menu bar
