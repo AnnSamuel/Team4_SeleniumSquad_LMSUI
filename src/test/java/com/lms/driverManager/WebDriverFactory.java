@@ -11,9 +11,20 @@ import org.openqa.selenium.edge.EdgeDriver;
 import com.lms.utilities.LoggerLoad;
 
 public class WebDriverFactory {
-	public static WebDriver driver;
+	
+	private WebDriver driver;
+	private static WebDriverFactory instance; 
 
-	public static WebDriver initializeDriver(String browser) {
+    private WebDriverFactory() {}
+
+    public static synchronized WebDriverFactory getInstance() {
+        if (instance == null) {
+            instance = new WebDriverFactory();
+        }
+        return instance;
+    }
+
+	public WebDriver initializeDriver(String browser) {
 
 		switch (browser.toLowerCase()) {
 		case "chrome":
@@ -34,27 +45,29 @@ public class WebDriverFactory {
 
 		case "safari":
 			driver = new SafariDriver();
-			LoggerLoad.info("testing on safari");
+			LoggerLoad.info("testing on safari");	
 			break;
-
-		default:
+		
+	     default:
 			throw new RuntimeException("Please pass the correct browser value: " + browser);
-
+			
 		}
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
+			driver.manage().deleteAllCookies();
+			driver.manage().window().maximize();
+			return driver;
+		}
+
+	public WebDriver getDriver() {
 		return driver;
 	}
-
-	public static WebDriver getDriver() {
-		return driver;
-	}
-
-	public static void closeDriver() {
+	
+	public void closeDriver()
+	{
 		if (driver != null) {
 			driver.quit();
 			driver = null;
 		}
 	}
 }
+

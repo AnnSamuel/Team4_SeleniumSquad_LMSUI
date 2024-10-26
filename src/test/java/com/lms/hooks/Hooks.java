@@ -11,6 +11,7 @@ import com.lms.utilities.LMSUIConstants;
 
 import org.openqa.selenium.OutputType;
 import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
@@ -18,8 +19,7 @@ import io.cucumber.java.Scenario;
 
 public class Hooks {
 
-	public WebDriver driver;
-	
+    WebDriverFactory wd = WebDriverFactory.getInstance();
 
 	@BeforeAll
 	public static void before_all() {
@@ -27,15 +27,14 @@ public class Hooks {
 		ConfigReader.load_prop();
 		appData.setModuleNameTestDataMap(ExcelReader.loadExcelData());
 		LMSUIConstants.applicationData = appData;
-		
 	}
 
 	@Before
 	public void setUp() {
 
-		if (driver == null) {
-			driver = WebDriverFactory.initializeDriver(ConfigReader.getProp("browser"));
-			System.out.println("driver details --->" + driver.toString());
+		if (wd.getDriver() == null) {
+			wd.initializeDriver(ConfigReader.getProp("browser"));
+			System.out.println("driver details --->" + wd.getDriver().toString());
 		}
 	}
 
@@ -43,13 +42,13 @@ public class Hooks {
 	public void addScreenShot(Scenario scenario) {
 		if (scenario.isFailed()) {
 			String ScreenShotName = scenario.getName().replaceAll(" ", "_");
-			byte[] sourcePath = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+			byte[] sourcePath = ((TakesScreenshot) wd.getDriver()).getScreenshotAs(OutputType.BYTES);
 			scenario.attach(sourcePath, "image/png", ScreenShotName);
 		}
 	}
 
-	@After
-	public void after() {
+	@AfterAll
+	public static void after() {
 		
 		// TestDataCleanup();
 		try {
@@ -57,7 +56,7 @@ public class Hooks {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		WebDriverFactory.closeDriver();
+		WebDriverFactory.getInstance().closeDriver();
 		System.out.println("driver closed");
 		
 		// private void TestDataCleanup(){
