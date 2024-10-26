@@ -1,5 +1,7 @@
 package com.lms.stepDefinition;
 
+import static com.lms.utilities.LMSUIConstants.applicationData;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,9 @@ import org.testng.Assert;
 
 import com.lms.driverManager.WebDriverFactory;
 import com.lms.pageObjects.BasePage;
+import com.lms.pageObjects.ClassPage;
+import com.lms.pageObjects.LoginPage;
+import com.lms.pageObjects.PageObjectFactory;
 import com.lms.pageObjects.ProgramPage;
 import com.lms.utilities.LoggerLoad;
 
@@ -18,16 +23,93 @@ import io.cucumber.java.en.When;
 
 public class Program_SD {
 	
-	WebDriver driver = WebDriverFactory.getDriver();
-	ProgramPage programObj = new ProgramPage();
-	BasePage baseObj = new BasePage();
+	LoginPage loginObj = PageObjectFactory.getLoginPage();
+	ProgramPage programObj = PageObjectFactory.getProgramPage();
 	String searchText = "";
 	
-	@Given("Admin is on the Dashboard Page")
-	public void admin_is_on_the_dashboard_page() {
-		programObj.login();
-	    
+//	@Given("Admin is on the Dashboard Page")
+//	public void admin_is_on_the_dashboard_page() {
+//		programObj.login();
+//	    
+//	}
+	
+	@Then("Admin should land on the {string} page on Program module")
+	public void admin_should_land_on_the_page_on_program_module(String expected) {
+
+		Assert.assertEquals(true, programObj.verifyPageTitle(expected));
+
 	}
+	
+	//Add new program
+	
+	@Given("Admin is on the Manage Program page")
+	public void admin_is_on_the_manage_program_page() {
+		System.out.println("program Manage ############" + programObj);
+		if (!applicationData.isLoggedIn()) {
+			loginObj.login("ValidCredentials");
+
+		}
+		if (!programObj.isOnProgramPage()) {
+			programObj.clickProgramBtn();
+		}
+
+	}
+	
+	
+	@When("Admin clicks add new program under the program menu bar")
+	public void admin_clicks_add_new_program_under_the_program_menu_bar() {
+
+		programObj.clickAddNewProgramBtn();
+	}
+
+	@Then("Admin should see a manage program pop up with empty form and <SAVE> and <CANCEL> button and Close\\(X) Icon on the top right corner of the window")
+	public void admin_should_see_a_manage_program_pop_up_with_empty_form_and_save_and_cancel_button_and_close_x_icon_on_the_top_right_corner_of_the_window() {
+
+		Assert.assertEquals(programObj.verifyPopup(),true);
+
+	}
+
+	@Then("Admin should see program name description and status fields in the program details window")
+	public void admin_should_see_program_name_description_and_status_fields_in_the_program_details_window() {
+
+		Assert.assertEquals(programObj.verifyPopupTextField(),true);
+
+	}
+	
+	@Given("Admin is on the program Popup window")
+	public void admin_is_on_the_program_popup_window() {
+
+		if (!applicationData.isLoggedIn()) {
+			loginObj.login("ValidCredentials");
+		}
+		programObj.clickProgramBtn();
+		programObj.clickAddNewProgramBtn();
+	}
+	
+	@When("Admin enters {string} mandatory fields in the add program form and clicks on save button")
+	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button(String testcase) {
+		
+		programObj.validateInputMandatoryFields(testcase);
+		programObj.clickSaveBtn();
+
+	}
+
+	@Then("Admin gets message program added Successfully")
+	public void admin_gets_message_class_added_successfully() {
+       programObj.validateAddNewPopupTitle();
+		
+	}
+	
+	@Then("Admin gets error text on program details popup")
+	public void admin_gets_error_text_on_program_details_popup() {
+       programObj.validateErrorText();
+		
+	}
+	
+	
+	
+	
+	
 	
 	@When("Admin clicks Program on the navigation bar")
 	public void admin_clicks_program_on_the_navigation_bar() {
