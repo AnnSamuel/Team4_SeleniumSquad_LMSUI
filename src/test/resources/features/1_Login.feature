@@ -1,29 +1,14 @@
-#Author: your.email@your.domain.com
-#Keywords Summary :
-#Feature: List of scenarios.
-#Scenario: Business rule through list of steps with arguments.
-#Given: Some precondition step
-#When: Some key actions
-#Then: To observe outcomes or validation
-#And,But: To enumerate more Given,When,Then steps
-#Scenario Outline: List of steps for data-driven as an Examples and <placeholder>
-#Examples: Container for s table
-#Background: List of steps run before each of the scenarios
-#""" (Doc Strings)
-#| (Data Tables)
-#@ (Tags/Labels):To group Scenarios
-#<> (placeholder)
-#""
-## (Comments)
-#Sample Feature Definition Template
-@tag
-Feature: Title of your feature
-  I want to use this template for my feature file
-
-  @tag1
-  Scenario: Title of your scenario
+@login_Scenarios
+Feature: Login Page
+  
+  @TC_login_01
+  Scenario Outline: Login page validation
     Given Admin is in login Page
-    When Admin enter valid credentials  and clicks login button 
-    Then Admin should land on dashboard page ( centre of the page will be empty , menu bar is present).  
- 
+    When Admin enter login credentials "<testcase>" and clicks login button          
+    Then Admin should land on dashboard page  
+     
+     Examples:
+     |testcase|
+     |ValidCredentials|
+     |InvalidCredentials|
 

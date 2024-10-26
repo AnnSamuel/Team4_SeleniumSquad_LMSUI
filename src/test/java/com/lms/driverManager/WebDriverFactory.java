@@ -11,13 +11,24 @@ import org.openqa.selenium.edge.EdgeDriver;
 import com.lms.utilities.LoggerLoad;
 
 public class WebDriverFactory {
-	public static WebDriver driver;
+	
+	private WebDriver driver;
+	private static WebDriverFactory instance; 
 
-	public  static WebDriver initializeDriver(String browser) {
+    private WebDriverFactory() {}
+
+    public static synchronized WebDriverFactory getInstance() {
+        if (instance == null) {
+            instance = new WebDriverFactory();
+        }
+        return instance;
+    }
+
+	public WebDriver initializeDriver(String browser) {
 
 		switch (browser.toLowerCase()) {
 		case "chrome":
-			driver = new ChromeDriver();// initialize chrome driver
+			driver = new ChromeDriver();
 
 			LoggerLoad.info("testing on chrome");
 			break;
@@ -47,11 +58,11 @@ public class WebDriverFactory {
 			return driver;
 		}
 
-	public static WebDriver getDriver() {
+	public WebDriver getDriver() {
 		return driver;
 	}
 	
-	public static void closeDriver()
+	public void closeDriver()
 	{
 		if (driver != null) {
 			driver.quit();
