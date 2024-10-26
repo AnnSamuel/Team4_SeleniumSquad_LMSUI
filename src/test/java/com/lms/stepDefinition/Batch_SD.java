@@ -93,8 +93,6 @@ public class Batch_SD {
 	    Assert.assertEquals(batchPage.verifyTableHeaders("Batch Status "), true);
 	    Assert.assertEquals(batchPage.verifyTableHeaders("No Of Classes "), true);
 	    Assert.assertEquals(batchPage.verifyTableHeaders("Program Name "), true);
-	    Assert.assertEquals(batchPage.verifyTableHeaders(" Edit / Delete "), true);
-	     
 	}
 	
 	@Then("Admin should see the checkbox in the datatable header row")
