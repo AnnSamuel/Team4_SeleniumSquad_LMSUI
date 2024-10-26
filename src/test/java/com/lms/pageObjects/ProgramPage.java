@@ -23,6 +23,8 @@ public class ProgramPage extends BasePage {
 	WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	String programName = "Micro services";
 	Map<String, String> programdata;
+	Map<String, String> searchData;
+	
 	
 	
 	
@@ -36,7 +38,7 @@ public class ProgramPage extends BasePage {
 	
 	@FindBy(xpath = "//div/button[contains(@icon ,'pi-trash')]") WebElement deleteAllBtn;
 
-	@FindBy(id = "filterGlobal") WebElement searchBtn;
+	@FindBy(id = "filterGlobal") WebElement searchBox;
 	
 	@FindBy(xpath = "//*[text()='Program']/..") WebElement programLink;
 	
@@ -122,6 +124,16 @@ public class ProgramPage extends BasePage {
     public void clickSaveBtn() {
     	click(saveBtn);
     }
+    
+    public void clickCancelBtn() {
+    	click(cancelBtn);
+    }
+    
+    public void clickCloseBtn() {
+    	click(closeBtn);
+    }
+    
+    
 	
 	
 
@@ -129,12 +141,17 @@ public class ProgramPage extends BasePage {
 		return programHeading.getText();
 	}
 	
-	public void setSearchText(String searchInput) {
-		searchBtn.sendKeys(searchInput);
+	public void setSearchText(String testcase) {
+		searchData = LMSUIConstants.applicationData.getData("Search", testcase);
+		LMSUIConstants.applicationData.setSearchInput(searchData.get("input"));
+		//LoggerLoad.info(searchData.get("input"));
+		sendKeys(searchBox,searchData.get("input"));
+		
 	}
 	
 	public void clickProgramBtn() {
-		click(programLink);
+		((JavascriptExecutor)driver).executeScript("arguments[0].click();",programLink);
+		//click(programLink);
 	}
 	
 	public boolean verifyPageTitle(String expected) {
@@ -162,6 +179,14 @@ public class ProgramPage extends BasePage {
 	    } else {
 	        return "";
 	    	}
+	}
+	
+	public boolean validateAddNewPopup() {
+	    if (addNewPopup.isDisplayed()) {
+
+	        return true;
+	    } 
+	    return false;
 	}
 	
 	public String validateErrorText() {
@@ -224,6 +249,7 @@ public class ProgramPage extends BasePage {
 			String name = progDesc.getText();
 			programDescList.add(name);
 		}
+		System.out.println("program desc size"+programDescList.size());
 		return programDescList;
 		 
 	}
@@ -238,19 +264,20 @@ public class ProgramPage extends BasePage {
 		return false;
 	}
     
-    public List<Map<String, String>> validateSearchResult() {
-    	List<Map<String, String>> programDataSearchResults = new ArrayList<>();
-    	for(int i=0;i<programData.size();i++) {
-    		Map<String,String>programRow = new HashMap<>();
-    		programRow.put("programName", progName.getText());
-    		programRow.put("programDescription", progDesc.getText());
-    		programRow.put("programStatus", progStatus.getText());
-    		programDataSearchResults.add(programRow);
-    		
-    	}
-    	return programDataSearchResults;
-    	
-    }
+    
+//    public List<Map<String, String>> validateSearchResult() {
+//    	List<Map<String, String>> programDataSearchResults = new ArrayList<>();
+//    	for(int i=0;i<programData.size();i++) {
+//    		Map<String,String>programRow = new HashMap<>();
+//    		programRow.put("programName", progName.getText());
+//    		programRow.put("programDescription", progDesc.getText());
+//    		programRow.put("programStatus", progStatus.getText());
+//    		programDataSearchResults.add(programRow);
+//    		
+//    	}
+//    	return programDataSearchResults;
+//    	
+//    }
 
 }
 

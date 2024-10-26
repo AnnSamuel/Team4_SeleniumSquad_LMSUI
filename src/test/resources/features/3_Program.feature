@@ -11,11 +11,13 @@ Feature: LMSprogram Functionality
     And Admin should see the "LMS - Learning Management System" Title
     And Admin should see the Searchbar
 
+
+ # ADD PROGRAM
   @addProgram @TC_Program_02
   Scenario: Add New Program Validation
     Given Admin is on the Manage Program page
     When Admin clicks add new program under the program menu bar
-    Then Admin should see a manage program pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
+    Then Admin should see program details pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
     Then Admin should see program name description and status fields in the program details window
 
   @addProgram @TC_Program_03
@@ -47,6 +49,34 @@ Feature: LMSprogram Functionality
     Given Admin is on the program Popup window
     When Admin enters "BlankStatus" mandatory fields in the add program form and clicks on save button
     Then Admin gets error text on program details popup
+    
+  @addProgram @cancelProgram @TC_Program_08
+   Scenario: Program Details cancel button validation for add new program
+    Given Admin is on the program Popup window
+    When Admin clicks the cancel button in the program details window
+    Then The program details window is closed and new program is not created
+    
+   @addProgram @closeProgram @TC_Program_09
+   Scenario: Program Details close button validation for add new program
+    Given Admin is on the program Popup window
+    When Admin clicks the close X button in the program details window
+    Then The program details window is closed and new program is not created
+    
+    
+    
+  # EDIT PROGRAM
+  
+  @editProgram @TC_Program_10
+  Scenario: Edit Program Validation
+    Given Admin is on the Manage Program page
+    When Admin clicks edit program button for a program
+    Then Admin should see a program details pop up with filled form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
+    
+    
+    
+    
+    
+    
     
     
     
@@ -307,82 +337,28 @@ Feature: LMSprogram Functionality
   #When Admin Click on "X" button
   #Then Admin can see Confirm Deletion form disappear
   #Program Search
+  
   @searchProgramNamefull
   Scenario Outline: Verify Admin is able to view search results for valid program name
     Given Admin is on Program module
-    When Admin enter the program to search by "<programName>"
+    When Admin enter the program to search by "<testcase>"
     Then Admin should able to see Program name, description, and status for searched program name
 
     Examples: 
-      | programName |
-      | testssjavaa |
+      | testcase |
+      |ValidProgramName|
+      |InvalidProgramName|
+      |PartialProgramName|
 
-  @searchProgramNameinvalid @searchPrograms
-  Scenario Outline: Verify Admin is not able view to search results for invalid program name
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programName>"
-    Then Admin should not view any search results
-
-    Examples: 
-      | programName |
-      | invalid     |
-
-  @searchProgramNamePartial @searchPrograms
-  Scenario Outline: Verify Admin is able to view search results found for partial program name
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programName>"
-    Then Admin should able to see Program name, description, and status for searched program name
-
-    Examples: 
-      | programName |
-      | mast        |
-
-  @searchProgramNameMultiple @searchPrograms
-  Scenario Outline: Verify Admin is able to view multiple search results for program name
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programName>"
-    Then Admin should able to see multiple program results for searched program name
-
-    Examples: 
-      | programName | count |
-      | tss         |     2 |
 
   @searchProgramDescfull @searchPrograms
   Scenario Outline: Verify Admin is able to view search results found for valid program description
     Given Admin is on Program module
-    When Admin enter the program to search by "<programDescription>"
+    When Admin enter the program to search by "<testcase>"
     Then Admin should able to see Program name, description, and status for searched program name
 
     Examples: 
-      | programDescription |
-      | testjava           |
-
-  @searchProgramDescInvalid @searchPrograms
-  Scenario Outline: Verify Admin is not able view to search results for invalid program description
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programDescription>"
-    Then Admin should not view any search results
-
-    Examples: 
-      | programDescription |
-      | invalid            |
-
-  @searchProgramDescPartial @searchPrograms
-  Scenario Outline: Verify Admin is able to view search results found for partial program description
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programDescription>"
-    Then Admin should able to see Program name, description, and status for searched program description
-
-    Examples: 
-      | programDescription |
-      | stja               |
-
-  @searchProgramDescMultiple @searchPrograms
-  Scenario Outline: Verify Admin is able to view multiple search results found for program description
-    Given Admin is on Program module
-    When Admin enter the program to search by "<programDescription>"
-    Then Admin should able to see multiple program results for searched program description
-
-    Examples: 
-      | programDescription |
-      | tjava              |
+      | testcase |
+      |ValidProgramDesc|
+      |InvalidProgramDesc|
+      |PartialProgramDesc|

@@ -15,6 +15,7 @@ import com.lms.pageObjects.ClassPage;
 import com.lms.pageObjects.LoginPage;
 import com.lms.pageObjects.PageObjectFactory;
 import com.lms.pageObjects.ProgramPage;
+import com.lms.utilities.LMSUIConstants;
 import com.lms.utilities.LoggerLoad;
 
 import io.cucumber.java.en.Given;
@@ -25,7 +26,7 @@ public class Program_SD {
 	
 	LoginPage loginObj = PageObjectFactory.getLoginPage();
 	ProgramPage programObj = PageObjectFactory.getProgramPage();
-	String searchText = "";
+	String testcaseName = "";
 	
 //	@Given("Admin is on the Dashboard Page")
 //	public void admin_is_on_the_dashboard_page() {
@@ -62,8 +63,8 @@ public class Program_SD {
 		programObj.clickAddNewProgramBtn();
 	}
 
-	@Then("Admin should see a manage program pop up with empty form and <SAVE> and <CANCEL> button and Close\\(X) Icon on the top right corner of the window")
-	public void admin_should_see_a_manage_program_pop_up_with_empty_form_and_save_and_cancel_button_and_close_x_icon_on_the_top_right_corner_of_the_window() {
+	@Then("Admin should see program details pop up with empty form and <SAVE> and <CANCEL> button and Close\\(X) Icon on the top right corner of the window")
+	public void admin_should_see_program_details_pop_up_with_empty_form_and_save_and_cancel_button_and_close_x_icon_on_the_top_right_corner_of_the_window() {
 
 		Assert.assertEquals(programObj.verifyPopup(),true);
 
@@ -105,6 +106,42 @@ public class Program_SD {
        programObj.validateErrorText();
 		
 	}
+	
+	//cancel
+	@When("Admin clicks the cancel button in the program details window")
+	public void admin_clicks_the_cancel_button_in_the_program_details_window() {
+	    programObj.clickCancelBtn();
+	}
+	
+	//close
+	@When("Admin clicks the close X button in the program details window")
+	public void admin_clicks_the_close_x_button_in_the_program_details_window() {
+	    programObj.clickCloseBtn();
+	}
+	
+	@Then("The program details window is closed and new program is not created")
+	public void the_program_details_window_is_closed_and_new_program_is_not_created() {
+	    Assert.assertEquals(programObj.validateAddNewPopup(), "false");
+	    
+	    
+	}
+	
+	//Edit program
+	
+	@When("Admin clicks edit program button for a program")
+	public void admin_clicks_edit_program_button_for_a_program() {
+		//programObj.clickEditProgram();
+	    
+	}
+	@Then("Admin should see a program details pop up with filled form and <SAVE> and <CANCEL> button and Close\\(X) Icon on the top right corner of the window")
+	public void admin_should_see_a_program_details_pop_up_with_filled_form_and_save_and_cancel_button_and_close_x_icon_on_the_top_right_corner_of_the_window() {
+	    
+	}
+	
+	
+
+	
+
 	
 	
 	
@@ -154,13 +191,26 @@ public class Program_SD {
 	    
 	}
 	@When("Admin enter the program to search by {string}")
-	public void admin_enter_the_program_to_search_by_valid(String searchInput) {
-		programObj.setSearchText(searchInput);
-	    
+	public void admin_enter_the_program_to_search_by_valid(String testcase) {
+		programObj.setSearchText(testcase);
+		testcaseName = testcase;
 	}
 	
 	@Then("Admin should able to see Program name, description, and status for searched program name")
 	    public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_name() {
+		
+		LoggerLoad.info("in then step");
+		String searchInput = LMSUIConstants.applicationData.getSearchInput();
+		if(testcaseName.toLowerCase().contains("programname")) {
+			LoggerLoad.info("search inside program name loop");
+			ArrayList<String> programNames = programObj.getProgramNamesList();
+			Assert.assertEquals(programObj.validateSearch(programNames, searchInput), true);
+		}
+		else if(testcaseName.toLowerCase().contains("programdesc")) {
+			LoggerLoad.info("search inside program desc loop");
+			ArrayList<String> programDescList = programObj.getProgramDescriptionsList();
+			Assert.assertEquals(programObj.validateSearch(programDescList, searchInput), true);	
+		}
 	    
 	}
 
