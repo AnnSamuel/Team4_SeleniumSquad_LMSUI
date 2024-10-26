@@ -1,33 +1,58 @@
 package com.lms.stepDefinition;
 
-import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
-import com.lms.driverManager.WebDriverFactory;
+import com.lms.pageObjects.BatchPage;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Batch_SD {
-	
-	WebDriver driver = WebDriverFactory.getDriver();
-	
-	@Given("Admin is on the Dashboard Page")
-	public void admin_is_on_the_dashboard_page() {
-	   System.out.println("Admin is on the Dashboard Page");
+
+	BatchPage batchPage = new BatchPage();
+
+	@When("Admin Clicks on the {string} menu from the header")
+	public void admin_clicks_on_the_menu_from_the_header(String string) {
+		batchPage.clickOnBatchBtn();
 	}
 
-	@When("Admin Clicks on the Batch menu from the header")
-	public void admin_clicks_on_the_batch_menu_from_the_header() {
-	   System.out.println("Admin Clicks on the Batch menu from the header");
+	@Then("Admin should be in the {string} Page")
+	public void admin_should_be_in_the_page(String string) {
+		Assert.assertEquals(batchPage.getHeading(), string);
 	}
 
-	@Then("Admin should be in the Manage Batch Page")
-	public void admin_should_be_in_the_manage_batch_page() {
-	  System.out.println("Admin should be in the Manage Batch Page");
+	@Then("Admin should see a title with text as {string}")
+	public void admin_should_see_a_title_with_text_as(String string) {
+		Assert.assertEquals(batchPage.getTitle(), string);
 	}
 
+	@Given("Admin is on batch page")
+	public void admin_is_on_batch_page() {
+		batchPage.clickOnBatchBtn();
+	}
 
+	@When("Admin clicks {string} on the navigation bar")
+	public void admin_clicks_on_the_navigation_bar(String string) {
+		// batchPage.clickOnBatchBtn();
 
+	}
+
+	@Then("Admin should see sub menu in menu bar as {string}")
+	public void admin_should_see_sub_menu_in_menu_bar_as(String string) {
+		Assert.assertEquals(batchPage.getMenuItemText(), string);
+
+	}
+
+	@When("Admin clicks on {string} under the {string} menu bar")
+	public void admin_clicks_on_under_the_menu_bar(String string, String string2) {
+		batchPage.clickOnBatchBtn();
+		batchPage.clickOnMenuItem();
+	}
+
+	@Then("Admin should see the Batch Details pop up window")
+	public void admin_should_see_the_batch_details_pop_up_window() {
+		Assert.assertEquals(batchPage.getPopUpWindowTitle(), "Batch Details");
+	}
 
 }

@@ -54,7 +54,7 @@ public class WebDriverFactory {
 			throw new RuntimeException("Please pass the correct browser value: " + browser);
 			
 		}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));// implicit wait
 			driver.manage().deleteAllCookies();
 			driver.manage().window().maximize();
 			return driver;
