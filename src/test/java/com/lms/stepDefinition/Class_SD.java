@@ -13,17 +13,15 @@ import io.cucumber.java.en.When;
 import static com.lms.utilities.LMSUIConstants.*;
 
 public class Class_SD {
-
-	// #####################################Febi########################################################
-
-//	LoginPage lp = new LoginPage();
-//	ClassPage cp = new ClassPage();
+  
+	//#####################################Febi########################################################
 
 	LoginPage lp = PageObjectFactory.getLoginPage();
 	ClassPage cp = PageObjectFactory.getClassPage();
 	
 	@Given("Admin is on the Dashboard Page")
 	public void admin_is_on_the_dashboard_page() {
+		
 		System.out.println("Class Dashboard======> " + cp + "loginPage " + lp);
 		if (!applicationData.isLoggedIn()) {
 
@@ -110,16 +108,31 @@ public class Class_SD {
 
 	}
 
-	@When("Admin enters mandatory fields in the form and clicks on save button")
-	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button() {
+	@When("Admin enters {string} mandatory fields in the form and clicks on save button")
+	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button(String testcase) {
+		
+		//cp.validInputMandatoryFields(testcase);
 
 	}
 
 	@Then("Admin gets message Class added Successfully")
 	public void admin_gets_message_class_added_successfully() {
 
+		
 	}
 
+	@When("Admin selects class date in date picker")
+	public void admin_selects_class_date_in_date_picker() {
+
+		
+	}
+
+	@Then("Admin should see no of class value is added automatically")
+	public void admin_should_see_no_of_class_value_is_added_automatically() {
+
+	
+	}
+	
 	/////////////////////////////////////////////////////////////////////////
 
 	// Ann

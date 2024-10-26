@@ -10,17 +10,23 @@ Scenario: Validating the class manage page
 	Then Admin should land on the "Manage Class" 
 	And Admin should see the "LMS - Learning Management System" Title 
 	And Admin should see the Searchbar 
+	 
 	
 @TC_Class_02 
 Scenario: Add New Class Validation 
-	Given  Admin is on the Manage class page 
-	When  Admin clicks add new class under the class menu bar 
-	Then  Admin should see a manage class pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window 
+	Given Admin is on the Manage class page 
+	When Admin clicks add new class under the class menu bar 
+	Then Admin should see a manage class pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window 
 	Then Admin should see few input fields and their respective text boxes in the class details window 
 	
 @TC_Class_03 
 Scenario: Class Details pop up Validation 
 	Given Admin is on the Class Popup window 
-	When Admin enters mandatory fields in the form and clicks on save button 
-	Then Admin gets message Class added Successfully
+	When Admin enters "validInputAll" mandatory fields in the form and clicks on save button 
+	Then Admin gets message Class added Successfully 
+	When Admin selects class date in date picker 
+	Then Admin should see no of class value is added automatically 
+	
+
+	
 	

@@ -13,12 +13,10 @@ import com.lms.utilities.LoggerLoad;
 public class WebDriverFactory {
 	
 	private WebDriver driver;
-	private static WebDriverFactory instance; //Singleton Instance
+	private static WebDriverFactory instance; 
 
-	// Private constructor to prevent instantiation
     private WebDriverFactory() {}
 
-    // Public method to provide access to the singleton instance
     public static synchronized WebDriverFactory getInstance() {
         if (instance == null) {
             instance = new WebDriverFactory();
@@ -54,9 +52,9 @@ public class WebDriverFactory {
 			throw new RuntimeException("Please pass the correct browser value: " + browser);
 			
 		}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));// implicit wait
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
 			driver.manage().deleteAllCookies();
-			//driver.manage().window().maximize();
+			driver.manage().window().maximize();
 			return driver;
 		}
 
