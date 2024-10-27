@@ -62,6 +62,19 @@ public class BasePage {
 		return false;
 
 	}
+	
+	
+	public void dropDownSelect(WebElement dropdown, String desiredOption) {
+         click(dropdown);
+		 List<WebElement> options = driver.findElements(By.cssSelector("ul[role='listbox'] li"));
+        
+        for (WebElement option : options) {
+            if (option.getText().equals(desiredOption)) {
+                click(option);
+                break;
+            }
+        }
+	 }
 
 	public boolean click(WebElement element) {
 		try {

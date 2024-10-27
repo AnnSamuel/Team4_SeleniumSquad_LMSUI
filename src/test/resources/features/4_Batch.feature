@@ -38,28 +38,22 @@ Feature: This feature file contain scenario for the Batch module
   Scenario: validate checkbox in each data rows
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should the checkbox in each row
-    
-   @BatchPageValidation-TableHeaders
+
+  @BatchPageValidation-TableHeaders
   Scenario: Validate Datatable headers
     When Admin Clicks on the "Batch" menu from the header
-    Then Admin should see the datatable headers 
-    
-    
-    
-    @BatchPageValidation-CheckboxHeader
+    Then Admin should see the datatable headers
+
+  @BatchPageValidation-CheckboxHeader
   Scenario: Validate "Checkbox" in the Datatable header row
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the checkbox in the datatable header row
-    
-    
-    @BatchPageValidation-SortIconHeaders
+
+  @BatchPageValidation-SortIconHeaders
   Scenario: Validate "sort icon" next to all the datatable header
     When Admin Clicks on the "Batch" menu from the header
-    Then Admin should see the sort icon next to all Datatable headers 
-    
-    
-    
-    
+    Then Admin should see the sort icon next to all Datatable headers
+
   @VerifySubMenu
   Scenario: Verify sub menu displayed in batch menu bar
     Given Admin is on batch page
@@ -70,3 +64,82 @@ Feature: This feature file contain scenario for the Batch module
   Scenario: Validate Admin able to click on the Add new Batch Option
     When Admin clicks on "Add New batch" under the "batch" menu bar
     Then Admin should see the Batch Details pop up window
+
+  @AddNewBatch-AllMandatoryFields
+  Scenario: validate save button in Batch details pop up
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters "validInputAll" mandatory fields in the form and clicks on save button
+    Then Admin should get a succesesful message
+
+  @AddNewBatch-SelectProgram
+  Scenario: Validate batchname prefix selected program name
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin selects program name present in the dropdown
+    Then Admin should see selected program name in the batch name prefix box
+
+  @TC_Batch_15
+  Scenario: Validate batchname prefix selected program name
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin selects program name present in the dropdown
+    Then Admin should see selected program name in the batch name prefix box
+
+  @TC_Batch_16
+  Scenario: Validate batch name suffix box should accept only numbers
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters alphabets in batch name suffix box
+    Then Admin should get error message below the text box of respective field
+
+  @TC_Batch_17
+  Scenario: Validate batch name prefix box is not editable
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters alphabets in batch "name prefix" box
+    Then Admin should see empty text box
+
+  @TC_Batch_18 @TC_Batch_20
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "Mandatory" data and clicks "save" button
+    Then Admin should get a successful message
+
+  @TC_Batch_19 @TC_Batch_19.1
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "MissingProgram" data and clicks save button
+    Then Admin should get error message below the text box of respective field for "MissingProgram"
+
+  @TC_Batch_19 @TC_Batch_19.2
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "MissingBatchName" data and clicks save button
+    Then Admin should get error message below the text box of respective field for "MissingBatchName"
+
+  @TC_Batch_19 @TC_Batch_19.3
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "MissingStatus" data and clicks save button
+    Then Admin should get error message below the text box of respective field for "MissingStatus"
+
+  @TC_Batch_19 @TC_Batch_19.4
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "MissingDesc" data and clicks save button
+    Then Admin should get error message below the text box of respective field for "MissingDesc"
+
+  @TC_Batch_19 @TC_Batch_19.5
+  Scenario: Validate input data only for mandatory fields
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "MissingNoOfClass" data and clicks save button
+    Then Admin should get error message below the text box of respective field for "MissingNoOfClass"
+
+  @TC_Batch_21
+  Scenario: validate cancel button in Batch details pop up
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "Mandatory" data and clicks "cancel" button
+    Then Admin can see the batch details popup closes without creating any batch
+  
+  @TC_Batch_22
+  Scenario: validate close icon on the batch details pop up
+    Given Admin is on the Batch Details Pop Up WIndow
+    When Admin enters the "Mandatory" data and clicks "close" button
+    Then Admin can see the batch details popup closes without creating any batch  
+    

@@ -1,8 +1,15 @@
 package com.lms.stepDefinition;
 
+import static com.lms.utilities.LMSUIConstants.applicationData;
+
+import java.util.Map;
+
 import org.testng.Assert;
 
 import com.lms.pageObjects.BatchPage;
+import com.lms.pageObjects.LoginPage;
+import com.lms.pageObjects.PageObjectFactory;
+import com.lms.utilities.LMSUIConstants;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,7 +17,8 @@ import io.cucumber.java.en.When;
 
 public class Batch_SD {
 
-	BatchPage batchPage = new BatchPage();
+	LoginPage lp = PageObjectFactory.getLoginPage();
+	BatchPage batchPage = PageObjectFactory.getBatchPage();
 
 	@When("Admin Clicks on the {string} menu from the header")
 	public void admin_clicks_on_the_menu_from_the_header(String string) {
@@ -75,7 +83,7 @@ public class Batch_SD {
 	public void admin_should_see_the_edit_icon_in_each_row() {
 		Assert.assertEquals(batchPage.isEditIconsPresentInEachRow(), true);
 	}
-	
+
 	@Then("Admin should see the delete icon in each row")
 	public void admin_should_see_the_delete_icon_in_each_row() {
 		Assert.assertEquals(batchPage.isDeleteIconsPresentInEachRow(), true);
@@ -85,30 +93,123 @@ public class Batch_SD {
 	public void admin_should_the_checkbox_in_each_row() {
 		Assert.assertEquals(batchPage.isCheckBoxPresentInEachRow(), true);
 	}
-	
+
 	@Then("Admin should see the datatable headers")
 	public void admin_should_see_the_datatable_headers() {
-	    Assert.assertEquals(batchPage.verifyTableHeaders("Batch Name "), true);
-	    Assert.assertEquals(batchPage.verifyTableHeaders("Batch Description "), true);
-	    Assert.assertEquals(batchPage.verifyTableHeaders("Batch Status "), true);
-	    Assert.assertEquals(batchPage.verifyTableHeaders("No Of Classes "), true);
-	    Assert.assertEquals(batchPage.verifyTableHeaders("Program Name "), true);
+		Assert.assertEquals(batchPage.verifyTableHeaders("Batch Name "), true);
+		Assert.assertEquals(batchPage.verifyTableHeaders("Batch Description "), true);
+		Assert.assertEquals(batchPage.verifyTableHeaders("Batch Status "), true);
+		Assert.assertEquals(batchPage.verifyTableHeaders("No Of Classes "), true);
+		Assert.assertEquals(batchPage.verifyTableHeaders("Program Name "), true);
 	}
-	
+
 	@Then("Admin should see the checkbox in the datatable header row")
 	public void admin_should_see_the_checkbox_in_the_datatable_header_row() {
 		batchPage.verifyCheckBoxInHeader();
 	}
 
-	
 	@Then("Admin should see the sort icon next to all Datatable headers")
 	public void admin_should_see_the_sort_icon_next_to_all_datatable_headers() {
 		Assert.assertEquals(batchPage.verifySortIconInHeaders("Batch Name "), true);
-	    Assert.assertEquals(batchPage.verifySortIconInHeaders("Batch Description "), true);
-	    Assert.assertEquals(batchPage.verifySortIconInHeaders("Batch Status "), true);
-	    Assert.assertEquals(batchPage.verifySortIconInHeaders("No Of Classes "), true);
-	    Assert.assertEquals(batchPage.verifySortIconInHeaders("Program Name "), true);
-	    Assert.assertEquals(batchPage.verifySortIconInHeaders(" Edit / Delete "), false);
+		Assert.assertEquals(batchPage.verifySortIconInHeaders("Batch Description "), true);
+		Assert.assertEquals(batchPage.verifySortIconInHeaders("Batch Status "), true);
+		Assert.assertEquals(batchPage.verifySortIconInHeaders("No Of Classes "), true);
+		Assert.assertEquals(batchPage.verifySortIconInHeaders("Program Name "), true);
+		Assert.assertEquals(batchPage.verifySortIconInHeaders(" Edit / Delete "), false);
+	}
+
+	@Given("Admin is on the Batch Details Pop Up WIndow")
+	public void admin_is_on_the_batch_details_pop_up_w_indow() {
+		if (!applicationData.isLoggedIn()) {
+
+			lp.login("ValidCredentials");
+
+		}
+
+		batchPage.clickOnBatchBtn();
+		batchPage.clickOnMenuItem();
+		Assert.assertEquals(batchPage.getPopUpWindowTitle(), "Batch Details");
+	}
+
+	@When("Admin selects program name present in the dropdown")
+	public void admin_selects_program_name_present_in_the_dropdown() {
+		batchPage.inputBatchFields("ValidProgramName");
+
+	}
+
+	@Then("Admin should see selected program name in the batch name prefix box")
+	public void admin_should_see_selected_program_name_in_the_batch_name_prefix_box() {
+		Map<String, String> batchTestData = LMSUIConstants.applicationData.getData("Batch", "ValidProgramName");
+		String programName = batchTestData.get("ProgramName");
+		Assert.assertEquals(batchPage.getSelectedProgramName(), programName);
+
+	}
+
+	@When("Admin enters the {string} data and clicks {string} button")
+	public void admin_enters_the_data_and_clicks_button(String string, String string2) {
+		if ("Mandatory".equalsIgnoreCase(string)) {
+			batchPage.inputBatchFields("validInputMandatory");
+		} else {
+			batchPage.inputBatchFields(string);
+		}
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if("save".equalsIgnoreCase(string2)) {
+			batchPage.clickSaveBtn();
+		} else if("cancel".equalsIgnoreCase(string2)) {
+			batchPage.clickCancelBtn();
+		}else if("close".equalsIgnoreCase(string2)) {
+			batchPage.clickCloseBtn();
+		}
+	}
+
+	@When("Admin enters alphabets in batch name suffix box")
+	public void admin_enters_alphabets_in_batch_name_suffix_box() {
+		batchPage.inputBatchFields("InvalidBatchName");
+	}
+
+	@Then("Admin should get error message below the text box of respective field")
+	public void admin_should_get_error_message_below_the_text_box_of_respective_field() {
+		Assert.assertEquals(batchPage.getErrorForField(), "This field accept only numbers and max 5 count.");
+	}
+
+	@Then("Admin should get error message below the text box of respective field for {string}")
+	public void admin_should_get_error_message_below_the_text_box_of_respective_field_for(String string) {
+		Assert.assertEquals(batchPage.getErrorForField(),
+				LMSUIConstants.applicationData.getData("Batch", string).get("ErrorMessage"));
+	}
+
+	@When("Admin enters alphabets in batch {string} box")
+	public void admin_enters_alphabets_in_batch_box(String string) {
+		if (string.equalsIgnoreCase("name prefix")) {
+			batchPage.inputBatchFields("InvalidBatchNamePrefix");
+		}
+
+	}
+
+	@Then("Admin should see empty text box")
+	public void admin_should_see_empty_text_box() {
+		Assert.assertEquals(batchPage.getBatchNamePefix(), "");
+
+	}
+
+	@Then("Admin should get a successful message")
+	public void admin_should_get_a_successful_message() {
+		Assert.assertEquals(batchPage.saveActionPopup(), "Successful\nBatch Created Successfully");
+	}
+	
+	
+	@Then("Admin can see the batch details popup closes without creating any batch")
+	public void admin_can_see_the_batch_details_popup_closes_without_creating_any_batch() {
+		Assert.assertEquals(batchPage.isSaveBatchPopupDisplayed(), false);
+		Assert.assertEquals(batchPage.getHeading(), "Manage Batch");
+		
 	}
 
 }
