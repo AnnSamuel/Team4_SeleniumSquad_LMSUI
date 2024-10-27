@@ -1,7 +1,7 @@
 @login_Scenarios
 Feature: Login Page
   
-  @TC_login_01
+  @TC_Login_01
   Scenario Outline: Login page validation
     Given Admin is in login Page
     When Admin enter login credentials "<testcase>" and clicks login button          
