@@ -13,6 +13,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.lms.driverManager.WebDriverFactory;
 import com.lms.utilities.LMSUIConstants;
@@ -21,12 +22,14 @@ import com.lms.utilities.LoggerLoad;
 public class ProgramPage extends BasePage {
 
 	WebDriver driver = WebDriverFactory.getInstance().getDriver();
-	String programName = "Micro services";
+	BasePage BasepageObj =  new BasePage();
+	String programNamefromStep = "";
 	Map<String, String> programdata;
 	Map<String, String> searchData;
 	
-	
-	
+	String progNamePath =  "//table/tbody/tr/td[2]";
+	String progDescPath =  "//table/tbody/tr/td[3]";
+	String progStatusPath =  "//table/tbody/tr/td[4]";
 	
 	 @FindBy (id = "username") WebElement userName;
 	 @FindBy (id= "password") WebElement password;
@@ -41,15 +44,16 @@ public class ProgramPage extends BasePage {
 	@FindBy(id = "filterGlobal") WebElement searchBox;
 	
 	@FindBy(xpath = "//*[text()='Program']/..") WebElement programLink;
-	
+	@FindBy(xpath = "//table")WebElement tableComplete;
 	
 	@FindBy (xpath = "//table/tbody") WebElement programTable;
+	@FindBy (xpath = "//table/thead/tr/th[2]") WebElement programNameHeading;
+	@FindBy (xpath = "//table/thead/tr/th[3]") WebElement programDescHeading;
+	@FindBy (xpath = "//table/thead/tr/th[4]") WebElement programStatusHeading;
 	
 	@FindAll (value = {@FindBy (xpath = "//table/tbody//tr")}) List<WebElement> programData;
-	
-	@FindBy (xpath = "//table/tbody//tr//td[2]") WebElement progName;
-	@FindBy (xpath = "//table/tbody//tr//td[3]") WebElement progDesc;
-	@FindBy (xpath = "//table/tbody//tr//td[4]") WebElement progStatus;
+
+
 
 	@FindBy(id = "editProgram") WebElement editProgram;
 	
@@ -61,6 +65,9 @@ public class ProgramPage extends BasePage {
 	
 	//Addprogram
 	@FindBy(xpath = "//button[text()='Add New Program']") WebElement addProgramBtn;
+	@FindBy(xpath="//*[text()='Name']") WebElement name;
+	@FindBy(xpath="//*[text()='Description']") WebElement description;
+	@FindBy(xpath="//*[text()='Status']") WebElement status;
 	@FindBy(id="programName") WebElement programNameInput;
 	@FindBy(id="programDescription") WebElement programDescInput;
 	@FindBy(xpath="//*[@ng-reflect-value = 'Active']") WebElement activeStatusInput;
@@ -85,11 +92,26 @@ public class ProgramPage extends BasePage {
 		return false;
 	}
 	
+	public boolean verifyColumnHeader() {
+		
+		if (programNameHeading.equals("Program Name ") && (programDescHeading.equals("Program Description "))  && 
+				(programStatusHeading.equals("Program Status ")) ) {
+			return true;
+		}
+		return false;
+		
+		
+	}
+	
     public void validateInputMandatoryFields(String testcase) {
 		
 		programdata = LMSUIConstants.applicationData.getData("Program", testcase);
-		LoggerLoad.info(programdata.get("ProgramName"));
+		LMSUIConstants.applicationData.setProgramName(programdata.get("ProgramName"));
+		LMSUIConstants.applicationData.setProgramDesc(programdata.get("ProgramDescription"));
+		LMSUIConstants.applicationData.setProgramStatus(programdata.get("ProgramStatus"));
 		
+		
+		LoggerLoad.info(programdata.get("ProgramName"));
 		sendKeys(programNameInput, programdata.get("ProgramName"));
 		sendKeys(programDescInput, programdata.get("ProgramDescription"));
 		if(programdata.get("ProgramStatus").equalsIgnoreCase("active")) {
@@ -100,6 +122,27 @@ public class ProgramPage extends BasePage {
 		}
 		
 	}
+    
+    public void setProgramName(String name) {
+    	click(programNameInput);
+    	programNameInput.clear();
+    	sendKeys(programNameInput,name);
+    }
+    
+    public void setProgramDesc(String desc) {
+    	click(programNameInput);
+    	programDescInput.clear();
+    	sendKeys(programDescInput,desc);
+    }
+    
+    public void setProgramStatus(String status) {
+    	if(status.equalsIgnoreCase("active")) {
+			click(activeStatusInput);
+		}
+		else {
+			click(inactiveStatusInput);
+		}
+    }
     
     public boolean verifyPopupTextField() {
 		
@@ -117,6 +160,16 @@ public class ProgramPage extends BasePage {
     public boolean verifyPopup() {
 		if(isDisplayed(cancelBtn) && isDisplayed(saveBtn) && isDisplayed(closeBtn)){
 			return true;
+		}
+		return false;
+	}
+    
+    public boolean verifyFilledForm() {
+		if(verifyPopupTextField()) {
+			if(programNameInput.getText().equalsIgnoreCase(programNamefromStep) ) {
+				return true;
+			}
+			//complete for desc and status
 		}
 		return false;
 	}
@@ -147,6 +200,11 @@ public class ProgramPage extends BasePage {
 		//LoggerLoad.info(searchData.get("input"));
 		sendKeys(searchBox,searchData.get("input"));
 		
+	}
+	
+	public void search(String programName) {
+		sendKeys(searchBox,programName);
+
 	}
 	
 	public void clickProgramBtn() {
@@ -213,6 +271,7 @@ public class ProgramPage extends BasePage {
 	}
 	
 	public void clickEditProgram(String programName) {
+		programNamefromStep=programName;
 		WebElement editButton = getProgramRowElement(programName).findElement(By.id("editProgram"));
 	   ((JavascriptExecutor)driver).executeScript("arguments[0].click();",editButton);
 		
@@ -229,30 +288,30 @@ public class ProgramPage extends BasePage {
 	}
 	
 	
-    public ArrayList<String> getProgramNamesList() {
-    	ArrayList<String>programNamesList = new ArrayList<String>();
-		
-		int rows = programData.size();
-		for(int row=1; row<=rows; row++) {
-			String name = progName.getText();
-			programNamesList.add(name);
-		}
-		return programNamesList;
-		 
-	}
+//    public ArrayList<String> getProgramNamesList() {
+//    	ArrayList<String>programNamesList = new ArrayList<String>();
+//		
+//		int rows = programData.size();
+//		for(int row=1; row<=rows; row++) {
+//			String name = progName.getText();
+//			programNamesList.add(name);
+//		}
+//		return programNamesList;
+//		 
+//	}
     
-    public ArrayList<String> getProgramDescriptionsList() {
-    	ArrayList<String>programDescList = new ArrayList<String>();
-		
-		int rows = programData.size();
-		for(int row=1; row<=rows; row++) {
-			String name = progDesc.getText();
-			programDescList.add(name);
-		}
-		System.out.println("program desc size"+programDescList.size());
-		return programDescList;
-		 
-	}
+//    public ArrayList<String> getProgramDescriptionsList() {
+//    	ArrayList<String>programDescList = new ArrayList<String>();
+//		
+//		int rows = programData.size();
+//		for(int row=1; row<=rows; row++) {
+//			String name = progDesc.getText();
+//			programDescList.add(name);
+//		}
+//		System.out.println("program desc size"+programDescList.size());
+//		return programDescList;
+//		 
+//	}
     
     public boolean validateSearch(ArrayList<String>dataInputsList, String searchInput) {
     	
@@ -265,19 +324,25 @@ public class ProgramPage extends BasePage {
 	}
     
     
-//    public List<Map<String, String>> validateSearchResult() {
-//    	List<Map<String, String>> programDataSearchResults = new ArrayList<>();
-//    	for(int i=0;i<programData.size();i++) {
-//    		Map<String,String>programRow = new HashMap<>();
-//    		programRow.put("programName", progName.getText());
-//    		programRow.put("programDescription", progDesc.getText());
-//    		programRow.put("programStatus", progStatus.getText());
-//    		programDataSearchResults.add(programRow);
-//    		
-//    	}
-//    	return programDataSearchResults;
-//    	
-//    }
+    
+    public boolean verifyAsterikforFields() {
+    	if(name.getText().contains("*") && description.getText().contains("*") && status.getText().contains("*")) {
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public void verifySearchResultProgramName(String searchString) throws Exception {
+		
+		ArrayList<String> data = BasepageObj.getAllPageData(tableComplete,progNamePath);
+		System.out.println("data found:      ");
+		for(int i=0;i<data.size();i++) {
+			System.out.println(data.get(i));
+		}
+		
+		Assert.assertTrue(BasepageObj.validateSearch(data, searchString), "Searched Result are not Found");
+	}
+    
 
 }
 

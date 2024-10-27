@@ -10,88 +10,180 @@ Feature: LMSprogram Functionality
     Then Admin should land on the "Manage Program" page on Program module
     And Admin should see the "LMS - Learning Management System" Title
     And Admin should see the Searchbar
+    
+  @columnHeaderProgram   
+  Scenario: Verify view details of programs
+  When Admin clicks the "Program" in the Header
+  Then Admin should able to see Program name, description, and status headings
+  
 
-
- # ADD PROGRAM
+  # ADD PROGRAM
   @addProgram @TC_Program_02
   Scenario: Add New Program Validation
     Given Admin is on the Manage Program page
     When Admin clicks add new program under the program menu bar
     Then Admin should see program details pop up with empty form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
     Then Admin should see program name description and status fields in the program details window
+    Then Admin should see a red * mark for mandatory fields
 
   @addProgram @TC_Program_03
-  Scenario: Program Details pop up Validation for valid inputs
+  Scenario Outline: Program Details pop up Validation for valid inputs
     Given Admin is on the program Popup window
-    When Admin enters "validInputAll" mandatory fields in the add program form and clicks on save button
+    When Admin enters fields from "<testcase>" in the add program form and clicks on save button
     Then Admin gets message program added Successfully
-    
+
+    Examples: 
+      | testcase      |
+      | validInputAll |
+
   @addProgram @TC_Program_04
-  Scenario: Program Details pop up Validation for blank program name input
+  Scenario Outline: Program Details pop up Validation for blank program name input
     Given Admin is on the program Popup window
-    When Admin enters "BlankProgramName" mandatory fields in the add program form and clicks on save button
+    When Admin enters fields from "<testcase>" in the add program form and clicks on save button
     Then Admin gets error text on program details popup
-    
+
+    Examples: 
+      | testcase         |
+      | BlankProgramName |
+
   @addProgram @TC_Program_05
-  Scenario: Program Details pop up Validation for invalid program name input
+  Scenario Outline: Program Details pop up Validation for invalid program name input
     Given Admin is on the program Popup window
-    When Admin enters "InvalidProgramName" mandatory fields in the add program form and clicks on save button
+    When Admin enters fields from "<testcase>" in the add program form and clicks on save button
     Then Admin gets error text on program details popup
-    
+
+    Examples: 
+      | testcase           |
+      | InvalidProgramName |
+
   @addProgram @TC_Program_06
-  Scenario: Program Details pop up Validation for blank program description input
+  Scenario Outline: Program Details pop up Validation for blank program description input
     Given Admin is on the program Popup window
-    When Admin enters "BlankDescriptionName" mandatory fields in the add program form and clicks on save button
+    When Admin enters fields from "<testcase>" in the add program form and clicks on save button
     Then Admin gets error text on program details popup
-    
+
+    Examples: 
+      | testcase             |
+      | BlankDescriptionName |
+
   @addProgram @TC_Program_07
-  Scenario: Program Details pop up Validation for blank program status input
+  Scenario Outline: Program Details pop up Validation for blank program status input
     Given Admin is on the program Popup window
-    When Admin enters "BlankStatus" mandatory fields in the add program form and clicks on save button
+    When Admin enters fields from "<testcase>" in the add program form and clicks on save button
     Then Admin gets error text on program details popup
-    
+
+    Examples: 
+      | testcase    |
+      | BlankStatus |
+
   @addProgram @cancelProgram @TC_Program_08
-   Scenario: Program Details cancel button validation for add new program
+  Scenario: Program Details cancel button validation for add new program
     Given Admin is on the program Popup window
     When Admin clicks the cancel button in the program details window
     Then The program details window is closed and new program is not created
-    
-   @addProgram @closeProgram @TC_Program_09
-   Scenario: Program Details close button validation for add new program
+
+  @addProgram @closeProgram @TC_Program_09
+  Scenario: Program Details close button validation for add new program
     Given Admin is on the program Popup window
     When Admin clicks the close X button in the program details window
     Then The program details window is closed and new program is not created
-    
-    
-    
+
+  #//search for the added program
+  @addProgram @TC_Program_10
+  Scenario: Verify added Program is created
+    Given Admin is on the Manage Program page
+    When Admin searches with newly created "sanDoNotEditt"
+    Then Records of the newly created  "sanDoNotEditt" is displayed with correct values
+
   # EDIT PROGRAM
-  
-  @editProgram @TC_Program_10
+  @editProgram @TC_Program_11
   Scenario: Edit Program Validation
     Given Admin is on the Manage Program page
-    When Admin clicks edit program button for a program
+    When Admin clicks edit program button for a program "sanDoNotEditt"
     Then Admin should see a program details pop up with filled form and <SAVE> and <CANCEL> button and Close(X) Icon on the top right corner of the window
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    Then Admin should see a red * mark for mandatory fields
 
+  @editProgram @TC_Program_12
+  Scenario: Verify edit Program Name
+    Given Admin clicks edit program button for a program "sanDoNotEditt"
+    When Admin Clicks on Save button after updating program Name as "sanDoNotEdited"
+    Then Admin gets message program edited Successfully
+
+  @editProgram @TC_Program_13
+  Scenario: Verify edit Program description
+    Given Admin clicks edit program button for a program "sanDoNotEdited"
+    When Admin Clicks on Save button after updating program description as "it is here"
+    Then Admin gets message program edited Successfully
+    
+   @editProgram @TC_Program_14
+  Scenario: Verify edit Program status
+    Given Admin clicks edit program button for a program "sanDoNotEdited"
+    When Admin Clicks on Save button after updating program status as "inactive"
+    Then Admin gets message program edited Successfully
+    
+   @editProgram @cancelProgram @TC_Program_15
+  Scenario: Program Details cancel button validation for edit new program
+    Given Admin clicks edit program button for a program "sanDoNotEdited"
+    When Admin clicks the cancel button in the program details window
+    Then The program details window is closed
+
+  @editProgram @closeProgram @TC_Program_16
+  Scenario: Program Details close button validation for edit new program
+    Given Admin clicks edit program button for a program "sanDoNotEdited"
+    When Admin clicks the close X button in the program details window
+    Then The program details window is closed
+    
+    
+  #//search for the edited program
+  @addProgram @TC_Program_17
+  Scenario: Verify added Program is edited
+    Given Admin is on the Manage Program page
+    When Admin searches with newly edited program name "sanDoNotEdited"
+    Then Records of the edited program name "sanDoNotEditt" is displayed with correct values
+
+
+  #Delete program feature
+  
+   @deleteProgram @TC_Program_18
+   Scenario: Delete Program Validation
+    Given Admin is on the Manage Program page
+    When Admin clicks delete program button for a program "sanDoNotEdited"
+    Then Admin should see confirmation pop up with and <No> and <Yes> buttons and Close(X) Icon on the top right corner of the window
+   
+   @deleteProgram
+   Scenario: verify Yes button in Delete Confirm window
+    Given Admin Clicks on any Delete button for program "sanDoNotEdited"
+    When Admin Clicks on Yes button
+    Then Admin is able to see message "Program Deleted Successfully"
+
+  @deleteProgram
+   Scenario: Verify No button in Delete Confirm window
+    Given Admin Clicks on Delete button for a program 
+    When Admin Clicks on No button
+    Then The program should not be deleted
+    
+    
+   @deleteProgram
+   Scenario: Verify close button in Delete Confirm window
+    Given Admin Clicks on Delete button for a program 
+    When Admin Clicks on close button
+    Then The program should not be deleted
+    
+   #//search for the deleted program
+   @deleteProgram 
+   Scenario: Verify Deleted Program
+    Given Admin is on the Manage Program page
+    When Admin searches with newly edited program name "sanDoNotEdited"
+    Then The program name is not displayed
+  
+  
   #
   #Menu bar
   #@programMenu @programTC02
   #Scenario: Verify any broken links on program page
   #When Admin clicks Program on the navigation bar
   #Then Admin should not have any broken links for Program module
-  #
-  #@programMenu @programTC003
-  #Scenario: Verify heading in menu bar
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the heading "LMS - Learning Management System"
+ 
   #
   #@programMenu @programTC001
   #Scenario: Verify other modules name displayed in menu bar
@@ -108,11 +200,7 @@ Feature: LMSprogram Functionality
   #When Admin clicks Program on the navigation bar
   #Then Admin should see sub menu in menu bar as "Add New Program"
   #
-  #Manage program page validation
-  #Scenario: Verify heading in manage program
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the heading "Manage Program"
+
   #
   #Scenario: Verify view details of programs
   #Given Admin is on dashboard page after Login
@@ -124,162 +212,50 @@ Feature: LMSprogram Functionality
   #When Admin clicks Program on the navigation bar
   #Then Admin should see a Delete button in left top is disabled
   #
-  #Scenario: Verify the Search button
+  
+   #Scenario: Verify checkbox default state beside Program Name column header
   #Given Admin is on dashboard page after Login
   #When Admin clicks Program on the navigation bar
-  #Then Admin should see Search bar with text as "Search..."
-  #
-  #Scenario: Verify column header name of data table
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see data table with column header on the Manage Program Page as  Program Name, Program Description, Program Status, Edit/Delete
-  #
-  #Scenario: Verify checkbox default state beside Program Name column header
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then AAdmin should see checkbox default state as unchecked beside Program Name column header as
+  #Then Admin should see checkbox default state as unchecked beside Program Name column header as
   #
   #Scenario: Verify checkboxes default state beside each Program names in the data table
   #Given Admin is on dashboard page after Login
   #When Admin clicks Program on the navigation bar
   #Then Admin should see check box default state as unchecked on the left side in all rows against program name
   #
-  #Scenario: Verify Sort icon in manage program
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the sort arrow icon beside to each column header except Edit and Delete
-  #
-  #Scenario: Verify edit and delete icon in manage program
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the Edit and Delete buttons on each row of the data table
-  #
-  #Scenario: Verify pagination icons below data table in manage program
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the text as "Showing x to y of z entries" along with Pagination icon below the table
-  #
-  #Scenario: Verify footer message in manage program
-  #Given Admin is on dashboard page after Login
-  #When Admin clicks Program on the navigation bar
-  #Then Admin should see the footer as "In total there are z programs"
-  #
-  # Menu bar - Program - Add New Program
-  #Scenario: Verify add New Program
-  #Given Admin is on Program module
-  #When Admin clicks on New Program under the Program menu bar
-  #Then Admin should see pop up window for program details
-  #
-  #Scenario: Verify title of the pop up window
-  #Given Admin is on Program module
-  #When Admin clicks on New Program under the Program menu bar
-  #Then Admin should see window title as "Program Details"
-  #
-  #Scenario: Verify mandatory fields with red "*" mark
-  #Given Admin is on Program module
-  #When Admin clicks on New Program under the Program menu bar
-  #Then Admin should see red "*" mark beside mandatory field "Name"
-  #
-  #Scenario: Verify empty form submission
-  #Given Admin is on Program details form
-  #When Admin clicks save button without entering mandatory fields
-  #Then Admin gets message '<field> is required'
-  #
-  #Scenario: Verify cancel button
-  #Given Admin is on Program details form
-  #When Admin clicks Cancel button
-  #Then Admin can see Program Details form disappears
-  #
-  #Scenario: Verify enter program name
-  #Given Admin is on program details form
-  #When Admin enters the Name in the text box
-  #Then Admin can see the text entered
-  #
-  #Scenario: Verify enter description
-  #Given Admin is on program details form
-  #When Admin enters the Description in text boxbar
-  #Then Admin can see the text entered in description box
-  #
-  #Scenario: Verify select Status
-  #Given Admin is on program details form
-  #When Admin selects the status of the program by clicking on the radio button "(Active/InActive)"
-  #Then Admin can see 'Active/Inactive' status selected
-  #
-  #Scenario: Verify select Status
-  #Given Admin is on Program module
-  #When Admin clicks on New Program under the Program menu bar
-  #Then Admin should see pop up window for program details
-  #Scenario: Verify Admin is able to save the program details
-  #Given Admin is on program details form
-  #When Admin enter valid details for mandatory fields and Click on save button
-  #Then Admin gets message 'Successful Program created'
-  #
-  #Scenario: Verify cancel program details
-  #Given Admin is on program details form
-  #When Admin Click on cancel button
-  #Then Admin can see program details form disappear
-  #
-  #Scenario: Verify added Program is created
-  #Given Admin is on Program module
-  #When Admin searches with newly created "Program Name"
-  #Then Records of the newly created  "Program Name" is displayed and match the data entered
-  #
-  #Scenario: Verify close window with X
-  #Given Admin is on program details form
-  #When Admin Click on "X" button
-  #Then Admin can see program details form disappear
-  #
-  #Manage program- Edit
-  #Scenario: Verify Edit option
-  #Given Admin is on Program module
-  #When Admin clicks on Edit option for particular program
-  #Then Admin lands on Program details form
-  #
-  #Scenario: Verify title of the pop up window
-  #Given Admin is on Program module
-  #When Admin clicks on Edit option for particular program
-  #Then Admin should see window title as "Program Details"
-  #
-  #Scenario: Verify mandatory fields with red "*" mark
-  #Given Admin is on program details form
-  #When Admin clicks on Edit option for particular program
-  #Then Admin should see red "*" mark beside mandatory field "Name"
-  #
-  #Scenario: Verify edit Program Name
-  #Given Admin is on program details form
-  #When Admin edits the program name and click on save button
-  #Then Updated program name is seen by the Admin
-  #
-  #Scenario: Verify edit Description
-  #Given Admin is on program details form
-  #When Admin edits the description text and click on save button
-  #Then Admin can see the description is updated
-  #
-  #Scenario: Verify edit Status
-  #Given Admin is on program details form
-  #When Admin can change the status of the program and click on save button
-  #Then Status updated can be viewed by the Admin
-  #
-  #Scenario: Verify Admin is able to click Save
-  #Given Admin is on program details form
-  #When Admin click on save button
-  #Then Admin can see the updated program details
-  #
-  #Scenario: Verify Admin is able to click Cancel
-  #Given Admin is on program details form
-  #When Admin click on cancel button
-  #Then Admin can see the Program details form disappears
-  #
-  #Scenario: Verify edited Program details
-  #Given Admin is on Program module
-  #When Admin searches with newly updated "Program Name"
-  #Then Admin verifies that the details are correctly updated.
-  #
-  #Scenario: Verify close the window with "X"
-  #Given Admin is on program details form
-  #When Admin Click on "X" button
-  #Then Admin can see program details form disappear
-  #
+  
+  
+
+  
+  
+  @programheader
+  Scenario: Verify column header name of data table
+  Given Admin is on dashboard page after Login
+  When Admin clicks Program on the navigation bar
+  Then Admin should see data table with column header on the Manage Program Page as  Program Name, Program Description, Program Status, Edit/Delete
+  
+ 
+  Scenario: Verify Sort icon in manage program
+  Given Admin is on dashboard page after Login
+  When Admin clicks Program on the navigation bar
+  Then Admin should see the sort arrow icon beside to each column header except Edit and Delete
+  
+  Scenario: Verify edit and delete icon in manage program
+  Given Admin is on dashboard page after Login
+  When Admin clicks Program on the navigation bar
+  Then Admin should see the Edit and Delete buttons on each row of the data table
+  
+  Scenario: Verify pagination icons below data table in manage program
+  Given Admin is on dashboard page after Login
+  When Admin clicks Program on the navigation bar
+  Then Admin should see the text as "Showing 1 to 5 of 56 entries" along with Pagination icon below the table
+  
+  Scenario: Verify footer message in manage program
+  Given Admin is on dashboard page after Login
+  When Admin clicks Program on the navigation bar
+  Then Admin should see the footer as "In total there are 56 programs"
+  
+ 
   #Manage Program - Delete Program
   #Scenario: Verify delete feature
   #Given Admin is on Program module
@@ -337,28 +313,63 @@ Feature: LMSprogram Functionality
   #When Admin Click on "X" button
   #Then Admin can see Confirm Deletion form disappear
   #Program Search
-  
   @searchProgramNamefull
   Scenario Outline: Verify Admin is able to view search results for valid program name
-    Given Admin is on Program module
-    When Admin enter the program to search by "<testcase>"
+    Given Admin is on Program module and creates a new program
+    When Admin enters Program Name as "<programName>" to be searched
     Then Admin should able to see Program name, description, and status for searched program name
 
     Examples: 
-      | testcase |
-      |ValidProgramName|
-      |InvalidProgramName|
-      |PartialProgramName|
-
+      | programName     |
+      | sanDoNotEdit    |
+      | invalid program |
 
   @searchProgramDescfull @searchPrograms
   Scenario Outline: Verify Admin is able to view search results found for valid program description
-    Given Admin is on Program module
-    When Admin enter the program to search by "<testcase>"
+    Given Admin is on Program module and creates a new program
+    When Admin enters Program Description as "<programDesc>" to be searched
     Then Admin should able to see Program name, description, and status for searched program name
 
     Examples: 
-      | testcase |
-      |ValidProgramDesc|
-      |InvalidProgramDesc|
-      |PartialProgramDesc|
+      | programDesc         |
+      | undergrad DoNotEdit |
+      | invalid description |
+
+  #//sorting functionality
+  #Feature:Ascending order Functionality
+  @programsort @programnamesortasc
+  Scenario: Verify Program Name are displayed in Ascending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Name Ascending Arrow
+    Then Admin can see the Program Name displayed in Ascending order
+
+  @programsort @programdescsortasc
+  Scenario: Verify Program Description are displayed in Ascending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Description Ascending Arrow
+    Then Admin can see the Program Description displayed in Ascending order
+
+  @programsort @programstatussortasc
+  Scenario: Verify Program Status are displayed in Ascending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Status Ascending Arrow
+    Then Admin can see the Program Status displayed in Ascending order
+
+  #Feature: Descending order Functionality
+  @programsort @programnamesortdes
+  Scenario: Verify Program Name are displayed in Descending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Name Descending Arrow
+    Then Admin can see the Program Name displayed in Descending order
+
+  @programsort @programdescsortdes
+  Scenario: Verify Program Description are displayed in Descending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Description Descending Arrow
+    Then Admin can see the Program Description displayed in Descending order
+
+  @programsort @programstatussortdes
+  Scenario: Verify Program Status are displayed in Descending order
+    Given Admin is on the Manage Program page
+    When Admin clicks on Program Status Descending Arrow
+    Then Admin can see the Program Status displayed in Descending order

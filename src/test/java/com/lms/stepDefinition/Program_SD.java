@@ -37,8 +37,13 @@ public class Program_SD {
 	@Then("Admin should land on the {string} page on Program module")
 	public void admin_should_land_on_the_page_on_program_module(String expected) {
 
-		Assert.assertEquals(true, programObj.verifyPageTitle(expected));
+		Assert.assertEquals(programObj.verifyPageTitle(expected),true);
 
+	}
+	
+	@Then("Admin should able to see Program name, description, and status headings")
+	public void admin_should_able_to_see_program_name_description_and_status_headings() {
+	    Assert.assertEquals(programObj.verifyColumnHeader(),true);
 	}
 	
 	//Add new program
@@ -87,7 +92,7 @@ public class Program_SD {
 		programObj.clickAddNewProgramBtn();
 	}
 	
-	@When("Admin enters {string} mandatory fields in the add program form and clicks on save button")
+	@When("Admin enters fields from {string} in the add program form and clicks on save button")
 	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button(String testcase) {
 		
 		programObj.validateInputMandatoryFields(testcase);
@@ -126,26 +131,34 @@ public class Program_SD {
 	    
 	}
 	
+	@When("Admin searches with newly created {string}")
+	public void admin_searches_with_newly_created(String programName) {
+	    programObj.search(programName);
+	}
+	@Then("Records of the newly created  {string} is displayed with correct values")
+	public void records_of_the_newly_created_is_displayed_with_correct_values(String programName) throws Exception {
+		programObj.verifySearchResultProgramName(programName);
+	}
+	
 	//Edit program
 	
-	@When("Admin clicks edit program button for a program")
-	public void admin_clicks_edit_program_button_for_a_program() {
-		//programObj.clickEditProgram();
+	@When("Admin clicks edit program button for a program {string}")
+	public void admin_clicks_edit_program_button_for_a_program(String programName) {
+		programObj.search(programName);
+	    programObj.clickEditProgram(programName);
 	    
 	}
 	@Then("Admin should see a program details pop up with filled form and <SAVE> and <CANCEL> button and Close\\(X) Icon on the top right corner of the window")
 	public void admin_should_see_a_program_details_pop_up_with_filled_form_and_save_and_cancel_button_and_close_x_icon_on_the_top_right_corner_of_the_window() {
+		Assert.assertEquals(programObj.verifyFilledForm(), true);
+		Assert.assertEquals(programObj.verifyPopup(),true);
 	    
 	}
 	
-	
-
-	
-
-	
-	
-	
-	
+	@Then("Admin should see a red * mark for mandatory fields")
+	public void admin_should_see_a_red_mark_for_mandatory_fields() {
+	    Assert.assertEquals(programObj.verifyAsterikforFields(), true);
+	}
 	
 	
 	@When("Admin clicks Program on the navigation bar")
@@ -185,10 +198,11 @@ public class Program_SD {
 	
 	//Search
 	
-	@Given("Admin is on Program module")
+	@Given("Admin is on Program module and creates a new program")
 	public void admin_is_on_program_module() {
 		programObj.clickProgramBtn();
-	    
+
+		  
 	}
 	@When("Admin enter the program to search by {string}")
 	public void admin_enter_the_program_to_search_by_valid(String testcase) {
@@ -199,18 +213,7 @@ public class Program_SD {
 	@Then("Admin should able to see Program name, description, and status for searched program name")
 	    public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_name() {
 		
-		LoggerLoad.info("in then step");
-		String searchInput = LMSUIConstants.applicationData.getSearchInput();
-		if(testcaseName.toLowerCase().contains("programname")) {
-			LoggerLoad.info("search inside program name loop");
-			ArrayList<String> programNames = programObj.getProgramNamesList();
-			Assert.assertEquals(programObj.validateSearch(programNames, searchInput), true);
-		}
-		else if(testcaseName.toLowerCase().contains("programdesc")) {
-			LoggerLoad.info("search inside program desc loop");
-			ArrayList<String> programDescList = programObj.getProgramDescriptionsList();
-			Assert.assertEquals(programObj.validateSearch(programDescList, searchInput), true);	
-		}
+     
 	    
 	}
 
