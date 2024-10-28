@@ -95,5 +95,13 @@ Feature: Class Module
      |EditValidClassDates|
      #|EditValidStaffName|     
      |EditValidStatus|
+     
+    
+    @logout
+    Scenario: Validate logout
+    When Admin clicks on the logout in the menu bar
+    Then Admin should be redirected to login page "Please login to LMS application"
+    
+     
 
     

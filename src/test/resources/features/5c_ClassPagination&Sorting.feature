@@ -16,7 +16,7 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-@class
+@classPagination
 Feature: ClassPagination&Sorting
   I want to use this template for my feature file
   
@@ -84,4 +84,9 @@ Feature: ClassPagination&Sorting
     Given Admin is on the Manage Class page
     When Admin clicks on the Staff Name sort icon
     Then Admin should see Class details are sorted by Staff Name
+    
+        @logout
+    Scenario: Validate logout
+    When Admin clicks on the logout in the menu bar
+    Then Admin should be redirected to login page "Please login to LMS application"
     

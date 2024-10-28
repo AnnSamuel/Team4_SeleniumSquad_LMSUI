@@ -393,7 +393,17 @@ public void admin_should_see_class_details_are_sorted_by_staff_name() {
 	cp.SortAscendingOrder(cp.getSortStaffName());
 }
 
+@When("Admin clicks on the logout in the menu bar")
+public void admin_clicks_on_the_logout_in_the_menu_bar() {
+    // Write code here that turns the phrase above into concrete actions
+	cp.logout();
+}
 
+@Then("Admin should be redirected to login page {string}")
+public void admin_should_be_redirected_to_login_page(String string) {
+    // Write code here that turns the phrase above into concrete actions
+cp.vallogout(string);
+}
 
 
 }
