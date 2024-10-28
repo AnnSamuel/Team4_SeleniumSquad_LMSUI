@@ -20,7 +20,7 @@ public class BasePage {
 	protected WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	protected String BASE_URL = ConfigReader.getProp("baseUrl");
 
-	private static final long IMPLICIT_WAIT = 10;
+	protected static final long IMPLICIT_WAIT = 10;
 
 	@FindBy(xpath = "//table/tbody/tr//div[@role='checkbox']")
 	List<WebElement> rows;
@@ -92,6 +92,19 @@ public class BasePage {
 		return false;
 
 	}
+	
+	
+	public void dropDownSelect(WebElement dropdown, String desiredOption) {
+         click(dropdown);
+		 List<WebElement> options = driver.findElements(By.cssSelector("ul[role='listbox'] li"));
+        
+        for (WebElement option : options) {
+            if (option.getText().equals(desiredOption)) {
+                click(option);
+                break;
+            }
+        }
+	 }
 
 	public boolean click(WebElement element) {
 		try {

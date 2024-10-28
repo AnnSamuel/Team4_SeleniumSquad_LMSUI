@@ -17,7 +17,7 @@ import io.cucumber.java.Scenario;
 
 public class Hooks {
 
-    WebDriverFactory wd = WebDriverFactory.getInstance();
+	WebDriverFactory wd = WebDriverFactory.getInstance();
 
 	@BeforeAll
 	public static void before_all() {
@@ -47,8 +47,8 @@ public class Hooks {
 
 	@AfterAll
 	public static void after() {
-		
-	//	testDataCleanup();
+
+		// TestDataCleanup();
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -56,12 +56,9 @@ public class Hooks {
 		}
 		WebDriverFactory.getInstance().closeDriver();
 		System.out.println("driver closed");
-		
-//		 private static void testDataCleanup(){
-//			 
-//			
-//			
-//		 }
+
+		// private void TestDataCleanup(){
+		// }
 
 	}
 }

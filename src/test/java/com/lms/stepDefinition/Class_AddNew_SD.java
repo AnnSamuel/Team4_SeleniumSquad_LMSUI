@@ -21,7 +21,7 @@ public class Class_AddNew_SD {
 	//#####################################Febi@########################################################
 
 	LoginPage lp = PageObjectFactory.getLoginPage();
-	ClassAddPage cp = PageObjectFactory.getClassPage();
+	ClassAddPage cp = PageObjectFactory.getClassAddPage();
 	
 	Map<String, String> classData;
 	

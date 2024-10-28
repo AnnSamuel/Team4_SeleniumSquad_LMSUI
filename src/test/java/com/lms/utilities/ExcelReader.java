@@ -30,8 +30,10 @@ public class ExcelReader {
 				Row headerRow = sheet.getRow(0);
 				for (int j = 1; j <= sheet.getLastRowNum(); j++) {
 					Row row = sheet.getRow(j);
+				int colCount = headerRow.getPhysicalNumberOfCells();
 					Map<String, String> record = new HashMap<>();
-					for (int k = 0; k < row.getLastCellNum(); k++) {
+					for (int k = 0; k < colCount; k++) {
+				//	for (int k = 0; k < row.getLastCellNum(); k++) {
 						Cell cell = row.getCell(k);
 						String cellValue = cell!= null ? cell.getCellType()==CellType.NUMERIC ? ((long)cell.getNumericCellValue() + "") : cell.getStringCellValue():null;
 						String key = headerRow.getCell(k)!=null? headerRow.getCell(k).getStringCellValue():"";
