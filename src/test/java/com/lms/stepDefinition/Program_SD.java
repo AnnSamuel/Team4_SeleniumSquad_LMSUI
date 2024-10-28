@@ -41,8 +41,8 @@ public class Program_SD {
 
 	}
 	
-	@Then("Admin should able to see Program name, description, and status headings")
-	public void admin_should_able_to_see_program_name_description_and_status_headings() {
+	@Then("Admin should be able to see table with Program name, description, and status headings")
+	public void admin_should_be_able_to_see_table_with_program_name_description_and_status_headings() {
 	    Assert.assertEquals(programObj.verifyColumnHeader(),true);
 	}
 	
@@ -124,19 +124,19 @@ public class Program_SD {
 	    programObj.clickCloseBtn();
 	}
 	
-	@Then("The program details window is closed and new program is not created")
-	public void the_program_details_window_is_closed_and_new_program_is_not_created() {
-	    Assert.assertEquals(programObj.validateAddNewPopup(), "false");
+	@Then("The program details window is closed")
+	public void the_program_details_window_is_closed() {
+	    Assert.assertEquals(programObj.validateAddNewPopup(),false);
 	    
 	    
 	}
 	
-	@When("Admin searches with newly created {string}")
-	public void admin_searches_with_newly_created(String programName) {
+	@When("Admin searches with newly created program {string}")
+	public void admin_searches_with_newly_created_program(String programName) {
 	    programObj.search(programName);
 	}
-	@Then("Records of the newly created  {string} is displayed with correct values")
-	public void records_of_the_newly_created_is_displayed_with_correct_values(String programName) throws Exception {
+	@Then("Records of the newly created program {string} is displayed with correct values")
+	public void records_of_the_newly_created_program_is_displayed_with_correct_values(String programName) throws Exception {
 		programObj.verifySearchResultProgramName(programName);
 	}
 	
@@ -144,6 +144,7 @@ public class Program_SD {
 	
 	@When("Admin clicks edit program button for a program {string}")
 	public void admin_clicks_edit_program_button_for_a_program(String programName) {
+		programObj.clickProgramBtn();
 		programObj.search(programName);
 	    programObj.clickEditProgram(programName);
 	    
@@ -159,6 +160,42 @@ public class Program_SD {
 	public void admin_should_see_a_red_mark_for_mandatory_fields() {
 	    Assert.assertEquals(programObj.verifyAsterikforFields(), true);
 	}
+	
+	@When("Admin Clicks on Save button after updating program Name as {string}")
+	public void admin_clicks_on_save_button_after_updating_program_name_as(String programName) {
+	    programObj.setProgramName(programName);
+	    programObj.clickSaveBtn();
+	}
+	
+	
+	@Then("Admin gets message program edited Successfully")
+	public void admin_gets_message_program_edited_successfully() {
+		Assert.assertEquals(programObj.verifyEditSuccessMsg(), true);   
+	}
+	
+	@When("Admin Clicks on Save button after updating program description as {string}")
+	public void admin_clicks_on_save_button_after_updating_program_description_as(String programDesc) {
+		programObj.setProgramDesc(programDesc);
+	    programObj.clickSaveBtn();
+	}
+	@When("Admin Clicks on Save button after updating program status as {string}")
+	public void admin_clicks_on_save_button_after_updating_program_status_as(String programStatus) {
+		programObj.setProgramStatus(programStatus);
+	    programObj.clickSaveBtn();
+	}
+	
+	@When("Admin searches with newly edited program {string}")
+	public void admin_searches_with_newly_edited_program(String programName) {
+	    programObj.search(programName);
+	}
+	@Then("Records of the edited program {string} is displayed with correct values")
+	public void records_of_the_newly_edited_program_is_displayed_with_correct_values(String programName) throws Exception {
+		programObj.verifySearchResultProgramName(programName);
+	}
+	
+	
+	////Delete program
+	
 	
 	
 	@When("Admin clicks Program on the navigation bar")
