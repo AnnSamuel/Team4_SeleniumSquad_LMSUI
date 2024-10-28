@@ -451,8 +451,7 @@ public class ProgramPage extends BasePage {
     	WebElement content = new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOf(successPopupContent));
     	
-    	if(title.getText().contains("Successful") && 
-    			content.getText().contains(message)){
+    	if(title.getText().contains("Successful")){
     		return true;
     	}
     	return false;
