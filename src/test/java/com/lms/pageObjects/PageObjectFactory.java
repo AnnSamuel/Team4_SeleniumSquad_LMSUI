@@ -3,7 +3,7 @@ package com.lms.pageObjects;
 public class PageObjectFactory {
 	
 	private static LoginPage loginPage = new LoginPage();
-	private static ClassPage classPage = new ClassPage();
+	private static ClassAddPage classPage = new ClassAddPage();
 	private static DashboardPage dashboardPage = new DashboardPage();
 	private static ProgramPage programPage = new ProgramPage();
 	private static BatchPage batchPage = new BatchPage();
@@ -12,7 +12,7 @@ public class PageObjectFactory {
 		loginPage.initElements();
 		return loginPage;
 	}
-	public static ClassPage getClassPage() {
+	public static ClassAddPage getClassPage() {
 		classPage.initElements();
 		return classPage;
 	}
@@ -20,9 +20,11 @@ public class PageObjectFactory {
 		return dashboardPage;
 	}
 	public static ProgramPage getProgramPage() {
+		programPage.initElements();
 		return programPage;
 	}
 	public static BatchPage getBatchPage() {
+		batchPage.initElements();
 		return batchPage;
 	}
 	

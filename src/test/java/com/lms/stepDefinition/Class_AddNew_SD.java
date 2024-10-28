@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.testng.Assert;
 
-import com.lms.pageObjects.ClassPage;
+import com.lms.pageObjects.ClassAddPage;
 import com.lms.pageObjects.LoginPage;
 import com.lms.pageObjects.PageObjectFactory;
 
@@ -16,12 +16,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class Class_SD {
+public class Class_AddNew_SD {
   
 	//#####################################Febi@########################################################
 
 	LoginPage lp = PageObjectFactory.getLoginPage();
-	ClassPage cp = PageObjectFactory.getClassPage();
+	ClassAddPage cp = PageObjectFactory.getClassPage();
 	
 	Map<String, String> classData;
 	
@@ -231,9 +231,54 @@ public class Class_SD {
 		Assert.assertTrue(cp.getFooterText().contains(string));
 	
 	}
+	
+	@When("Admin clicks the delete icon")
+	public void admin_clicks_the_delete_icon() {
+		
+		cp.searchanddeleteBtn();
+	
+	}
 
+	@Then("Admin should see a alert open with heading {string} along with  <YES> and <NO> button for deletion")
+	public void admin_should_see_a_alert_open_with_heading_along_with_yes_and_no_button_for_deletion(String string) {
 
+		//Assert.assertTrue(cp.verifyConfirmPopupContent());
+	}
+	
+	@When("Admin clicks yes button")
+	public void admin_clicks_yes_button() {
+		cp.clickYesBtn();
+	
+	}
 
+	@Then("Then Admin gets alert {string} and can see the selected class is deleted from the data table")
+	public void then_admin_gets_alert_and_can_see_the_selected_class_is_deleted_from_the_data_table(String string) {
+
+		
+	
+	}
+
+	@When("Admin clicks delete icon and cliks No button")
+	public void admin_clicks_delete_icon_and_cliks_no_button() {
+
+	
+	}
+
+	@Then("Admin can see the deletion alert disappears without deleting")
+	public void admin_can_see_the_deletion_alert_disappears_without_deleting() {
+
+	
+	
+	}
+
+	@When("Admin clicks delete icon and on close button")
+	public void admin_clicks_delete_icon_and_on_close_button() {
+
+		
+	}
+
+	
+	
 	
 
 	

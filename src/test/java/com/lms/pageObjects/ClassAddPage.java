@@ -1,8 +1,8 @@
 package com.lms.pageObjects;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
+import static com.lms.utilities.LMSUIConstants.CLASS_SHEET_NAME;
+import static com.lms.utilities.LMSUIConstants.applicationData;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
-import static com.lms.utilities.LMSUIConstants.*;
-
-public class ClassPage extends BasePage {
+public class ClassAddPage extends BasePage {
 
 	@FindBy(xpath = "//span[text()='Class']/..")
 	WebElement classLink;
@@ -67,17 +65,26 @@ public class ClassPage extends BasePage {
 	WebElement cancelBtn;
 	@FindBy(xpath = "//button[contains(@class,'p-dialog-header-close')]")
 	WebElement closeBtn;
-	@FindBy(xpath="//mat-card-title/div[2]/div[1]/button")
+	@FindBy(xpath = "//mat-card-title/div[2]/div[1]/button")
 	WebElement multiDeleteBtn;
-	@FindBy(xpath="//div[contains(@class,'p-datatable-footer')]")
+	@FindBy(xpath = "//div[contains(@class,'p-datatable-footer')]")
 	WebElement footerText;
-	@FindBy(xpath="//span[contains(@class,'p-paginator-current ng-star-inserted')]")
+	@FindBy(xpath = "//span[contains(@class,'p-paginator-current ng-star-inserted')]")
 	WebElement footerPagination;
-	@FindBy(xpath="//i[contains(@class,'p-sortable-column-icon')]")
+	@FindBy(xpath = "//i[contains(@class,'p-sortable-column-icon')]")
 	List<WebElement> sortIcons;
+	@FindBy(xpath = "//button[contains(@class,'p-confirm-dialog-accept')]")
+	WebElement yesBtn;  
+	@FindBy(xpath = "//button[contains(@class,'p-confirm-dialog-reject')]")
+	WebElement noBtn;
+	@FindBy(xpath="//span[text()='Confirm']")
+	WebElement confirmlabel;
+	@FindBy(xpath = "//button[@icon='pi pi-trash']")
+	WebElement deleteBtn;
 	
 	
-		
+	
+	
 	
 
 	JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -96,30 +103,14 @@ public class ClassPage extends BasePage {
 		return false;
 	}
 
-	public boolean selectDate(String dateStr) {
-
-		try {
-			Date date = DateFormat.getDateInstance().parse(dateStr);
-
-			WebElement wb = driver.findElement(By.xpath(
-					"//span[contains(@class,'p-ripple ng-star-inserted')] and text() = '" + date.getDay() + "']"));
-			if (wb.isEnabled()) {
-				wb.click();
-				return true;
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 
 	public void createClassInputFields(String testcase) {
 
-		classData = applicationData.getData("Class", testcase); // TestData from Excel based on the testcase
+		classData = applicationData.getData(CLASS_SHEET_NAME, testcase); // TestData from Excel based on the testcase
 
 		driver.findElements(By.xpath("//div[@aria-haspopup='listbox']")).get(0).click();
 		System.out.println("");
-		// wait(100);
+		wait(100);
 		if (classData.get("Batchname") != null) {
 			driver.findElement(By.xpath("//li[@aria-label='" + classData.get("Batchname") + "']")).click();
 		}
@@ -130,12 +121,6 @@ public class ClassPage extends BasePage {
 		if (classData.get("ClassDescription") != null) {
 			sendKeys(classDescText, classData.get("ClassDescription"));
 		}
-
-		// datepicker
-//		String dateValues = classData.get("SelectClassDates");
-//		for (String val : dateValues.split(",")) {
-//			selectDate(val);
-//		}
 
 		click(classDates);
 		if (classData.get("SelectClassDates") != null) {
@@ -170,31 +155,53 @@ public class ClassPage extends BasePage {
 
 		click(classDates);
 		sendKeys(classDates, dates);
+		click(calenderIcon);
 		classDates.sendKeys(Keys.TAB);
 		js.executeScript("arguments[0].scrollIntoView(true);", noOfClasses);
 		click(classDates);
-		// driver.findElement(By.xpath("//div[contains(@class,'p-dialog-content')]")).click();
-		// wait(2000);
 		classDates.sendKeys(Keys.TAB);
-		// classDates.sendKeys(Keys.TAB);*/
-
-		// wait(2000);
 
 		return true;
 	}
+	
+	public void deleteClass() {
+		
+		click(deleteBtn);
+	}
 
-	public String getFooterText() {
+	public void searchanddeleteBtn() {
 		
+		String classTopic = applicationData.getClassTopics().get(0);
+		searchBar.clear();
+		sendKeys(searchBar,classTopic);
+		click(deleteBtn);
 		
-		return getText(footerText);
+	}
+
+	public boolean verifyConfirmPopupContent() {
+		
+		return confirmlabel.isDisplayed() && yesBtn.isDisplayed() && noBtn.isDisplayed() && closeBtn.isDisplayed();
+			
+	}
+	
+	public void clickYesBtn() {
+		
+		click(yesBtn);
 		
 	}
 	
+	
+	public String getFooterText() {
+
+		return getText(footerText);
+
+	}
+
 	public String getFooterPaginationText() {
-		
+
 		return getText(footerPagination);
 	}
-	
+
 	public boolean clickDatePicker() {
 
 		click(classDates);
@@ -207,20 +214,20 @@ public class ClassPage extends BasePage {
 		click(savebtn);
 	}
 
-	public boolean verifyDataTableHeaders(List<String> headers ) {
-		
+	public boolean verifyDataTableHeaders(List<String> headers) {
+
 		headers.forEach(str -> {
-			
-		Assert.assertNotNull(driver.findElement(By.xpath("//th[contains(text(),'"+str+"')]")));
+
+			Assert.assertNotNull(driver.findElement(By.xpath("//th[contains(text(),'" + str + "')]")));
 		});
-		
+
 		return true;
 	}
-	
+
 	public boolean verifyMultiDeleteBtn() {
-	
+
 		return isViewable(multiDeleteBtn);
-		
+
 	}
 
 	public Boolean verifyNewClassPopupMandatoryFields() {
@@ -248,15 +255,15 @@ public class ClassPage extends BasePage {
 		}
 		return result;
 	}
-	
+
 	public boolean verifySortIcons() {
-		
+
 		return sortIcons.stream().allMatch(we -> we.isDisplayed());
 	}
 
 	public void verifyOptionalInput(String testcase) {
 
-		classData = applicationData.getData("Class", testcase); // TestData from Excel based on the testcase
+		classData = applicationData.getData(CLASS_SHEET_NAME, testcase); // TestData from Excel based on the testcase
 
 		if (classData.get("ClassDescription") != null) {
 			sendKeys(classDescText, classData.get("ClassDescription"));

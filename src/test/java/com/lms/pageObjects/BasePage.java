@@ -197,14 +197,10 @@ public class BasePage {
 		return allCheckboxesDisplayed;
 	}
 
-//	public String searchText(String text) {
-//		
-//		 
-//		
-//		return className;
-//	}
 
 	public void singleDelete() {
+		
+		
 
 	}
 
