@@ -29,6 +29,13 @@ public class BasePage {
 	@FindBy(xpath = "//table/tbody/tr//button[contains(@icon, 'pi-trash')]")
 	List<WebElement> deleteIcons;
 
+	// success popup
+
+	@FindBy(xpath = "//div[contains(@class,'p-toast-summary')]")
+	WebElement successPopupTitle;
+	@FindBy(xpath = "//div[contains(@class,'p-toast-detail')]")
+	WebElement successPopupContent;
+
 	public BasePage() {
 		PageFactory.initElements(driver, this);
 	}
@@ -40,6 +47,20 @@ public class BasePage {
 	public void openPage(String pagename) {
 		driver.get(BASE_URL + pagename);
 
+	}
+
+	public boolean verifyPopup(String expmsg) {
+
+		return verifyText(expmsg, successPopupTitle);
+	}
+	
+	public void wait(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean dropDownSelect(WebElement element) {
@@ -153,9 +174,12 @@ public class BasePage {
 		return allCheckboxesDisplayed;
 	}
 
-	public void search(String text) {
-
-	}
+//	public String searchText(String text) {
+//		
+//		 
+//		
+//		return className;
+//	}
 
 	public void singleDelete() {
 

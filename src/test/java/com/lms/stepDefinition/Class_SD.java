@@ -12,12 +12,16 @@ import io.cucumber.java.en.When;
 
 import static com.lms.utilities.LMSUIConstants.*;
 
+import java.util.Map;
+
 public class Class_SD {
   
-	//#####################################Febi########################################################
+	//#####################################Febi@########################################################
 
 	LoginPage lp = PageObjectFactory.getLoginPage();
 	ClassPage cp = PageObjectFactory.getClassPage();
+	
+	Map<String, String> classData;
 	
 	@Given("Admin is on the Dashboard Page")
 	public void admin_is_on_the_dashboard_page() {
@@ -101,28 +105,31 @@ public class Class_SD {
 			lp.login("ValidCredentials");
 
 		}
-		if (!cp.isOnClassPage()) {
+		//if (!cp.isOnClassPage()) {
 			cp.classBtnClick();
 			cp.addNewBtnClick();
-		}
+		//}
 
 	}
 
 	@When("Admin enters {string} mandatory fields in the form and clicks on save button")
 	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button(String testcase) {
+		classData = applicationData.getData(CLASS_SHEET_NAME, testcase);
+		cp.createClassInputFields(testcase);
 		
-		//cp.validInputMandatoryFields(testcase);
-
 	}
 
 	@Then("Admin gets message Class added Successfully")
 	public void admin_gets_message_class_added_successfully() {
-
 		
+		Assert.assertTrue(cp.verifyPopup(classData.get("ExpectedMsg")));
+		//Assert.assertEquals(true, cp.searchClass());
+		cp.wait(3000);
 	}
 
 	@When("Admin selects class date in date picker")
 	public void admin_selects_class_date_in_date_picker() {
+		
 
 		
 	}

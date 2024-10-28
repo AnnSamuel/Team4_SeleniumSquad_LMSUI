@@ -9,10 +9,11 @@ public class PageObjectFactory {
 	private static BatchPage batchPage = new BatchPage();
 	
 	public static LoginPage getLoginPage() {
-		//loginPage.initElements();
+		loginPage.initElements();
 		return loginPage;
 	}
 	public static ClassPage getClassPage() {
+		classPage.initElements();
 		return classPage;
 	}
 	public static DashboardPage getDashboardPage() {

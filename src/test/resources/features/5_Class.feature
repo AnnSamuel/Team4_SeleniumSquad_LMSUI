@@ -20,12 +20,20 @@ Scenario: Add New Class Validation
 	Then Admin should see few input fields and their respective text boxes in the class details window 
 	
 @TC_Class_03 
-Scenario: Class Details pop up Validation 
+Scenario Outline: Class Details pop up Validation 
 	Given Admin is on the Class Popup window 
-	When Admin enters "validInputAll" mandatory fields in the form and clicks on save button 
-	Then Admin gets message Class added Successfully 
-	When Admin selects class date in date picker 
-	Then Admin should see no of class value is added automatically 
+	When Admin enters "<testcase>" mandatory fields in the form and clicks on save button 
+	Then Admin gets message Class added Successfully
+
+ Examples:
+     |testcase|
+     |validInputMandatory|
+     |validInputAll|
+     
+     	
+	
+	 
+ 
 	
 
 	

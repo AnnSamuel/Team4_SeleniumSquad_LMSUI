@@ -12,7 +12,7 @@ public class LMSUIConstants {
 	public static final String LOGIN_SHEET_NAME= "Login"; //Reference Variable which holds String Data
 	public static final String PROGRAM_SHEET_NAME="Program";
 	public static final String BATCH_SHEET_NAME="Batch";
-	public static final String USER_SHEET_NAME="User";
+	public static final String CLASS_SHEET_NAME="Class";
 	
 	
 	
