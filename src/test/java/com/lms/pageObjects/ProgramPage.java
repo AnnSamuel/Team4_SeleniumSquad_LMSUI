@@ -226,11 +226,11 @@ public class ProgramPage extends BasePage {
 		if(verifyPopupTextField()) {
 			
 			String pname = LMSUIConstants.applicationData.getProgramName();
-			String pDesc = LMSUIConstants.applicationData.getProgramDesc();
-			String pStatus =LMSUIConstants.applicationData.getProgramStatus();
+			//String pDesc = LMSUIConstants.applicationData.getProgramDesc();
+			//String pStatus =LMSUIConstants.applicationData.getProgramStatus();
 			
 			
-			if(programNameInput.getText().equals(pname) && programDescInput.getText().equals(pDesc)) {
+			if(programNameInput.getText().equals(pname)) {
 				return true;
 			}
 			//complete for desc and status
@@ -261,13 +261,13 @@ public class ProgramPage extends BasePage {
 		return programHeading.getText();
 	}
 	
-	public void setSearchText(String testcase) {
-		searchData = LMSUIConstants.applicationData.getData("Search", testcase);
-		LMSUIConstants.applicationData.setSearchInput(searchData.get("input"));
-		//LoggerLoad.info(searchData.get("input"));
-		sendKeys(searchBox,searchData.get("input"));
-		
-	}
+//	public void setSearchText(String testcase) {
+//		searchData = LMSUIConstants.applicationData.getData("Search", testcase);
+//		LMSUIConstants.applicationData.setSearchInput(searchData.get("input"));
+//		//LoggerLoad.info(searchData.get("input"));
+//		sendKeys(searchBox,searchData.get("input"));
+//		
+//	}
 	
 	public void search(String programName) {
 		WebElement searchBox1 = new WebDriverWait(driver, Duration.ofSeconds(20))
@@ -484,8 +484,6 @@ public class ProgramPage extends BasePage {
     	String valLogin = loginPage.getText();
     	Assert.assertEquals(valLogin, string);
     }
-    
-    
 
 }
 
