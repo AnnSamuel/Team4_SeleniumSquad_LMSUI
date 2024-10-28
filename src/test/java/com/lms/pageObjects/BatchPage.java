@@ -294,8 +294,8 @@ public class BatchPage extends BasePage {
     }
     
     public String saveActionPopup() {
-    	if (saveBatchPopup.isDisplayed()) {
-	        return saveBatchPopup.getText();
+    	if (isDisplayed(saveBatchPopup)) {
+	        return getText(saveBatchPopup);
 	    } else {
 	        return "No Popup Displayed";
 	    	}
