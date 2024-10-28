@@ -20,6 +20,8 @@ public class BatchPage extends BasePage {
 
 	@FindBy(xpath = "//*[text()='Batch']/..")
 	WebElement batchBtn;
+	
+	@FindBy(xpath = "//span[text()='Batch']/..") WebElement batchLink;
 
 	@FindBy(className = "box")
 	WebElement heading;
@@ -80,9 +82,19 @@ public class BatchPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class, 'p-toast-detail')]") WebElement saveBatchPopupMessage;
 
 	
+	public void openHomePage() {
+		openPage("batch");
+	}
 
 	public void clickOnBatchBtn() {
 		click(batchBtn);
+	}
+	
+	public boolean isOnBatchPage() {
+		if(driver.getCurrentUrl().contains("batch")) {
+			return true;
+		}
+		return false;
 	}
 
 	public String getHeading() {
@@ -106,7 +118,23 @@ public class BatchPage extends BasePage {
 		driver.switchTo().activeElement();
 		return getText(popupWindowTitle);
 	}
+	
+	public boolean isOnBatchPopuUpindow() {
+		if(getText(popupWindowTitle, 1).equals("Batch Details")) {
+			return true;
+		}
+		return false;
+	}
 
+	public String getText(WebElement element, long waitTime) {
+		try {
+			WebElement textElement = new WebDriverWait(driver, Duration.ofSeconds(waitTime))
+				.until(ExpectedConditions.visibilityOf(element));
+			return textElement.getText();
+		} catch (Exception e) {
+			return "";
+		}
+	} 
 	public boolean isTopDeleteButtonEnabled() {
 		return topDeletebtn.isEnabled();
 	}
@@ -182,12 +210,10 @@ public class BatchPage extends BasePage {
 	}
 
 	public boolean verifySortIconInHeaders(String headerTitle) {
-		System.out.println("//mat-card-content//table/thead/tr//th[text()='" + headerTitle + "']//p-sorticon");
 		WebElement header = driver.findElement(
 				By.xpath("//mat-card-content//table/thead/tr//th[text()='" + headerTitle + "']//p-sorticon"));
 
 		if (header.isDisplayed()) {
-			System.out.println("Element " + headerTitle);
 			return true;
 		} else {
 			return false;
@@ -209,12 +235,16 @@ public class BatchPage extends BasePage {
 
 		String batchNamePrefix = batchTestData.get("BatchNamePrefix");
 		if (!Strings.isNullOrEmpty(batchNamePrefix)) {
-			sendKeys(batchProg, batchNamePrefix);
+			batchProg.sendKeys(batchNamePrefix);
 		}
 
 		String batchNameTxt = batchTestData.get("BatchName");
 		if (!Strings.isNullOrEmpty(batchNameTxt)) {
-			sendKeys(batchName, batchNameTxt); //+ new Random().nextInt()
+			if(testcase.equals("validInputMandatory")) {
+				sendKeys(batchName, batchNameTxt+ new Random().nextInt());
+			} else {
+				sendKeys(batchName, batchNameTxt);
+			}
 		}
 
 		String description = batchTestData.get("Description");

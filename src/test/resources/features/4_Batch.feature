@@ -1,81 +1,68 @@
-@Batch
 Feature: This feature file contain scenario for the Batch module
 
   Background: Admin logged on the Dashboard page
-    Given Admin is on the Dashboard Page
+    Given Admin is on the Dashboard Page - Batch
 
-  @BatchPageNavigation
+  @TC_Batch_01 @Batch
   Scenario: Verify Admin Navigate to Batch page successfully
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should be in the "Manage Batch" Page
 
-  @BatchPageValidation-Title
+  @TC_Batch_02 @Batch
   Scenario: Validate "Title" in Batch Page
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see a title with text as "LMS - Learning Management System"
 
-  @BatchPageValidation-heading
+  @TC_Batch_03
   Scenario: Validate "heading" in the Batch Page
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the "Manage Batch" Heading
 
-  @BatchPageValidation-DisabledDeleteIcon
+  @TC_Batch_04
   Scenario: Validate disabled "Delete Icon" under the header in the Batch Page
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the "disabled" "Delete Icon" under the header
 
-  @BatchPageValidation-EditIcon
+  @TC_Batch_06
   Scenario: Validate edit icon in each data rows
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the edit icon in each row
 
-  @BatchPageValidation-DeleteIcon
+  @TC_Batch_07
   Scenario: Validate delete icon in each data rows
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the delete icon in each row
 
-  @BatchPageValidation-CheckBox
+  @TC_Batch_08
   Scenario: validate checkbox in each data rows
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should the checkbox in each row
 
-  @BatchPageValidation-TableHeaders
+  @TC_Batch_09
   Scenario: Validate Datatable headers
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the datatable headers
 
-  @BatchPageValidation-CheckboxHeader
+  @TC_Batch_10
   Scenario: Validate "Checkbox" in the Datatable header row
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the checkbox in the datatable header row
 
-  @BatchPageValidation-SortIconHeaders
+  @TC_Batch_11
   Scenario: Validate "sort icon" next to all the datatable header
     When Admin Clicks on the "Batch" menu from the header
     Then Admin should see the sort icon next to all Datatable headers
 
-  @VerifySubMenu
+  @TC_Batch_12
   Scenario: Verify sub menu displayed in batch menu bar
     Given Admin is on batch page
     When Admin clicks "Batch" on the navigation bar
     Then Admin should see sub menu in menu bar as "Add New Batch"
 
-  @VerifyBatchWindowOpens
+  @TC_Batch_13
   Scenario: Validate Admin able to click on the Add new Batch Option
     When Admin clicks on "Add New batch" under the "batch" menu bar
     Then Admin should see the Batch Details pop up window
-
-  @AddNewBatch-AllMandatoryFields
-  Scenario: validate save button in Batch details pop up
-    Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters "validInputAll" mandatory fields in the form and clicks on save button
-    Then Admin should get a succesesful message
-
-  @AddNewBatch-SelectProgram
-  Scenario: Validate batchname prefix selected program name
-    Given Admin is on the Batch Details Pop Up WIndow
-    When Admin selects program name present in the dropdown
-    Then Admin should see selected program name in the batch name prefix box
 
   @TC_Batch_15
   Scenario: Validate batchname prefix selected program name
@@ -104,31 +91,31 @@ Feature: This feature file contain scenario for the Batch module
   @TC_Batch_19 @TC_Batch_19.1
   Scenario: Validate input data only for mandatory fields
     Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters the "MissingProgram" data and clicks save button
+    When Admin enters the "MissingProgram" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingProgram"
 
   @TC_Batch_19 @TC_Batch_19.2
   Scenario: Validate input data only for mandatory fields
     Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters the "MissingBatchName" data and clicks save button
+    When Admin enters the "MissingBatchName" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingBatchName"
 
-  @TC_Batch_19 @TC_Batch_19.3
+  @TC_Batch_191 @TC_Batch_19.3
   Scenario: Validate input data only for mandatory fields
     Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters the "MissingStatus" data and clicks save button
+    When Admin enters the "MissingStatus" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingStatus"
 
-  @TC_Batch_19 @TC_Batch_19.4
+  @TC_Batch_191 @TC_Batch_19.4
   Scenario: Validate input data only for mandatory fields
     Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters the "MissingDesc" data and clicks save button
+    When Admin enters the "MissingDesc" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingDesc"
 
-  @TC_Batch_19 @TC_Batch_19.5
+  @TC_Batch_191 @TC_Batch_19.5
   Scenario: Validate input data only for mandatory fields
     Given Admin is on the Batch Details Pop Up WIndow
-    When Admin enters the "MissingNoOfClass" data and clicks save button
+    When Admin enters the "MissingNoOfClass" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingNoOfClass"
 
   @TC_Batch_21
@@ -136,10 +123,9 @@ Feature: This feature file contain scenario for the Batch module
     Given Admin is on the Batch Details Pop Up WIndow
     When Admin enters the "Mandatory" data and clicks "cancel" button
     Then Admin can see the batch details popup closes without creating any batch
-  
+
   @TC_Batch_22
   Scenario: validate close icon on the batch details pop up
     Given Admin is on the Batch Details Pop Up WIndow
     When Admin enters the "Mandatory" data and clicks "close" button
-    Then Admin can see the batch details popup closes without creating any batch  
-    
+    Then Admin can see the batch details popup closes without creating any batch
