@@ -84,6 +84,18 @@ public class ProgramPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'p-toast-summary')]")WebElement successPopupTitle;
 	@FindBy(xpath = "//div[contains(@class,'p-toast-detail')]")WebElement successPopupContent;
 	
+	//edit program
+	@FindBy(id="Inactive") WebElement inactiveRadioEdit;
+	@FindBy(id="Active") WebElement activeRadioEdit;
+	
+	//delete program
+	@FindBy(xpath="//*[text()='No']/..") WebElement noBtn;
+	@FindBy(xpath="//*[text()='Yes']/..") WebElement yesBtn;
+	@FindBy(xpath="//*[contains(@class,' p-dialog-header-close p-link ng-star-inserted')]/..")WebElement deleteCloseBtn;
+	@FindBy(id="deleteProgram") WebElement firstProgDeleteBtn;
+	@FindBy (xpath="//span[text()='Confirm']") WebElement deleteConfirmPopup;
+	
+	
 	
 	public void openPage() {
 		driver.get(BASE_URL + "program");
@@ -99,8 +111,8 @@ public class ProgramPage extends BasePage {
 	
 	public boolean verifyColumnHeader() {
 		
-		if (programNameHeading.equals("Program Name ") && (programDescHeading.equals("Program Description "))  && 
-				(programStatusHeading.equals("Program Status ")) ) {
+		if (programNameHeading.getText().contains("Program Name ") && (programDescHeading.getText().contains("Program Description "))  && 
+				(programStatusHeading.getText().contains("Program Status ")) ) {
 			return true;
 		}
 		return false;
@@ -111,9 +123,9 @@ public class ProgramPage extends BasePage {
     public void validateInputMandatoryFields(String testcase) {
 		
 		programdata = LMSUIConstants.applicationData.getData("Program", testcase);
-		LMSUIConstants.applicationData.setProgramName(programdata.get("ProgramName"));
-		LMSUIConstants.applicationData.setProgramDesc(programdata.get("ProgramDescription"));
-		LMSUIConstants.applicationData.setProgramStatus(programdata.get("ProgramStatus"));
+		//LMSUIConstants.applicationData.setProgramName(programdata.get("ProgramName"));
+		//LMSUIConstants.applicationData.setProgramDesc(programdata.get("ProgramDescription"));
+		//LMSUIConstants.applicationData.setProgramStatus(programdata.get("ProgramStatus"));
 		
 		
 		LoggerLoad.info(programdata.get("ProgramName"));
@@ -151,6 +163,19 @@ public class ProgramPage extends BasePage {
 		}
     }
     
+    public void setProgramStatusForEdit(String status) {
+    	if(status.equalsIgnoreCase("active")) {
+    		((JavascriptExecutor)driver).executeScript("arguments[0].click();",activeRadioEdit);
+			//click(activeStatusInput);
+		}
+		else {
+			//click(inactiveStatusInput);
+			((JavascriptExecutor)driver).executeScript("arguments[0].click();",inactiveRadioEdit);
+		}
+    }
+    
+    
+    
     public boolean verifyPopupTextField() {
 		
 		if (isDisplayed(programNameInput) && isDisplayed(programDescInput) && isDisplayed(activeStatusInput)
@@ -161,7 +186,8 @@ public class ProgramPage extends BasePage {
 	}
     
     public void clickAddNewProgramBtn() {
-		 click(addProgramBtn);
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",addProgramBtn);
+		// click(addProgramBtn);
 	}
     
     public boolean verifyPopup() {
@@ -170,6 +196,26 @@ public class ProgramPage extends BasePage {
 		}
 		return false;
 	}
+    
+    public boolean verifyDeletePopup() {
+		if(isDisplayed(noBtn) && isDisplayed(yesBtn) && isDisplayed(deleteCloseBtn)){
+			return true;
+		}
+		return false;
+	}
+    public void clickYesBtn() {
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",yesBtn);
+    }
+    
+    public void clickNoBtn() {
+    
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",noBtn);
+    }
+    public void clickDeleteCloseBtn() {
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",deleteCloseBtn);
+    }
+    
+    
     
     public boolean verifyFilledForm() {
 		if(verifyPopupTextField()) {
@@ -227,6 +273,9 @@ public class ProgramPage extends BasePage {
 	}
 	
 	public void clickProgramBtn() {
+		WebElement programLink1 = new WebDriverWait(driver, Duration.ofSeconds(20))
+				.until(ExpectedConditions.elementToBeClickable(programLink));
+		
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",programLink);
 		//click(programLink);
 	}
@@ -265,9 +314,17 @@ public class ProgramPage extends BasePage {
 	    } 
 	    return false;
 	}
+	public boolean validateDeleteConfirmPopup() {
+		boolean popup = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.invisibilityOf(deleteConfirmPopup));
+	    if (popup) {
+	        return false;
+	    } 
+	    return true;
+	}
 	
-	public String validateErrorText() {
-	    return errorText.getText();
+	public boolean validateErrorText() {
+	    return errorText.isDisplayed();
 	}
 	
 	public void clickAddProgramBtn() {
@@ -299,6 +356,10 @@ public class ProgramPage extends BasePage {
 	public void clickDeleteProgram(String programName) {
 		WebElement deleteButton = getProgramRowElement(programName).findElement(By.id("deleteProgram"));
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",deleteButton);
+	}
+	
+	public void clickDeleteFirstProgram() {
+		((JavascriptExecutor)driver).executeScript("arguments[0].click();",firstProgDeleteBtn);
 	}
 	
 	
@@ -353,16 +414,29 @@ public class ProgramPage extends BasePage {
     
     public void verifySearchResultProgramName(String searchString) throws Exception {
 		
-		ArrayList<String> data = BasepageObj.getAllPageData(tableComplete,progNamePath);
+		ArrayList<String> data = BasepageObj.getAllPageData(progNamePath);
 		System.out.println("data found:      ");
 		for(int i=0;i<data.size();i++) {
 			System.out.println(data.get(i));
 		}
 		Assert.assertEquals(BasepageObj.validateSearch(data, searchString), true);
-		//Assert.assertTrue(BasepageObj.validateSearch(data, searchString), "Searched Result are not Found");
 	}
     
-    public boolean verifyAddSuccessMsg() {
+    public void verifySearchResultProgramDesc(String searchString) throws Exception{
+    	ArrayList<String> data = BasepageObj.getAllPageData(progDescPath);
+		System.out.println("data found:      ");
+		for(int i=0;i<data.size();i++) {
+			System.out.println(data.get(i));
+		}
+		Assert.assertEquals(BasepageObj.validateSearch(data, searchString), true);
+    }
+    
+    public boolean verifyZeroResults(String programName) {
+    	if(programData.size()<1) return true;
+    	return false;
+    }
+    
+    public boolean verifySuccessMessage(String message) {
     	WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.visibilityOf(successPopupTitle));
     	
@@ -370,7 +444,7 @@ public class ProgramPage extends BasePage {
 				.until(ExpectedConditions.visibilityOf(successPopupContent));
     	
     	if(title.getText().contains("Successful") && 
-    			content.getText().contains("Program Created Successfully")){
+    			content.getText().contains(message)){
     		return true;
     	}
     	return false;
@@ -380,19 +454,18 @@ public class ProgramPage extends BasePage {
     	return true;
     }
     
-    public boolean verifyEditSuccessMsg() {
-    	WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
-				.until(ExpectedConditions.visibilityOf(successPopupTitle));
-    	
-    	WebElement content = new WebDriverWait(driver, Duration.ofSeconds(10))
-				.until(ExpectedConditions.visibilityOf(successPopupContent));
-    	LoggerLoad.info(title.getText()+" , "+ content.getText());
-    	if(title.getText().contains("Successful") && 
-    			content.getText().contains("Program Updated")){
-    		return true;
-    	}
-    	return false;
-    	
+    public void clickProgNameSort() {
+    	searchBox.clear();
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",programNameHeading);
+    }
+    
+    public void clickProgDescSort() {
+    	searchBox.clear();
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",programDescHeading);
+    }
+    public void clickProgStatusSort() {
+    	searchBox.clear();
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",programStatusHeading);
     }
     
 

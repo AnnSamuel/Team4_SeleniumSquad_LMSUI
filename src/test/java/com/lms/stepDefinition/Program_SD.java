@@ -108,7 +108,7 @@ public class Program_SD {
 	
 	@Then("Admin gets error text on program details popup")
 	public void admin_gets_error_text_on_program_details_popup() {
-       programObj.validateErrorText();
+       Assert.assertEquals(programObj.validateErrorText(),true);
 		
 	}
 	
@@ -168,10 +168,10 @@ public class Program_SD {
 	}
 	
 	
-	@Then("Admin gets message program edited Successfully")
-	public void admin_gets_message_program_edited_successfully() {
-		Assert.assertEquals(programObj.verifyEditSuccessMsg(), true);   
-	}
+//	@Then("Admin gets message program edited Successfully")
+//	public void admin_gets_message_program_edited_successfully() {
+//		Assert.assertEquals(programObj.verifyEditSuccessMsg(), true);   
+//	}
 	
 	@When("Admin Clicks on Save button after updating program description as {string}")
 	public void admin_clicks_on_save_button_after_updating_program_description_as(String programDesc) {
@@ -180,7 +180,7 @@ public class Program_SD {
 	}
 	@When("Admin Clicks on Save button after updating program status as {string}")
 	public void admin_clicks_on_save_button_after_updating_program_status_as(String programStatus) {
-		programObj.setProgramStatus(programStatus);
+		programObj.setProgramStatusForEdit(programStatus);
 	    programObj.clickSaveBtn();
 	}
 	
@@ -196,8 +196,66 @@ public class Program_SD {
 	
 	////Delete program
 	
+	@When("Admin clicks delete button for program {string}")
+	public void admin_clicks_delete_program_button_for_program(String programName) {
+		programObj.clickProgramBtn();
+		programObj.search(programName);
+	    programObj.clickDeleteProgram(programName);
+	    
+	}
+	
+	@Then("Admin should see confirmation pop up with and <No> and <Yes> buttons and Close\\(X) Icon on the top right corner of the window")
+	public void admin_should_see_confirmation_pop_up_with_and_no_and_yes_buttons_and_close_x_icon_on_the_top_right_corner_of_the_window() {
+		Assert.assertEquals(programObj.verifyDeletePopup(),true);
+	}
+	
+	@Given("Admin Clicks on delete button for program {string}")
+	public void admin_clicks_any_delete_button_for_program(String programName) {
+		programObj.clickProgramBtn();
+		programObj.search(programName);
+	    programObj.clickDeleteProgram(programName);
+	    
+	}
+	@When("Admin Clicks on Yes button for program")
+	public void admin_clicks_on_yes_button_for_program() {
+		programObj.clickYesBtn();
+	    
+	}
+	@Then("Admin is able to see message {string}")
+	public void admin_is_able_to_see_message(String message) {
+		Assert.assertEquals(programObj.verifySuccessMessage(message), true);
+	}
+	@Given("Admin Clicks on delete button for a program")
+	public void admin_clicks_on_delete_button_for_a_program() {
+		programObj.clickProgramBtn();
+	    programObj.clickDeleteFirstProgram();
+	    
+	}
+	@When("Admin Clicks on No button for program")
+	public void admin_clicks_on_no_button_for_program() {
+	    programObj.clickNoBtn();
+	}
+	@When("Admin Clicks on close button for program")
+	public void admin_clicks_on_close_button_for_program() {
+	    programObj.clickDeleteCloseBtn();
+	}
+	@Then("The confirmation popup should disappear for program module")
+	public void the_confirmation_popup_should_disappear_for_program_module() {
+	    Assert.assertEquals(programObj.validateDeleteConfirmPopup(),false);
+	}
+	
+	@When("Admin searches with deleted program name {string}")
+	public void admin_searches_with_deleted_program_name(String programName) {
+		programObj.search(programName);
+	    
+	}
+	@Then("The program {string} is not displayed")
+	public void the_program_name_is_not_displayed(String programName) throws Exception {
+		programObj.verifyZeroResults(programName);
+	}
 	
 	
+	////
 	@When("Admin clicks Program on the navigation bar")
 	public void admin_clicks_program_on_the_navigation_bar() {
 		programObj.clickProgramBtn();
@@ -235,44 +293,90 @@ public class Program_SD {
 	
 	//Search
 	
-	@Given("Admin is on Program module and creates a new program")
-	public void admin_is_on_program_module() {
-		programObj.clickProgramBtn();
-
-		  
-	}
-	@When("Admin enter the program to search by {string}")
-	public void admin_enter_the_program_to_search_by_valid(String testcase) {
-		programObj.setSearchText(testcase);
-		testcaseName = testcase;
+//	@Given("Admin is on Program module and creates a new program")
+//	public void admin_is_on_program_module() {
+//		programObj.clickProgramBtn();
+//
+//		  
+//	}
+	@When("Admin searches with program name {string}")
+	public void admin_searches_with_program_name(String programName) {
+		programObj.search(programName);
 	}
 	
-	@Then("Admin should able to see Program name, description, and status for searched program name")
-	    public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_name() {
+	@When("Admin searches with Program Description {string}")
+	public void admin_searches_with_program_description(String programDesc) {
+		programObj.search(programDesc);
+	}
+	
+//	@When("Admin enter the program to search by {string}")
+//	public void admin_enter_the_program_to_search_by_valid(String testcase) {
+//		programObj.setSearchText(testcase);
+//		testcaseName = testcase;
+//	}
+	
+	@Then("Admin should able to see Program name, description, and status for name {string}")
+	    public void admin_should_able_to_see_program_name_description_and_status_for_name(String programName) throws Exception {
 		
-     
+		programObj.verifySearchResultProgramName(programName);    
+	}
+	
+	@Then("Admin should able to see Program name, description, and status for description {string}")
+    public void admin_should_able_to_see_program_name_description_and_status_for_description(String programDesc) throws Exception {
+	
+	programObj.verifySearchResultProgramDesc(programDesc);    
+}
+	
+	@When("Admin clicks on Program Name Ascending Arrow")
+	public void admin_clicks_on_program_name_ascending_arrow() {
+	    programObj.clickProgNameSort();
+	}
+	@Then("Admin can see the Program Name displayed in Ascending order")
+	public void admin_can_see_the_program_name_displayed_in_ascending_order() {
 	    
 	}
-
-	@Then("Admin should able to see multiple program results for searched program name")
-	public void admin_should_able_to_see_multiple_program_results_for_searched_program_name() {
+	@When("Admin clicks on Program Name Descending Arrow")
+	public void admin_clicks_on_program_name_descending_arrow() {
 	    
 	}
-
-	@Then("Admin should able to see Program name, description, and status for searched program description")
-	public void admin_should_able_to_see_program_name_description_and_status_for_searched_program_description() {
+	@Then("Admin can see the Program Name displayed in Descending order")
+	public void admin_can_see_the_program_name_displayed_in_descending_order() {
 	    
 	}
-
-	@Then("Admin should able to see multiple program results for searched program description")
-	public void admin_should_able_to_see_multiple_program_results_for_searched_program_description() {
+	@When("Admin clicks on Program Description Ascending Arrow")
+	public void admin_clicks_on_program_description_ascending_arrow() {
+		programObj.clickProgDescSort();
+	}
+	@Then("Admin can see the Program Description displayed in Ascending order")
+	public void admin_can_see_the_program_description_displayed_in_ascending_order() {
 	    
 	}
 	
-	@Then("Admin should not view any search results")
-	public void admin_should_not_view_any_search_results() {
-	   
+	@When("Admin clicks on Program Description Descending Arrow")
+	public void admin_clicks_on_program_description_descending_arrow() {
+	    
 	}
+	@Then("Admin can see the Program Description displayed in Descending order")
+	public void admin_can_see_the_program_description_displayed_in_descending_order() {
+	    
+	}
+	@When("Admin clicks on Program Status Ascending Arrow")
+	public void admin_clicks_on_program_status_ascending_arrow() {
+		programObj.clickProgStatusSort();
+	}
+	@Then("Admin can see the Program Status displayed in Ascending order")
+	public void admin_can_see_the_program_status_displayed_in_ascending_order() {
+	    
+	}
+	@When("Admin clicks on Program Status Descending Arrow")
+	public void admin_clicks_on_program_status_descending_arrow() {
+	    
+	}
+	@Then("Admin can see the Program Status displayed in Descending order")
+	public void admin_can_see_the_program_status_displayed_in_descending_order() {
+	    
+	}
+
 	
 
 
