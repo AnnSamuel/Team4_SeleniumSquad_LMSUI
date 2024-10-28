@@ -85,7 +85,20 @@
     <artifactId>cucumber-picocontainer</artifactId>
     <version>7.20.1</version>
 </dependency>
+<dependency>
+	    <groupId>net.sourceforge.tess4j</groupId>
+	    <artifactId>tess4j</artifactId>
+	    <version>5.11.0</version>
+	</dependency>
+<!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
 
 
+<!-- Jazzy is a Java library for spell checking. 
+		This could be used for text validation or spell-checking within our tests. -->	
+	<dependency>
+		<groupId>net.sf.jazzy</groupId>
+		<artifactId>jazzy</artifactId>
+		<version>0.5.2-rtext-1.4.1-2</version>
+	</dependency>
   </dependencies>
 </project>
