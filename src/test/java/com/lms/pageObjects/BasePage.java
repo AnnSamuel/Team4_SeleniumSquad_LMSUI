@@ -20,7 +20,7 @@ public class BasePage {
 	protected WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	protected String BASE_URL = ConfigReader.getProp("baseUrl");
 
-	private static final long IMPLICIT_WAIT = 10;
+	protected static final long IMPLICIT_WAIT = 10;
 
 	@FindBy(xpath = "//table/tbody/tr//div[@role='checkbox']")
 	List<WebElement> rows;
