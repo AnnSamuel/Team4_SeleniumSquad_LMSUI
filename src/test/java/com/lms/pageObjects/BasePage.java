@@ -28,6 +28,8 @@ public class BasePage {
 	List<WebElement> editicons;
 	@FindBy(xpath = "//table/tbody/tr//button[contains(@icon, 'pi-trash')]")
 	List<WebElement> deleteIcons;
+	@FindBy(xpath="//button[contains(@class,'p-toast-icon-close')]")
+	WebElement closeToastIcon;
 
 	// success popup
 
@@ -50,8 +52,15 @@ public class BasePage {
 	}
 
 	public boolean verifyPopup(String expmsg) {
-
-		return verifyText(expmsg, successPopupTitle);
+		boolean retVal = false;
+		retVal =  verifyText(expmsg, successPopupTitle);
+//		try {
+//			click(closeToastIcon);
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+		return retVal;
+		
 	}
 	
 	public void wait(int time) {
@@ -132,6 +141,20 @@ public class BasePage {
 		}
 		return false;
 	}
+	
+	public boolean isViewable(WebElement element) {
+		try {
+			WebElement ele = new WebDriverWait(driver, Duration.ofSeconds(IMPLICIT_WAIT))
+					.until(ExpectedConditions.visibilityOf(element));
+
+			return ele.isDisplayed();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 	public String getText(WebElement element) {
 

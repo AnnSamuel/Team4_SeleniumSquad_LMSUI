@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
-@CucumberOptions(plugin = { "pretty", "html:target/Report.html" }, monochrome = false, tags = "", features = {
+@CucumberOptions(plugin = { "pretty", "html:target/Report.html" }, monochrome = false, tags = "@TC_Class_03", features = {
 		"src/test/resources/features" }, glue = { "com.lms.stepDefinition", "com.lms.hooks" })
 
 public class TestRunner extends AbstractTestNGCucumberTests {

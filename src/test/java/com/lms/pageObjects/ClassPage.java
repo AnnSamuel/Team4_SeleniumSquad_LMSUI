@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 import static com.lms.utilities.LMSUIConstants.*;
 
@@ -19,7 +20,7 @@ public class ClassPage extends BasePage {
 	@FindBy(xpath = "//span[text()='Class']/..")
 	WebElement classLink;
 	@FindBy(xpath = "//div[contains(@role, 'dialog')]")
-	WebElement addNewPopup;
+	WebElement addNewClassPopup;
 	@FindBy(xpath = "//span[@id='pr_id_85-label']")
 	WebElement PopupTitle;
 	@FindBy(xpath = "//div[text()=' Manage Class']")
@@ -30,12 +31,8 @@ public class ClassPage extends BasePage {
 	WebElement searchBar;
 	@FindBy(xpath = "//button[text()='Add New Class']")
 	WebElement addNewBtn;
-	@FindBy(xpath = "//span[text()='Cancel']")
-	WebElement cancelBtn;
 	@FindBy(xpath = "//span[text()='Save']")
 	WebElement saveBtn;
-	@FindBy(xpath = "//span[contains(@class,'p-dialog-header-close-icon ng-tns')]")
-	WebElement closeBtn;
 	@FindBy(xpath = "//span[@class='p-button-icon pi pi-calendar']")
 	WebElement calenderIcon;
 	@FindBy(xpath = "//input[@id='classTopic']")
@@ -64,10 +61,26 @@ public class ClassPage extends BasePage {
 	WebElement classNotesText;
 	@FindBy(xpath = "//input[@id = 'classRecordingPath']")
 	WebElement classRecordingText;
+	@FindBy(xpath = "//small[@class='p-invalid ng-star-inserted']")
+	List<WebElement> mandatoryErrorMsg;
+	@FindBy(xpath = "//button[@label='Cancel']")
+	WebElement cancelBtn;
+	@FindBy(xpath = "//button[contains(@class,'p-dialog-header-close')]")
+	WebElement closeBtn;
+	@FindBy(xpath="//mat-card-title/div[2]/div[1]/button")
+	WebElement multiDeleteBtn;
+	@FindBy(xpath="//div[contains(@class,'p-datatable-footer')]")
+	WebElement footerText;
+	@FindBy(xpath="//span[contains(@class,'p-paginator-current ng-star-inserted')]")
+	WebElement footerPagination;
+	@FindBy(xpath="//i[contains(@class,'p-sortable-column-icon')]")
+	List<WebElement> sortIcons;
+	
+	
+		
+	
 
 	JavascriptExecutor js = (JavascriptExecutor) driver;
-
-
 
 	Map<String, String> classData;
 
@@ -103,10 +116,10 @@ public class ClassPage extends BasePage {
 	public void createClassInputFields(String testcase) {
 
 		classData = applicationData.getData("Class", testcase); // TestData from Excel based on the testcase
-		
+
 		driver.findElements(By.xpath("//div[@aria-haspopup='listbox']")).get(0).click();
 		System.out.println("");
-		wait(100);
+		// wait(100);
 		if (classData.get("Batchname") != null) {
 			driver.findElement(By.xpath("//li[@aria-label='" + classData.get("Batchname") + "']")).click();
 		}
@@ -123,22 +136,20 @@ public class ClassPage extends BasePage {
 //		for (String val : dateValues.split(",")) {
 //			selectDate(val);
 //		}
-		
+
 		click(classDates);
 		if (classData.get("SelectClassDates") != null) {
 			sendKeys(classDates, classData.get("SelectClassDates"));
 		}
 		classDates.sendKeys(Keys.TAB);
-		
+
 		js.executeScript("arguments[0].scrollIntoView(true);", staffNamedd);
 		driver.findElements(By.xpath("//div[@aria-haspopup='listbox']")).get(1).click();
-		
+
 		if (classData.get("StaffName") != null) {
 			driver.findElement(By.xpath("//li[@aria-label='" + classData.get("StaffName") + "']")).click();
 		}
-		
 		staffNamedd.sendKeys(Keys.TAB);
-		
 		click(statusActiveOption);
 		if (classData.get("Comments") != null) {
 			sendKeys(classCommentsText, classData.get("Comments"));
@@ -149,13 +160,140 @@ public class ClassPage extends BasePage {
 		if (classData.get("Recording") != null) {
 			sendKeys(classRecordingText, classData.get("Recording"));
 		}
-		
+
 		click(savebtn);
 		applicationData.getClassTopics().add(classData.get("ClassTopic"));
 
 	}
+
+	public boolean datePicker(String dates) {
+
+		click(classDates);
+		sendKeys(classDates, dates);
+		classDates.sendKeys(Keys.TAB);
+		js.executeScript("arguments[0].scrollIntoView(true);", noOfClasses);
+		click(classDates);
+		// driver.findElement(By.xpath("//div[contains(@class,'p-dialog-content')]")).click();
+		// wait(2000);
+		classDates.sendKeys(Keys.TAB);
+		// classDates.sendKeys(Keys.TAB);*/
+
+		// wait(2000);
+
+		return true;
+	}
+
+	public String getFooterText() {
+		
+		
+		return getText(footerText);
+		
+	}
 	
+	public String getFooterPaginationText() {
+		
+		return getText(footerPagination);
+	}
 	
+	public boolean clickDatePicker() {
+
+		click(classDates);
+
+		return true;
+	}
+
+	public void emptyInputClick() {
+
+		click(savebtn);
+	}
+
+	public boolean verifyDataTableHeaders(List<String> headers ) {
+		
+		headers.forEach(str -> {
+			
+		Assert.assertNotNull(driver.findElement(By.xpath("//th[contains(text(),'"+str+"')]")));
+		});
+		
+		return true;
+	}
+	
+	public boolean verifyMultiDeleteBtn() {
+	
+		return isViewable(multiDeleteBtn);
+		
+	}
+
+	public Boolean verifyNewClassPopupMandatoryFields() {
+		Boolean result = Boolean.FALSE;
+		if (addNewClassPopup.isDisplayed()) {
+			if (mandatoryErrorMsg != null && !mandatoryErrorMsg.isEmpty() && mandatoryErrorMsg.size() == 6) {
+				WebElement batchNameAlert = mandatoryErrorMsg.get(0);
+				WebElement classTopicAlert = mandatoryErrorMsg.get(1);
+				WebElement classDatesAlert = mandatoryErrorMsg.get(2);
+				WebElement noOfClassesAlert = mandatoryErrorMsg.get(3);
+				WebElement staffNameAlert = mandatoryErrorMsg.get(4);
+				WebElement statusAlert = mandatoryErrorMsg.get(5);
+
+				if (batchNameAlert.isDisplayed() && classTopicAlert.isDisplayed() && classDatesAlert.isDisplayed()
+						&& noOfClassesAlert.isDisplayed() && staffNameAlert.isDisplayed()
+						&& statusAlert.isDisplayed()) {
+
+					return mandatoryErrorMsg.stream().allMatch(we -> we.getAttribute("style").contains("color: red"));
+
+					// result = Boolean.TRUE;
+				}
+			} else {
+				result = Boolean.FALSE;
+			}
+		}
+		return result;
+	}
+	
+	public boolean verifySortIcons() {
+		
+		return sortIcons.stream().allMatch(we -> we.isDisplayed());
+	}
+
+	public void verifyOptionalInput(String testcase) {
+
+		classData = applicationData.getData("Class", testcase); // TestData from Excel based on the testcase
+
+		if (classData.get("ClassDescription") != null) {
+			sendKeys(classDescText, classData.get("ClassDescription"));
+		}
+		if (classData.get("Comments") != null) {
+			sendKeys(classCommentsText, classData.get("Comments"));
+		}
+		if (classData.get("Notes") != null) {
+			sendKeys(classNotesText, classData.get("Notes"));
+		}
+		if (classData.get("Recording") != null) {
+			sendKeys(classRecordingText, classData.get("Recording"));
+		}
+
+		click(savebtn);
+
+	}
+
+	public void verifyCancelBtn() {
+
+		click(cancelBtn);
+	}
+
+	public void verifyCloseBtn() {
+
+		click(closeBtn);
+	}
+
+	public boolean isDateDisabled(String day) {
+
+		return driver.findElement(By.xpath("//span[text()='" + day + "' and contains(@class,'p-disabled')]")) != null;
+	}
+
+	public String getNoOfClasses() {
+
+		return noOfClasses.getAttribute("ng-reflect-model");
+	}
 
 	public boolean searchClass() {
 
@@ -224,13 +362,19 @@ public class ClassPage extends BasePage {
 	}
 
 	public String validateAddNewPopupTitle() {
-		if (addNewPopup.isDisplayed()) {
+		if (addNewClassPopup.isDisplayed()) {
 			String poptitle = PopupTitle.getText();
 			System.out.println("popup title text is: " + poptitle);
 			return PopupTitle.getText();
 		} else {
 			return "";
 		}
+	}
+
+	public boolean validateAddNewPopup() {
+
+		return addNewClassPopup.isDisplayed();
+
 	}
 
 }
