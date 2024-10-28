@@ -323,14 +323,77 @@ cp.validateCancelBtn();
 @When("Admin clicks on the Batchname sort icon")
 public void admin_clicks_on_the_batchname_sort_icon() {
     // Write code here that turns the phrase above into concrete actions
-
+cp.clickSortBatchName();
 }
 
 @Then("Admin should see Class details are sorted by Batch Name")
 public void admin_should_see_class_details_are_sorted_by_batch_name() {
     // Write code here that turns the phrase above into concrete actions
-  
+  cp.SortAscendingOrder(cp.getSortBatchName());
 }
+
+@When("Admin clicks on the Class topic sort icon")
+public void admin_clicks_on_the_class_topic_sort_icon() {
+    // Write code here that turns the phrase above into concrete actions
+  cp.clickSortClassTopic(); 
+}
+
+@Then("Admin should see Class details are sorted by Class topic")
+public void admin_should_see_class_details_are_sorted_by_class_topic() {
+    // Write code here that turns the phrase above into concrete actions
+	 cp.SortAscendingOrder(cp.getSortClassTopic());
+}
+
+@When("Admin clicks on the descreption sort icon")
+public void admin_clicks_on_the_descreption_sort_icon() {
+    // Write code here that turns the phrase above into concrete actions
+	  cp.clickSortClassDescription(); 
+}
+
+@Then("Admin should see Class details are sorted by descreption")
+public void admin_should_see_class_details_are_sorted_by_descreption() {
+    // Write code here that turns the phrase above into concrete actions
+	 cp.SortAscendingOrder(cp.getSortClassDescription());
+}
+
+@When("Admin clicks on the Status sort icon")
+public void admin_clicks_on_the_status_sort_icon() {
+    // Write code here that turns the phrase above into concrete actions
+	
+	cp.clickSortStatus(); 
+}
+
+@Then("Admin should see Class details are sorted by Status")
+public void admin_should_see_class_details_are_sorted_by_status() {
+    // Write code here that turns the phrase above into concrete actions
+	 cp.SortAscendingOrder(cp.getSortStatus());
+}
+
+@When("Admin clicks on the Class Date sort icon")
+public void admin_clicks_on_the_class_date_sort_icon() {
+    // Write code here that turns the phrase above into concrete actions
+	cp.clickSortClassDate(); 
+}
+
+@Then("Admin should see Class details are sorted by Class Date")
+public void admin_should_see_class_details_are_sorted_by_class_date() {
+    // Write code here that turns the phrase above into concrete actions
+	 cp.SortAscendingOrder(cp.getSortClassDate());
+}
+
+@When("Admin clicks on the Staff Name sort icon")
+public void admin_clicks_on_the_staff_name_sort_icon() {
+    // Write code here that turns the phrase above into concrete actions
+	cp.clickSortStaffName(); 
+}
+
+@Then("Admin should see Class details are sorted by Staff Name")
+public void admin_should_see_class_details_are_sorted_by_staff_name() {
+    // Write code here that turns the phrase above into concrete actions
+	cp.SortAscendingOrder(cp.getSortStaffName());
+}
+
+
 
 
 }

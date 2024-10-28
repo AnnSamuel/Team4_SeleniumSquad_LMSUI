@@ -17,7 +17,7 @@
 ## (Comments)
 #Sample Feature Definition Template
 @class
-Feature: ClassPagination
+Feature: ClassPagination&Sorting
   I want to use this template for my feature file
   
   Background: Admin logged on the Dashboard page 
@@ -48,9 +48,40 @@ Feature: ClassPagination
     Then Admin should see the very first page record on the table with Previous page link are disabled
     
     
-    @classSorting
+    @classSorting1
     Scenario: Sort Class by Batch name
     Given Admin is on the Manage Class page
     When Admin clicks on the Batchname sort icon
     Then Admin should see Class details are sorted by Batch Name
+    
+   @classSorting2
+    Scenario: Sort Class by Class topic
+    Given Admin is on the Manage Class page
+    When Admin clicks on the Class topic sort icon
+    Then Admin should see Class details are sorted by Class topic 
+    
+    @classSorting3
+    Scenario: Sort Class by Class Descreption
+    Given Admin is on the Manage Class page
+    When Admin clicks on the descreption sort icon
+    Then Admin should see Class details are sorted by descreption
+    
+    @classSorting4
+    Scenario: Sort Class by Class Status
+    Given Admin is on the Manage Class page
+    When Admin clicks on the Status sort icon
+    Then Admin should see Class details are sorted by Status
+    
+    
+   #@classSorting5
+    #Scenario: Sort Class by Class date
+    #Given Admin is on the Manage Class page
+    #When Admin clicks on the Class Date sort icon
+    #Then Admin should see Class details are sorted by Class Date
+    
+     @classSorting6
+    Scenario: Sort Class by staff name
+    Given Admin is on the Manage Class page
+    When Admin clicks on the Staff Name sort icon
+    Then Admin should see Class details are sorted by Staff Name
     

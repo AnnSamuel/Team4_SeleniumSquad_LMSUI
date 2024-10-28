@@ -5,12 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Comparator;
 import java.util.Date;
 import com.lms.utilities.LMSUIConstants;
 
@@ -183,6 +186,46 @@ public class ClassPage extends BasePage {
 	
 	@FindBy(xpath = "//span[text()='Close']/..")
 	WebElement closePopUp;
+	
+	@FindBy(xpath = "//thead//tr//th[2]")
+	WebElement clickSortBatchName;
+
+	@FindBy(xpath = "//thead//tr//th[3]")
+	WebElement clickSortClassTopic;
+
+	@FindBy(xpath = "//thead//tr//th[4]")
+	WebElement clickSortClassDescription;
+	
+	@FindBy(xpath = "//thead//tr//th[5]")
+	WebElement clickSortStatus;
+	
+	@FindBy(xpath = "//thead//tr//th[6]")
+	WebElement clickSortClassDate;
+	
+	@FindBy(xpath = "//thead//tr//th[7]")
+	WebElement clickSortStaffName;
+	
+	
+	@FindBy(xpath = "//tr//td[2]")
+	List<WebElement> sortBatchName;
+
+	@FindBy(xpath = "//tr//td[3]")
+	List<WebElement> sortClassTopic;
+
+	@FindBy(xpath = "//tr//td[4]")
+	List<WebElement> sortClassDescription;
+	
+	@FindBy(xpath = "//tr//td[5]")
+	List<WebElement> sortStatus;
+	
+	@FindBy(xpath = "//tr//td[6]")
+	List<WebElement> sortClassDate;
+	
+	@FindBy(xpath = "//tr//td[7]")
+	List<WebElement> sortStaffName;
+	
+	
+	
 
 	Map<String, String> classData;
 //
@@ -585,6 +628,8 @@ public class ClassPage extends BasePage {
 		Assert.assertTrue(actualErrMsg.contains(expectedErrMsg), "The message should contain the substring");
 
 	}
+	
+	//// pagination
 
 	public void waitForDataTableToLoad() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -634,4 +679,89 @@ public class ClassPage extends BasePage {
 			return false;
 		}
 	}
+	
+	public List<WebElement> getSortBatchName() {
+		return sortBatchName;
+			
+	}
+	
+	public void clickSortBatchName() {
+		click(clickSortBatchName);
+		
+	}
+	
+	public List<WebElement> getSortClassTopic() {
+		return sortClassTopic;
+			
+	}
+	
+	public void clickSortClassTopic() {
+		click(clickSortClassTopic);
+		
+	}
+	
+	public List<WebElement> getSortClassDescription() {
+		return sortClassDescription;
+			
+	}
+	
+	public void clickSortClassDescription() {
+		click(clickSortClassDescription);
+		
+	}
+	
+	public List<WebElement> getSortStatus() {
+		return sortStatus;
+			
+	}
+	
+	public void clickSortStatus() {
+		click(clickSortStatus);
+		
+	}
+	
+	public List<WebElement> getSortClassDate() {
+		return sortClassDate;
+			
+	}
+	
+	public void clickSortClassDate() {
+		click(clickSortClassDate);
+		
+	}
+	
+	public List<WebElement> getSortStaffName() {
+		return sortStaffName;
+			
+	}
+	
+	public void clickSortStaffName() {
+		click(clickSortStaffName);
+		
+	}
+	
+	
+	
+	public void SortAscendingOrder(List<WebElement> list) {
+		List<String> appSort = list.stream().map(s -> s.getText()).collect(Collectors.toList());
+		System.out.println(appSort);
+
+		List<String> SortedList = appSort.stream().sorted(String.CASE_INSENSITIVE_ORDER).collect(Collectors.toList());
+		System.out.println(SortedList);
+		Assert.assertTrue(appSort.equals(SortedList));
+
+	}
+	
+	public void sortDescendingOrder(List<WebElement> list) {
+		List<String> appSort = list.stream().map(s -> s.getText()).collect(Collectors.toList());
+		System.out.println(appSort);
+
+		List<String> sortedList = appSort.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+		System.out.println(sortedList);
+
+		Assert.assertTrue(appSort.equals(sortedList));
+	
+	
+	}
 }
+
