@@ -14,9 +14,9 @@ Feature: LMSprogram Functionality
   @columnHeaderProgram   
   Scenario: Verify view details of programs
   When Admin clicks the "Program" in the Header
-  Then Admin should able to see Program name, description, and status headings
+  Then Admin should be able to see table with Program name, description, and status headings
   
-
+ 
   # ADD PROGRAM
   @addProgram @TC_Program_02
   Scenario: Add New Program Validation
@@ -80,20 +80,20 @@ Feature: LMSprogram Functionality
   Scenario: Program Details cancel button validation for add new program
     Given Admin is on the program Popup window
     When Admin clicks the cancel button in the program details window
-    Then The program details window is closed and new program is not created
+    Then The program details window is closed
 
   @addProgram @closeProgram @TC_Program_09
   Scenario: Program Details close button validation for add new program
     Given Admin is on the program Popup window
     When Admin clicks the close X button in the program details window
-    Then The program details window is closed and new program is not created
+    Then The program details window is closed
 
   #//search for the added program
   @addProgram @TC_Program_10
   Scenario: Verify added Program is created
     Given Admin is on the Manage Program page
-    When Admin searches with newly created "sanDoNotEditt"
-    Then Records of the newly created  "sanDoNotEditt" is displayed with correct values
+    When Admin searches with newly created program "sanDoNotEditt"
+    Then Records of the newly created program "sanDoNotEditt" is displayed with correct values
 
   # EDIT PROGRAM
   @editProgram @TC_Program_11
@@ -138,8 +138,8 @@ Feature: LMSprogram Functionality
   @addProgram @TC_Program_17
   Scenario: Verify added Program is edited
     Given Admin is on the Manage Program page
-    When Admin searches with newly edited program name "sanDoNotEdited"
-    Then Records of the edited program name "sanDoNotEditt" is displayed with correct values
+    When Admin searches with newly edited program "sanDoNotEdited"
+    Then Records of the edited program "sanDoNotEdited" is displayed with correct values
 
 
   #Delete program feature
@@ -147,27 +147,27 @@ Feature: LMSprogram Functionality
    @deleteProgram @TC_Program_18
    Scenario: Delete Program Validation
     Given Admin is on the Manage Program page
-    When Admin clicks delete program button for a program "sanDoNotEdited"
+    When Admin clicks delete button for a program "sanDoNotEdited"
     Then Admin should see confirmation pop up with and <No> and <Yes> buttons and Close(X) Icon on the top right corner of the window
    
    @deleteProgram
    Scenario: verify Yes button in Delete Confirm window
     Given Admin Clicks on any Delete button for program "sanDoNotEdited"
-    When Admin Clicks on Yes button
+    When Admin Clicks on Yes button for program
     Then Admin is able to see message "Program Deleted Successfully"
 
   @deleteProgram
    Scenario: Verify No button in Delete Confirm window
     Given Admin Clicks on Delete button for a program 
-    When Admin Clicks on No button
-    Then The program should not be deleted
+    When Admin Clicks on No button for program
+    Then The confirmation popup should disappear for program module
     
     
    @deleteProgram
    Scenario: Verify close button in Delete Confirm window
     Given Admin Clicks on Delete button for a program 
-    When Admin Clicks on close button
-    Then The program should not be deleted
+    When Admin Clicks on close button for program
+    Then The confirmation popup should disappear for program module
     
    #//search for the deleted program
    @deleteProgram 
@@ -256,32 +256,7 @@ Feature: LMSprogram Functionality
   Then Admin should see the footer as "In total there are 56 programs"
   
  
-  #Manage Program - Delete Program
-  #Scenario: Verify delete feature
-  #Given Admin is on Program module
-  #When Admin clicks on delete button for a program
-  #Then Admin will get confirm deletion popup
-  #
-  #Scenario: Verify Admin is able to click 'Yes'
-  #Given Admin is on Confirm deletion form
-  #When Admin clicks on "Yes" button
-  #Then Admin can see 'Successful Program Deleted' message
-  #
-  #Scenario: Verify Admin is able to deleted program
-  #Given Admin is on Program module
-  #When Admin Searches for "Deleted Program name"
-  #Then There should be zero results
-  #
-  #Scenario: Verify Admin is able to click 'No'
-  #Given Admin is on Program Confirm Deletion Page after selecting a program to delete
-  #When Admin clicks on "No" button
-  #Then Admin can see Confirmation form disappears
-  #
-  #Scenario: Verify Admin is able to close the window with "X"
-  #Given Admin is on Program Confirm Deletion Page after selecting a program to delete
-  #When Admin Click on "X" button
-  #Then Admin can see Confirm Deletion form disappear
-  #
+  
   #Manage Program - Delete Multiple Program
   #Scenario: Verify Admin is able to select multiple programs
   #Given Admin is on Program module
