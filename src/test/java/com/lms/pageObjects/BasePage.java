@@ -96,6 +96,16 @@ public class BasePage {
 	
 	public void dropDownSelect(WebElement dropdown, String desiredOption) {
          click(dropdown);
+         
+         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(IMPLICIT_WAIT));
+         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("ul[role='listbox'] li")));
+
+         try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 List<WebElement> options = driver.findElements(By.cssSelector("ul[role='listbox'] li"));
         
         for (WebElement option : options) {

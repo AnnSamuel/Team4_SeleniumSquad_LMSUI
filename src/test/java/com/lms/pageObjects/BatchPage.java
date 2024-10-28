@@ -250,7 +250,7 @@ public class BatchPage extends BasePage {
 		String batchNameTxt = batchTestData.get("BatchName");
 		if (!Strings.isNullOrEmpty(batchNameTxt)) {
 			if(testcase.equals("validInputMandatory")) {
-				sendKeys(batchName, batchNameTxt+ new Random().nextInt());
+				sendKeys(batchName, String.valueOf(new Random().nextInt(99999)));
 			} else {
 				sendKeys(batchName, batchNameTxt);
 			}
