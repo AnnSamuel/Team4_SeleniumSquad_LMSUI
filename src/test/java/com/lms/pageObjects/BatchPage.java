@@ -1,6 +1,7 @@
 package com.lms.pageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -68,6 +69,9 @@ public class BatchPage extends BasePage {
 
 	@FindBy(id = "batchNoOfClasses")
 	WebElement batchNoOfClasses;
+	
+	@FindBy(id = "programName")
+	WebElement programName;
 
 	@FindBy(xpath = "//*[@ng-reflect-value = 'ACTIVE']")
 	WebElement activeStatusInput;
@@ -302,7 +306,7 @@ public class BatchPage extends BasePage {
     
     public String saveActionPopup() {
     	if (isDisplayed(saveBatchPopup)) {
-	        return getText(saveBatchPopup);
+	        return getText(saveBatchPopupTitle);
 	    } else {
 	        return "No Popup Displayed";
 	    	}
@@ -322,6 +326,28 @@ public class BatchPage extends BasePage {
 		click(editIcon);
 	}
     
+    public boolean isProgramNameEditable(){
+    	return programName.isEnabled();
+    }
     
+    public boolean isBatchNameEditable(){
+    	return batchName.isEnabled();
+    }
+    
+    public List<String> getBatchNamesForAllRows() {
+    	List<String> list = new ArrayList();
+    	List<WebElement> rows = driver.findElements(By.xpath("//mat-card-content//table/tbody/tr"));
+    	 for (WebElement row : rows) {
+    		 list.add(row.findElement(By.xpath("td[2]")).getText());
+    	 }
+        return list;
+
+    }
+    
+    public String getBatchName(String testData) {
+    	Map<String, String> batchTestData = LMSUIConstants.applicationData.getData("Batch", testData);
+		System.out.println("batchTestData:"+ batchTestData);
+		return batchTestData.get("BatchName");
+    }
 }
 

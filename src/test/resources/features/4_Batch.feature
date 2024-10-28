@@ -118,21 +118,63 @@ Feature: This feature file contain scenario for the Batch module
     When Admin enters the "MissingNoOfClass" data and clicks "save" button
     Then Admin should get error message below the text box of respective field for "MissingNoOfClass"
 
-  @TC_Batch_21
+  @TC_Batch_21 
   Scenario: validate cancel button in Batch details pop up
     Given Admin is on the Batch Details Pop Up WIndow
     When Admin enters the "Mandatory" data and clicks "cancel" button
     Then Admin can see the batch details popup closes without creating any batch
 
-  @TC_Batch_22
+  @TC_Batch_22 
   Scenario: validate close icon on the batch details pop up
     Given Admin is on the Batch Details Pop Up WIndow
     When Admin enters the "Mandatory" data and clicks "close" button
     Then Admin can see the batch details popup closes without creating any batch
     
-  @TC_Batch_23
+  @TC_Batch_23 
   Scenario: Validate Edit icon feature in any row
     Given Admin is on batch page
-    When Admin clicks edit batch button for a batch "AAAAAAAAA05"
+    When Admin clicks edit batch button for a batch "ValidSearch"
     Then Admin should see the Batch Details pop up window
+    
+    @TC_Batch_24 
+  Scenario: Validate program name  value is disabled to edit
+    Given Admin is on batch page
+    When Admin clicks edit batch button for a batch "ValidSearch"
+    Then Admin should see "Program name" value field is disabled for editing
+    
+    @TC_Batch_25 
+  Scenario: Validate batch name  value is disabled to edit
+    Given Admin is on batch page
+    When Admin clicks edit batch button for a batch "ValidSearch"
+    Then Admin should see "Batch name" value field is disabled for editing
+    
+    @TC_Batch_26 
+  Scenario: Validate editing description and No. of classes fields with invalid data in the pop up
+    Given Admin is on batch page
+    And Admin clicks edit batch button for a batch "ValidSearch"
+    When Admin enters the "InvalidDescriptionEdit" data and clicks "save" button
+    Then Admin should get error message below the text box of respective field for "InvalidDescriptionEdit"
+    
+    @TC_Batch_27 
+  Scenario: Validate editing description and No. of classes fields with invalid data in the pop up
+    Given Admin is on batch page
+    And Admin clicks edit batch button for a batch "ValidSearch"
+    When Admin enters the "ValidEdit" data and clicks "save" button
+    Then Admin should get a successful message
+    
+     @TC_Batch_28 
+  Scenario: validate cancel button in Batch details pop up
+    Given Admin is on batch page
+    And Admin clicks edit batch button for a batch "ValidSearch"
+    When Admin enters the "ValidEdit" data and clicks "cancel" button
+    Then Admin can see the batch details popup closes without creating any batch
+    
+    @TC_Batch_39 @TC_Batch_40 @TC_Batch_41 
+  Scenario: validate serach box functionality
+    Given Admin is on batch page
+    When Admin enters the batch name "ValidSearch" in the search text box 
+    Then Admin should see the filtered "ValidSearch" batches in the data table
+  
+    
+    
     

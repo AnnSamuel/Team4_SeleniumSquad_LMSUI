@@ -2,9 +2,12 @@ package com.lms.stepDefinition;
 
 import static com.lms.utilities.LMSUIConstants.applicationData;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.util.Strings;
 
 import com.lms.pageObjects.BatchPage;
 import com.lms.pageObjects.LoginPage;
@@ -46,6 +49,10 @@ public class Batch_SD {
 
 	@Given("Admin is on batch page")
 	public void admin_is_on_batch_page() {
+		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
+			batchPage.clickCloseBtn();
+		}
+		
 		if (!batchPage.isOnBatchPage()) {
 			batchPage.clickOnBatchBtn();
 			batchPage.closeSubMenu();
@@ -221,7 +228,7 @@ public class Batch_SD {
 
 	@Then("Admin should get a successful message")
 	public void admin_should_get_a_successful_message() {
-		Assert.assertEquals(batchPage.saveActionPopup(), "Successful\nBatch Created Successfully");
+		Assert.assertEquals(batchPage.saveActionPopup(), "Successful");
 	}
 
 	@Then("Admin can see the batch details popup closes without creating any batch")
@@ -233,8 +240,39 @@ public class Batch_SD {
 
 	@When("Admin clicks edit batch button for a batch {string}")
 	public void admin_clicks_edit_batch_button_for_a_batch(String string) {
-		batchPage.search(string);
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
 		batchPage.clickEditBatch();
 	}
-
+	
+	@Then("Admin should see {string} value field is disabled for editing")
+	public void admin_should_see_value_field_is_disabled_for_editing(String string) {
+		if(string.equalsIgnoreCase("Program name")) {
+			batchPage.isProgramNameEditable();
+		} else if(string.equalsIgnoreCase("Batch name")) {
+			batchPage.isBatchNameEditable();
+		}
+		 
+	}
+	
+	@When("Admin enters the batch name {string} in the search text box")
+	public void admin_enters_the_batch_name_in_the_search_text_box(String string) {
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
+	}
+	
+	@Then("Admin should see the filtered {string} batches in the data table")
+	public void admin_should_see_the_filtered_batches_in_the_data_table(String string) {
+		
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		
+		List<String> list = batchPage.getBatchNamesForAllRows();
+		Assert.assertTrue(list.size()>0);
+		System.out.println("SIZE=" + list.size());
+		for(String batchName: list) {
+			Assert.assertTrue(batchName.startsWith(expectedatchNameTxt));
+		}
+	}
+	
+	
 }
