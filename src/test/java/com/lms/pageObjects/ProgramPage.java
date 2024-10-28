@@ -33,6 +33,8 @@ public class ProgramPage extends BasePage {
 	String progNamePath =  "//table/tbody/tr/td[2]";
 	String progDescPath =  "//table/tbody/tr/td[3]";
 	String progStatusPath =  "//table/tbody/tr/td[4]";
+	@FindBy(xpath = "//p[text()='Please login to LMS application']")
+	WebElement loginPage;
 	
 	 @FindBy (id = "username") WebElement userName;
 	 @FindBy (id= "password") WebElement password;
@@ -95,6 +97,9 @@ public class ProgramPage extends BasePage {
 	@FindBy(id="deleteProgram") WebElement firstProgDeleteBtn;
 	@FindBy (xpath="//span[text()='Confirm']") WebElement deleteConfirmPopup;
 	
+	//logout
+	@FindBy(id="logout") WebElement logout;
+	
 	
 	
 	public void openPage() {
@@ -111,8 +116,8 @@ public class ProgramPage extends BasePage {
 	
 	public boolean verifyColumnHeader() {
 		
-		if (programNameHeading.getText().contains("Program Name ") && (programDescHeading.getText().contains("Program Description "))  && 
-				(programStatusHeading.getText().contains("Program Status ")) ) {
+		if (programNameHeading.getText().contains("Program Name") && (programDescHeading.getText().contains("Program Description"))  && 
+				(programStatusHeading.getText().contains("Program Status")) ) {
 			return true;
 		}
 		return false;
@@ -268,6 +273,7 @@ public class ProgramPage extends BasePage {
 		WebElement searchBox1 = new WebDriverWait(driver, Duration.ofSeconds(20))
 				.until(ExpectedConditions.elementToBeClickable(searchBox));
 		//click(searchBox1);
+		searchBox.clear();
 		sendKeys(searchBox,programName);
 
 	}
@@ -308,11 +314,13 @@ public class ProgramPage extends BasePage {
 	}
 	
 	public boolean validateAddNewPopup() {
-	    if (addNewPopup.isDisplayed()) {
+		boolean popup = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.invisibilityOf(addNewPopup));
+	    if (popup) {
 
-	        return true;
+	        return false;
 	    } 
-	    return false;
+	    return true;
 	}
 	public boolean validateDeleteConfirmPopup() {
 		boolean popup = new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -467,6 +475,16 @@ public class ProgramPage extends BasePage {
     	searchBox.clear();
     	((JavascriptExecutor)driver).executeScript("arguments[0].click();",programStatusHeading);
     }
+    
+    public void clickLogout() {
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",logout);
+    }
+    
+    public void validatelogout(String string) {
+    	String valLogin = loginPage.getText();
+    	Assert.assertEquals(valLogin, string);
+    }
+    
     
 
 }

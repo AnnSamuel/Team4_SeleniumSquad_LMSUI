@@ -41,6 +41,18 @@ public class Program_SD {
 
 	}
 	
+	@When("Admin clicks the {string} in the Header from program")
+	public void admin_clicks_the_in_the_header_from_program(String string) {
+		if (!applicationData.isLoggedIn()) {
+			loginObj.login("ValidCredentials");
+
+		}
+		if (!programObj.isOnProgramPage()) {
+			programObj.clickProgramBtn();
+		}
+
+	}
+	
 	@Then("Admin should be able to see table with Program name, description, and status headings")
 	public void admin_should_be_able_to_see_table_with_program_name_description_and_status_headings() {
 	    Assert.assertEquals(programObj.verifyColumnHeader(),true);
@@ -64,7 +76,7 @@ public class Program_SD {
 	
 	@When("Admin clicks add new program under the program menu bar")
 	public void admin_clicks_add_new_program_under_the_program_menu_bar() {
-
+		programObj.clickProgramBtn();
 		programObj.clickAddNewProgramBtn();
 	}
 
@@ -88,8 +100,11 @@ public class Program_SD {
 		if (!applicationData.isLoggedIn()) {
 			loginObj.login("ValidCredentials");
 		}
-		programObj.clickProgramBtn();
-		programObj.clickAddNewProgramBtn();
+	
+			programObj.clickProgramBtn();
+			programObj.clickAddNewProgramBtn();
+		
+		
 	}
 	
 	@When("Admin enters fields from {string} in the add program form and clicks on save button")
@@ -375,6 +390,16 @@ public class Program_SD {
 	@Then("Admin can see the Program Status displayed in Descending order")
 	public void admin_can_see_the_program_status_displayed_in_descending_order() {
 	    
+	}
+	
+	@When("Admin clicks the logout button from program module")
+	public void admin_clicks_the_logout_button_from_program_module() {
+		programObj.clickLogout();
+	}
+	@Then("Admin should be displayed with login screen from program {string}")
+	public void admin_should_be_displayed_with_login_screen_from_program(String string) {
+		programObj.validatelogout(string);
+
 	}
 
 	
