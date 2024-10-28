@@ -58,7 +58,7 @@ Feature: This feature file contain scenario for the Batch module
     Given Admin is on batch page
     When Admin clicks "Batch" on the navigation bar
     Then Admin should see sub menu in menu bar as "Add New Batch"
-
+#
   @TC_Batch_13
   Scenario: Validate Admin able to click on the Add new Batch Option
     When Admin clicks on "Add New batch" under the "batch" menu bar
@@ -129,3 +129,10 @@ Feature: This feature file contain scenario for the Batch module
     Given Admin is on the Batch Details Pop Up WIndow
     When Admin enters the "Mandatory" data and clicks "close" button
     Then Admin can see the batch details popup closes without creating any batch
+    
+  @TC_Batch_23
+  Scenario: Validate Edit icon feature in any row
+    Given Admin is on batch page
+    When Admin clicks edit batch button for a batch "AAAAAAAAA05"
+    Then Admin should see the Batch Details pop up window
+    

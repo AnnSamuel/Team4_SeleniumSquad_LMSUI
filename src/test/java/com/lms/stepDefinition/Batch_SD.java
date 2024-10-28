@@ -19,14 +19,12 @@ public class Batch_SD {
 
 	LoginPage lp = PageObjectFactory.getLoginPage();
 	BatchPage batchPage = PageObjectFactory.getBatchPage();
-	
+
 	@Given("Admin is on the Dashboard Page - Batch")
 	public void admin_is_on_the_dashboard_page() {
 		if (!applicationData.isLoggedIn()) {
 			lp.login("ValidCredentials");
 		}
-		
-//		batchPage.openHomePage();
 	}
 
 	@When("Admin Clicks on the {string} menu from the header")
@@ -50,13 +48,14 @@ public class Batch_SD {
 	public void admin_is_on_batch_page() {
 		if (!batchPage.isOnBatchPage()) {
 			batchPage.clickOnBatchBtn();
+			batchPage.closeSubMenu();
 		}
 	}
 
 	@When("Admin clicks {string} on the navigation bar")
 	public void admin_clicks_on_the_navigation_bar(String string) {
 		if (!batchPage.isOnBatchPage()) {
-		 batchPage.clickOnBatchBtn();
+			batchPage.clickOnBatchBtn();
 		}
 
 	}
@@ -88,7 +87,7 @@ public class Batch_SD {
 		if (!batchPage.isOnBatchPage()) {
 			batchPage.clickOnBatchBtn();
 		}
-		
+
 		batchPage.clickOnMenuItem();
 	}
 
@@ -142,8 +141,8 @@ public class Batch_SD {
 			lp.login("ValidCredentials");
 
 		}
-		
-		if(batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
+
+		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
 			batchPage.clickCloseBtn();
 		}
 
@@ -180,12 +179,12 @@ public class Batch_SD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if("save".equalsIgnoreCase(string2)) {
+
+		if ("save".equalsIgnoreCase(string2)) {
 			batchPage.clickSaveBtn();
-		} else if("cancel".equalsIgnoreCase(string2)) {
+		} else if ("cancel".equalsIgnoreCase(string2)) {
 			batchPage.clickCancelBtn();
-		}else if("close".equalsIgnoreCase(string2)) {
+		} else if ("close".equalsIgnoreCase(string2)) {
 			batchPage.clickCloseBtn();
 		}
 	}
@@ -224,13 +223,18 @@ public class Batch_SD {
 	public void admin_should_get_a_successful_message() {
 		Assert.assertEquals(batchPage.saveActionPopup(), "Successful\nBatch Created Successfully");
 	}
-	
-	
+
 	@Then("Admin can see the batch details popup closes without creating any batch")
 	public void admin_can_see_the_batch_details_popup_closes_without_creating_any_batch() {
 //		Assert.assertEquals(batchPage.isSaveBatchPopupDisplayed(), false);
 		Assert.assertEquals(batchPage.getHeading(), "Manage Batch");
-		
+
+	}
+
+	@When("Admin clicks edit batch button for a batch {string}")
+	public void admin_clicks_edit_batch_button_for_a_batch(String string) {
+		batchPage.search(string);
+		batchPage.clickEditBatch();
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.apache.poi.util.StringUtil;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,7 +44,7 @@ public class BatchPage extends BasePage {
 
 	@FindBy(xpath = "//button[@icon='pi pi-pencil']")
 	WebElement editIcon;
-
+	
 	@FindBy(className = "p-dropdown-label")
 	WebElement dropdownLabel;
 
@@ -89,6 +90,10 @@ public class BatchPage extends BasePage {
 	public void clickOnBatchBtn() {
 		click(batchBtn);
 	}
+	
+    public void closeSubMenu() {
+  	   ((JavascriptExecutor)driver).executeScript("arguments[0].click();", batchBtn);
+    }
 	
 	public boolean isOnBatchPage() {
 		if(driver.getCurrentUrl().contains("batch")) {
@@ -290,7 +295,9 @@ public class BatchPage extends BasePage {
     }
     
     public void clickCloseBtn() {
-    	click(closeBtn);
+//    	click(closeBtn);
+   	   ((JavascriptExecutor)driver).executeScript("arguments[0].click();", closeBtn);
+
     }
     
     public String saveActionPopup() {
@@ -306,6 +313,15 @@ public class BatchPage extends BasePage {
     	return isDisplayed(saveBatchPopup);
     }
 	
-
+    
+    public void search(String batchName) {
+		sendKeys(searchBox,batchName);
+	}
+    
+    public void clickEditBatch() {
+		click(editIcon);
+	}
+    
+    
 }
 
