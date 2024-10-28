@@ -1,5 +1,5 @@
 package com.lms.pageObjects;
 
-public class ProgramPage {
+public class ProgramPage extends BasePage {
 
 }

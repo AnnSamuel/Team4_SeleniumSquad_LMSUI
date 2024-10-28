@@ -1,16 +1,14 @@
 package com.lms.hooks;
 
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 
 import com.lms.driverManager.WebDriverFactory;
 import com.lms.utilities.ApplicationData;
 import com.lms.utilities.ConfigReader;
 import com.lms.utilities.ExcelReader;
-import com.lms.utilities.LMSUIConstants;
+import static com.lms.utilities.LMSUIConstants.*;
 
-import org.openqa.selenium.OutputType;
-import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
@@ -26,7 +24,7 @@ public class Hooks {
 		ApplicationData appData = new ApplicationData();
 		ConfigReader.load_prop();
 		appData.setModuleNameTestDataMap(ExcelReader.loadExcelData());
-		LMSUIConstants.applicationData = appData;
+		applicationData = appData;
 	}
 
 	@Before

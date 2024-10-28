@@ -1,5 +1,6 @@
 package com.lms.utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ public class ApplicationData {
 	private boolean isLoggedIn;
 	private String programName;
 	private String batchName;
-	private String classTopic;
+	private List<String> classTopics = new ArrayList<>();
 
 	
 	public String getProgramName() {
@@ -28,12 +29,12 @@ public class ApplicationData {
 		this.batchName = batchName;
 	}
 
-	public String getClassTopic() {
-		return classTopic;
+	public List<String> getClassTopics() {
+		return classTopics;
 	}
 
-	public void setClassTopic(String classTopic) {
-		this.classTopic = classTopic;
+	public void setClassTopics(List<String> classTopic) {
+		this.classTopics = classTopics;
 	}
 
 	public boolean isLoggedIn() {
