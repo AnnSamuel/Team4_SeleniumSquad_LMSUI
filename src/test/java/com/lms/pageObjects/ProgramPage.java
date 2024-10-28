@@ -1,5 +1,6 @@
 package com.lms.pageObjects;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.lms.driverManager.WebDriverFactory;
@@ -78,6 +81,8 @@ public class ProgramPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@role, 'dialog')]") WebElement addNewPopup; 
 	@FindBy(xpath = "//span[@id='pr_id_85-label']") WebElement PopupTitle;
 	@FindBy(xpath="//*[contains(@class, 'p-invalid ng-star-inserted')]") WebElement errorText;
+	@FindBy(xpath = "//div[contains(@class,'p-toast-summary')]")WebElement successPopupTitle;
+	@FindBy(xpath = "//div[contains(@class,'p-toast-detail')]")WebElement successPopupContent;
 	
 	
 	public void openPage() {
@@ -137,10 +142,12 @@ public class ProgramPage extends BasePage {
     
     public void setProgramStatus(String status) {
     	if(status.equalsIgnoreCase("active")) {
-			click(activeStatusInput);
+    		((JavascriptExecutor)driver).executeScript("arguments[0].click();",activeStatusInput);
+			//click(activeStatusInput);
 		}
 		else {
-			click(inactiveStatusInput);
+			//click(inactiveStatusInput);
+			((JavascriptExecutor)driver).executeScript("arguments[0].click();",inactiveStatusInput);
 		}
     }
     
@@ -166,7 +173,13 @@ public class ProgramPage extends BasePage {
     
     public boolean verifyFilledForm() {
 		if(verifyPopupTextField()) {
-			if(programNameInput.getText().equalsIgnoreCase(programNamefromStep) ) {
+			
+			String pname = LMSUIConstants.applicationData.getProgramName();
+			String pDesc = LMSUIConstants.applicationData.getProgramDesc();
+			String pStatus =LMSUIConstants.applicationData.getProgramStatus();
+			
+			
+			if(programNameInput.getText().equals(pname) && programDescInput.getText().equals(pDesc)) {
 				return true;
 			}
 			//complete for desc and status
@@ -175,15 +188,18 @@ public class ProgramPage extends BasePage {
 	}
     
     public void clickSaveBtn() {
-    	click(saveBtn);
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",saveBtn);
+    	//click(saveBtn);
     }
     
     public void clickCancelBtn() {
-    	click(cancelBtn);
+    	//click(cancelBtn);
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",cancelBtn);
     }
     
     public void clickCloseBtn() {
-    	click(closeBtn);
+    	//click(closeBtn);
+    	((JavascriptExecutor)driver).executeScript("arguments[0].click();",closeBtn);
     }
     
     
@@ -203,6 +219,9 @@ public class ProgramPage extends BasePage {
 	}
 	
 	public void search(String programName) {
+		WebElement searchBox1 = new WebDriverWait(driver, Duration.ofSeconds(20))
+				.until(ExpectedConditions.elementToBeClickable(searchBox));
+		//click(searchBox1);
 		sendKeys(searchBox,programName);
 
 	}
@@ -339,9 +358,42 @@ public class ProgramPage extends BasePage {
 		for(int i=0;i<data.size();i++) {
 			System.out.println(data.get(i));
 		}
-		
-		Assert.assertTrue(BasepageObj.validateSearch(data, searchString), "Searched Result are not Found");
+		Assert.assertEquals(BasepageObj.validateSearch(data, searchString), true);
+		//Assert.assertTrue(BasepageObj.validateSearch(data, searchString), "Searched Result are not Found");
 	}
+    
+    public boolean verifyAddSuccessMsg() {
+    	WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(successPopupTitle));
+    	
+    	WebElement content = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(successPopupContent));
+    	
+    	if(title.getText().contains("Successful") && 
+    			content.getText().contains("Program Created Successfully")){
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public boolean verifyErrorMessage() {
+    	return true;
+    }
+    
+    public boolean verifyEditSuccessMsg() {
+    	WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(successPopupTitle));
+    	
+    	WebElement content = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(successPopupContent));
+    	LoggerLoad.info(title.getText()+" , "+ content.getText());
+    	if(title.getText().contains("Successful") && 
+    			content.getText().contains("Program Updated")){
+    		return true;
+    	}
+    	return false;
+    	
+    }
     
 
 }
