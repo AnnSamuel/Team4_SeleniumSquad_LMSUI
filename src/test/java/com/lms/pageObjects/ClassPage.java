@@ -591,6 +591,10 @@ public class ClassPage extends BasePage {
 		wait.until(ExpectedConditions.visibilityOf(dataTable));
 	}
 
+	public void clearFilter() {
+		search.clear();
+	}
+	
 	public void clickNextPagelink() {
 
 		waitForDataTableToLoad();

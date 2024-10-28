@@ -254,11 +254,8 @@ cp.ClkCancelBtn(string);
 cp.validateCancelBtn();
 	}
 
-//@Given("Admin is on Manage class page")
-//public void admin_is_on_manage_class_page() {
-//    // Write code here that turns the phrase above into concrete actions
-//  
-//}
+	
+	////////   pagination
 
 	@When("Admin clicks Next page link on the class table")
 	public void admin_clicks_next_page_link_on_the_class_table() {
