@@ -395,6 +395,7 @@ public class Program_SD {
 	@When("Admin clicks the logout button from program module")
 	public void admin_clicks_the_logout_button_from_program_module() {
 		programObj.clickLogout();
+		applicationData.setLoggedIn(false);
 	}
 	@Then("Admin should be displayed with login screen from program {string}")
 	public void admin_should_be_displayed_with_login_screen_from_program(String string) {

@@ -14,6 +14,7 @@ public class LMSUIConstants {
 	public static String PROGRAM_SHEET_NAME="Program";
 	public static String BATCH_SHEET_NAME="Batch";
 	public static String CLASS_SHEET_NAME="Class";
+	public static String CLASS_ADD_SHEET_NAME="ClassAdd";
 	
 	
 	

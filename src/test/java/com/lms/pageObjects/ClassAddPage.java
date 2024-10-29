@@ -1,6 +1,6 @@
 package com.lms.pageObjects;
 
-import static com.lms.utilities.LMSUIConstants.CLASS_SHEET_NAME;
+import static com.lms.utilities.LMSUIConstants.CLASS_ADD_SHEET_NAME;
 import static com.lms.utilities.LMSUIConstants.applicationData;
 
 import java.util.List;
@@ -106,7 +106,7 @@ public class ClassAddPage extends BasePage {
 
 	public void createClassInputFields(String testcase) {
 
-		classData = applicationData.getData(CLASS_SHEET_NAME, testcase); // TestData from Excel based on the testcase
+		classData = applicationData.getData(CLASS_ADD_SHEET_NAME, testcase); // TestData from Excel based on the testcase
 
 		driver.findElements(By.xpath("//div[@aria-haspopup='listbox']")).get(0).click();
 		System.out.println("");
@@ -263,7 +263,7 @@ public class ClassAddPage extends BasePage {
 
 	public void verifyOptionalInput(String testcase) {
 
-		classData = applicationData.getData(CLASS_SHEET_NAME, testcase); // TestData from Excel based on the testcase
+		classData = applicationData.getData(CLASS_ADD_SHEET_NAME, testcase); // TestData from Excel based on the testcase
 
 		if (classData.get("ClassDescription") != null) {
 			sendKeys(classDescText, classData.get("ClassDescription"));
