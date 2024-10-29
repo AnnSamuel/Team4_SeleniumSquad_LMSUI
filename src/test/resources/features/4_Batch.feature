@@ -198,3 +198,9 @@ Feature: This feature file contain scenario for the Batch module
     Given Admin is on the batch "ValidSearch" confirm popup page - Batch
     When Admin clicks on the delete icon and click "yes" buttton - Batch
     Then Admin should see the alert box closed and the batch is "deleted" - Batch
+    
+  @TC_Batch_50
+  Scenario: Logout from module
+  Given Admin is on batch page - Batch
+  When user click on logout link - Batch
+    

@@ -319,5 +319,11 @@ public class Batch_SD {
 		
 	}
 	
+	@When("user click on logout link - Batch")
+	public void user_click_on_logout_link_batch() {
+		batchPage.logout();
+	}
+	
+	
 	
 }

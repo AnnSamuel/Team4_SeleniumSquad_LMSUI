@@ -96,13 +96,25 @@ public class BatchPage extends BasePage {
 	@FindBy(xpath="//button[contains(@class, 'p-dialog-header-close')]") WebElement deleteCloseBtn;
 	@FindBy(id="deleteProgram") WebElement firstProgDeleteBtn;
 	@FindBy (xpath="//span[text()='Confirm']") WebElement deleteConfirmPopup;
-		
+	@FindBy(id="logout") WebElement logout;
 
 	
 	public void openHomePage() {
 		openPage("batch");
 	}
 
+	public void logout() {
+		click(logout);
+	}
+	
+	public boolean isLoginPage() {
+		if(driver.getCurrentUrl().contains("login")) {
+			return true;
+		}
+		return false;
+	}
+
+	
 	public void clickOnBatchBtn() {
 		click(batchBtn);
 	}
