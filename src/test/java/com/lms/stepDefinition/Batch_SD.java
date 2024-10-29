@@ -49,8 +49,8 @@ public class Batch_SD {
 
 	@Given("Admin is on batch page - Batch")
 	public void admin_is_on_batch_page() {
-		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
-			batchPage.clickCloseBtn();
+		if (batchPage.isOnBatchPage() && batchPage.isPopupWindowDispalyed()) {
+			batchPage.clickCloseBtn(); 
 		}
 		
 		if (!batchPage.isOnBatchPage()) {
@@ -78,15 +78,9 @@ public class Batch_SD {
 
 	}
 
-	@Then("Admin should see the {string} {string} under the header - Batch")
-	public void admin_should_see_the_under_the_header(String string, String string2) {
-		boolean isEnabled = false;
-		if ("enabled".equalsIgnoreCase(string)) {
-			isEnabled = true;
-		}
-
-		Assert.assertEquals(batchPage.isTopDeleteButtonEnabled(), isEnabled);
-
+	@Then("Admin should see the disabled Delete Icon under the header - Batch")
+	public void admin_should_see_the_under_the_header() {
+		Assert.assertEquals(batchPage.isTopDeleteButtonEnabled(), false);
 	}
 
 	@When("Admin clicks on {string} under the {string} menu bar - Batch")
@@ -144,12 +138,10 @@ public class Batch_SD {
 	@Given("Admin is on the Batch Details Pop Up WIndow - Batch")
 	public void admin_is_on_the_batch_details_pop_up_w_indow() {
 		if (!applicationData.isLoggedIn()) {
-
 			lp.login("ValidCredentials");
-
 		}
 
-		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
+		if (batchPage.isOnBatchPage() && batchPage.isPopupWindowDispalyed()) {
 			batchPage.clickCloseBtn();
 		}
 
@@ -259,6 +251,12 @@ public class Batch_SD {
 	public void admin_enters_the_batch_name_in_the_search_text_box(String string) {
 		String expectedatchNameTxt = batchPage.getBatchName(string);
 		batchPage.search(expectedatchNameTxt);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Then("Admin should see the filtered {string} batches in the data table - Batch")
@@ -268,11 +266,71 @@ public class Batch_SD {
 		
 		List<String> list = batchPage.getBatchNamesForAllRows();
 		Assert.assertTrue(list.size()>0);
-		System.out.println("SIZE=" + list.size());
+		System.out.println("SIZE=" + list.size() + "expectedatchNameTxt="+expectedatchNameTxt);
 		for(String batchName: list) {
+			System.out.println("BatchName=" + batchName);
 			Assert.assertTrue(batchName.startsWith(expectedatchNameTxt));
 		}
 	}
+	
+	@When("Admin clicks delete button for a batch {string} - Batch")
+	public void admin_clicks_delete_button_for_a_batch_batch(String string) {
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
+		batchPage.clickDeleteBatch();
+	    
+	}
+	@Then("Admin should see the confirm alert box with yes and no button - Batch")
+	public void admin_should_see_the_confirm_alert_box_with_yes_and_no_button_batch() {
+	    batchPage.validateDeleteConfirmPopup();
+	}
+	
+	
+	@Given("Admin is on the batch {string} confirm popup page - Batch")
+	public void admin_is_on_the_batch_confirm_popup_page_batch(String string) {
+		if (!batchPage.isOnBatchPage()) {
+			batchPage.clickOnBatchBtn();
+			batchPage.closeSubMenu();
+		}
+		
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
+		batchPage.clickDeleteBatch();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@When("Admin clicks on the delete icon and click {string} buttton - Batch")
+	public void admin_clicks_on_the_delete_icon_and_click_buttton_batch(String string) {
+		if("no".equalsIgnoreCase(string)) {
+			batchPage.clickNoBtn();
+		} if("close".equalsIgnoreCase(string)) {
+			batchPage.clickCloseIcon();
+		} if("yes".equalsIgnoreCase(string)) {
+			batchPage.clickYesBtn();
+		} 
+		
+	}
+	@Then("Admin should see the alert box closed and the batch is {string} - Batch")
+	public void admin_should_see_the_alert_box_closed_and_the_batch_is_batch(String string) {
+		if("not deleted".equals(string)) {
+			Assert.assertEquals(batchPage.validateDeleteConfirmPopup(),false);
+		} else {
+			Assert.assertEquals(batchPage.saveActionPopup(), "Successful");
+		}
+		
+	}
+	
+	@When("user click on logout link - Batch")
+	public void user_click_on_logout_link_batch() {
+		batchPage.logout();
+	}
+	
 	
 	
 }

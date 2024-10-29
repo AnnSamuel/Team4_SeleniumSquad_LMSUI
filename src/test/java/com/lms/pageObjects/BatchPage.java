@@ -46,6 +46,9 @@ public class BatchPage extends BasePage {
 	@FindBy(xpath = "//button[@icon='pi pi-pencil']")
 	WebElement editIcon;
 	
+	@FindBy(xpath = "//td//button[@icon='pi pi-trash']")
+	WebElement deleteIcon;
+	
 	@FindBy(className = "p-dropdown-label")
 	WebElement dropdownLabel;
 
@@ -85,12 +88,33 @@ public class BatchPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@role, 'alert')]") WebElement saveBatchPopup; 
 	@FindBy(xpath = "//div[contains(@class, 'p-toast-summary')]") WebElement saveBatchPopupTitle;
 	@FindBy(xpath = "//div[contains(@class, 'p-toast-detail')]") WebElement saveBatchPopupMessage;
+	
+	
+	//delete program
+	@FindBy(xpath="//*[text()='No']/..") WebElement noBtn;
+	@FindBy(xpath="//*[text()='Yes']/..") WebElement yesBtn;
+	@FindBy(xpath="//button[contains(@class, 'p-dialog-header-close')]") WebElement deleteCloseBtn;
+	@FindBy(id="deleteProgram") WebElement firstProgDeleteBtn;
+	@FindBy (xpath="//span[text()='Confirm']") WebElement deleteConfirmPopup;
+	@FindBy(id="logout") WebElement logout;
 
 	
 	public void openHomePage() {
 		openPage("batch");
 	}
 
+	public void logout() {
+		click(logout);
+	}
+	
+	public boolean isLoginPage() {
+		if(driver.getCurrentUrl().contains("login")) {
+			return true;
+		}
+		return false;
+	}
+
+	
 	public void clickOnBatchBtn() {
 		click(batchBtn);
 	}
@@ -128,7 +152,7 @@ public class BatchPage extends BasePage {
 		return getText(popupWindowTitle);
 	}
 	
-	public boolean isOnBatchPopuUpindow() {
+	public boolean isPopupWindowDispalyed() {
 		if(getText(popupWindowTitle, 1).equals("Batch Details")) {
 			return true;
 		}
@@ -150,8 +174,10 @@ public class BatchPage extends BasePage {
 
 	public boolean isEditIconsPresentInEachRow() {
 		boolean isFlag = true;
+		//Perform row lookup
 		List<WebElement> rows = driver.findElements(By.xpath("//mat-card-content//table/tbody/tr"));
 
+		//Verify if edit button is displayed
 		for (int i = 0; i < rows.size(); i++) {
 			WebElement editButton = rows.get(i).findElement(By.xpath("//button[@icon='pi pi-pencil']"));
 			if (editButton.isDisplayed()) {
@@ -169,8 +195,8 @@ public class BatchPage extends BasePage {
 		List<WebElement> rows = driver.findElements(By.xpath("//mat-card-content//table/tbody/tr"));
 
 		for (int i = 0; i < rows.size(); i++) {
-			WebElement editButton = rows.get(i).findElement(By.xpath("//button[@icon='pi pi-trash']"));
-			if (editButton.isDisplayed()) {
+			WebElement trashButton = rows.get(i).findElement(By.xpath("//button[@icon='pi pi-trash']"));
+			if (trashButton.isDisplayed()) {
 				System.out.println("Delete button is present in row " + (i + 1));
 			} else {
 				isFlag = false;
@@ -185,8 +211,8 @@ public class BatchPage extends BasePage {
 		List<WebElement> rows = driver.findElements(By.xpath("//mat-card-content//table/tbody/tr"));
 
 		for (int i = 0; i < rows.size(); i++) {
-			WebElement editButton = rows.get(i).findElement(By.xpath("//div[@role='checkbox']"));
-			if (editButton.isDisplayed()) {
+			WebElement checkBox = rows.get(i).findElement(By.xpath("//div[@role='checkbox']"));
+			if (checkBox.isDisplayed()) {
 				System.out.println("CheckBox button is present in row " + (i + 1));
 			} else {
 				isFlag = false;
@@ -209,9 +235,9 @@ public class BatchPage extends BasePage {
 	}
 
 	public boolean verifyCheckBoxInHeader() {
-		WebElement header = driver
+		WebElement checkbox = driver
 				.findElement(By.xpath("//mat-card-content//table/thead/tr//th//div[@role='checkbox']"));
-		if (header.isDisplayed()) {
+		if (checkbox.isDisplayed()) {
 			return true;
 		} else {
 			return false;
@@ -219,10 +245,10 @@ public class BatchPage extends BasePage {
 	}
 
 	public boolean verifySortIconInHeaders(String headerTitle) {
-		WebElement header = driver.findElement(
+		WebElement sortIcon = driver.findElement(
 				By.xpath("//mat-card-content//table/thead/tr//th[text()='" + headerTitle + "']//p-sorticon"));
 
-		if (header.isDisplayed()) {
+		if (sortIcon.isDisplayed()) {
 			return true;
 		} else {
 			return false;
@@ -234,9 +260,11 @@ public class BatchPage extends BasePage {
 	}
 
 	public void inputBatchFields(String testcase) {
+		//Read data from excel
 		Map<String, String> batchTestData = LMSUIConstants.applicationData.getData("Batch", testcase);
 		System.out.println("batchTestData:"+ batchTestData);
 
+		//If value for field is given then set it to popup
 		String programName = batchTestData.get("ProgramName");
 		if (!Strings.isNullOrEmpty(programName)) {
 			dropDownSelect(dropdownTrigger, batchTestData.get("ProgramName"));
@@ -250,7 +278,7 @@ public class BatchPage extends BasePage {
 		String batchNameTxt = batchTestData.get("BatchName");
 		if (!Strings.isNullOrEmpty(batchNameTxt)) {
 			if(testcase.equals("validInputMandatory")) {
-				sendKeys(batchName, batchNameTxt+ new Random().nextInt());
+				sendKeys(batchName, String.valueOf(new Random().nextInt(99999)));
 			} else {
 				sendKeys(batchName, batchNameTxt);
 			}
@@ -326,6 +354,19 @@ public class BatchPage extends BasePage {
 		click(editIcon);
 	}
     
+    public void clickDeleteBatch() {
+		click(deleteIcon);
+	}
+    
+    public boolean validateDeleteConfirmPopup() {
+		boolean popup = new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.invisibilityOf(deleteConfirmPopup));
+	    if (popup) {
+	        return false;
+	    } 
+	    return true;
+	}
+    
     public boolean isProgramNameEditable(){
     	return programName.isEnabled();
     }
@@ -348,6 +389,19 @@ public class BatchPage extends BasePage {
     	Map<String, String> batchTestData = LMSUIConstants.applicationData.getData("Batch", testData);
 		System.out.println("batchTestData:"+ batchTestData);
 		return batchTestData.get("BatchName");
+    }
+    
+    public void clickNoBtn() {
+    	click(noBtn);
+    }
+    
+    public void clickYesBtn() {
+    	System.out.println("YEssss");
+    	click(yesBtn);
+    }
+    
+    public void clickCloseIcon() {
+    	click(deleteCloseBtn);
     }
 }
 
