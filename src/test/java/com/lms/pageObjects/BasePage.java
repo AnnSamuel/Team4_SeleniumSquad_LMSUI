@@ -1,6 +1,7 @@
 package com.lms.pageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -28,6 +29,11 @@ public class BasePage {
 	List<WebElement> editicons;
 	@FindBy(xpath = "//table/tbody/tr//button[contains(@icon, 'pi-trash')]")
 	List<WebElement> deleteIcons;
+//	@FindAll (value = {@FindBy (xpath = "//table/tbody//tr")}) 
+//	List<WebElement> tableData;
+	@FindBy (xpath = "//table/tbody//tr[1]")
+	WebElement firstRow;
+	@FindBy(id = "filterGlobal") WebElement searchBox;
 	@FindBy(xpath="//button[contains(@class,'p-toast-icon-close')]")
 	WebElement closeToastIcon;
 
@@ -209,7 +215,56 @@ public class BasePage {
 		}
 		return allCheckboxesDisplayed;
 	}
+	
+	public void search(String searchText, String classpath) {
+		sendKeys(searchBox,searchText);
+		
+		
+	}
+	
+	public ArrayList<String> getAllPageData(String cellXPath) {
+		WebElement tableElement = driver.findElement(By.xpath("//table/tbody"));
+		WebElement nextButton = driver.findElement(By.xpath("//*[contains(@class,'p-paginator-next')]"));
+		ArrayList<String> result = new ArrayList<String>();
+		//while(nextBtn.isEnabled()) {
+			System.out.println("next btn is enabled ");
+			String[] pageData = this.getPageData(cellXPath);
+			for(int i = 0; i < pageData.length; i++) {
+				result.add(pageData[i]);
+			}
+			if(nextButton.isEnabled()) {
+				nextButton.click();
+			}
+			
+		//}
+		return result;
+	}
+	
+	public String[] getPageData(String cellXPath) {
+		System.out.println("row seze: "+rows.size());
+		List<WebElement> rows = driver.findElements(By.xpath(cellXPath));
+		String[] pageData = new String[rows.size()];
+		System.out.println("row seze: "+rows.size());
+		for(int i = 0; i < pageData.length; i++) {
+			pageData[i] = rows.get(i).getText();
+		}
+		return pageData;
+	}
 
+	 public boolean validateSearch(ArrayList<String>dataInputsList, String searchInput)throws Exception {
+	    	
+			for(int i=0;i<dataInputsList.size();i++) {
+				if(dataInputsList.get(i).toLowerCase().contains(searchInput.toLowerCase())) {
+					return true;
+				}
+				else{
+					return false;
+				}
+	}
+			throw new Exception("No data found");
+
+			
+		}
 
 	public void singleDelete() {
 		
