@@ -19,10 +19,11 @@ public class PageObjectFactory {
 	}
 	
 	public static ClassPage getClassPage() {
-		
+		classPage.initElements();
 		return classPage;
 	}
 	public static DashboardPage getDashboardPage() {
+		dashboardPage.initElements();
 		return dashboardPage;
 	}
 	public static ProgramPage getProgramPage() {
