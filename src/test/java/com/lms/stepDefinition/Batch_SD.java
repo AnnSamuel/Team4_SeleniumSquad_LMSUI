@@ -49,8 +49,8 @@ public class Batch_SD {
 
 	@Given("Admin is on batch page - Batch")
 	public void admin_is_on_batch_page() {
-		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
-			batchPage.clickCloseBtn();
+		if (batchPage.isOnBatchPage() && batchPage.isPopupWindowDispalyed()) {
+			batchPage.clickCloseBtn(); 
 		}
 		
 		if (!batchPage.isOnBatchPage()) {
@@ -78,15 +78,9 @@ public class Batch_SD {
 
 	}
 
-	@Then("Admin should see the {string} {string} under the header - Batch")
-	public void admin_should_see_the_under_the_header(String string, String string2) {
-		boolean isEnabled = false;
-		if ("enabled".equalsIgnoreCase(string)) {
-			isEnabled = true;
-		}
-
-		Assert.assertEquals(batchPage.isTopDeleteButtonEnabled(), isEnabled);
-
+	@Then("Admin should see the disabled Delete Icon under the header - Batch")
+	public void admin_should_see_the_under_the_header() {
+		Assert.assertEquals(batchPage.isTopDeleteButtonEnabled(), false);
 	}
 
 	@When("Admin clicks on {string} under the {string} menu bar - Batch")
@@ -149,7 +143,7 @@ public class Batch_SD {
 
 		}
 
-		if (batchPage.isOnBatchPage() && batchPage.isOnBatchPopuUpindow()) {
+		if (batchPage.isOnBatchPage() && batchPage.isPopupWindowDispalyed()) {
 			batchPage.clickCloseBtn();
 		}
 
@@ -272,6 +266,18 @@ public class Batch_SD {
 		for(String batchName: list) {
 			Assert.assertTrue(batchName.startsWith(expectedatchNameTxt));
 		}
+	}
+	
+	@When("Admin clicks delete button for a batch {string} - Batch")
+	public void admin_clicks_delete_button_for_a_batch_batch(String string) {
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
+		batchPage.clickDeleteBatch();
+	    
+	}
+	@Then("Admin should see the confirm alert box with yes and no button - Batch")
+	public void admin_should_see_the_confirm_alert_box_with_yes_and_no_button_batch() {
+	    batchPage.validateDeleteConfirmPopup();
 	}
 	
 	

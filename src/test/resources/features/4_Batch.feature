@@ -1,4 +1,4 @@
-Feature: This feature file contain scenario for the Batch module
+	Feature: This feature file contain scenario for the Batch module
 
   Background: Admin logged on the Dashboard page
     Given Admin is on the Dashboard Page - Batch
@@ -21,7 +21,7 @@ Feature: This feature file contain scenario for the Batch module
   @TC_Batch_04
   Scenario: Validate disabled "Delete Icon" under the header in the Batch Page
     When Admin Clicks on the "Batch" menu from the header - Batch
-    Then Admin should see the "disabled" "Delete Icon" under the header - Batch
+    Then Admin should see the disabled Delete Icon under the header - Batch
 
   @TC_Batch_06
   Scenario: Validate edit icon in each data rows
@@ -168,6 +168,25 @@ Feature: This feature file contain scenario for the Batch module
     And Admin clicks edit batch button for a batch "ValidSearch" - Batch
     When Admin enters the "ValidEdit" data and clicks "cancel" button - Batch
     Then Admin can see the batch details popup closes without creating any batch - Batch
+    
+    @TC_Batch_29 
+  Scenario: validate delete Icon on any row
+   	Given Admin is on batch page - Batch
+    When Admin clicks delete button for a batch "ValidSearch" - Batch
+    Then Admin should see the confirm alert box with yes and no button - Batch
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     @TC_Batch_39 @TC_Batch_40 @TC_Batch_41 
   Scenario: validate serach box functionality
