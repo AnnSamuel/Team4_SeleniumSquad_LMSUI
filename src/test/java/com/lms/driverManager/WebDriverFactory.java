@@ -54,7 +54,7 @@ public class WebDriverFactory {
 		}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));// implicit wait
 			driver.manage().deleteAllCookies();
-			driver.manage().window().maximize();
+//			driver.manage().window().maximize();
 			return driver;
 		}
 

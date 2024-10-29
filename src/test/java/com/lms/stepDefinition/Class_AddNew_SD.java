@@ -1,6 +1,6 @@
 package com.lms.stepDefinition;
 
-import static com.lms.utilities.LMSUIConstants.CLASS_ADD_SHEET_NAME;
+import static com.lms.utilities.LMSUIConstants.CLASS_SHEET_NAME;
 import static com.lms.utilities.LMSUIConstants.applicationData;
 
 import java.util.List;
@@ -116,7 +116,7 @@ public class Class_AddNew_SD {
 
 	@When("Admin enters {string} mandatory fields in the form and clicks on save button in class")
 	public void admin_enters_mandatory_fields_in_the_form_and_clicks_on_save_button_in_class(String testcase) {
-		classData = applicationData.getData(CLASS_ADD_SHEET_NAME, testcase);
+		classData = applicationData.getData(CLASS_SHEET_NAME, testcase);
 		cp.createClassInputFields(testcase);
 		
 	}
