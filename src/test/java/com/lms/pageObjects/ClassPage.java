@@ -339,7 +339,7 @@ public class ClassPage extends BasePage {
 
 	public void classPopUpWindow() {
 		search.clear();
-		search.sendKeys("testtopic82");
+		search.sendKeys(applicationData.getBatchName());
 		search.sendKeys(Keys.RETURN);
 		// WebElement firstRowExplicitWait =
 		// driver.findElement(By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]"));
@@ -349,7 +349,7 @@ public class ClassPage extends BasePage {
 		// waitForDataTableToLoad();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
-				By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), "testtopic82"));
+				By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), applicationData.getBatchName()));
 		// waitForFirstRowToContain("Javascript1");
 		// firstRowExplicitWait.findElement(By.xpath("//button[@icon='pi
 		// pi-pencil']")).click();
@@ -510,7 +510,7 @@ public class ClassPage extends BasePage {
 		if (!key.equalsIgnoreCase("status")) {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(
-					By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), "testtopic82"));
+					By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), applicationData.getBatchName()));
 		}
 //		WebElement firstRowExplicitWait = wait.until(
 //				ExpectedConditions.presenceOfElementLocated(By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]")));
@@ -542,7 +542,7 @@ public class ClassPage extends BasePage {
 		case "status":
             int rowSizeInactive = getTableBodyRowCount();
 			//WebElement statusRow = firstRow.findElement(By.xpath("./td[5]"));
-			//wait.until(ExpectedConditions.invisibilityOf(By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), "testtopic"));
+			//wait.until(ExpectedConditions.invisibilityOf(By.xpath("//tbody[@class='p-datatable-tbody']/tr[1]/td[3]"), applicationData.getBatchName()));
 			//System.out.println(statusRow + "--" + value);
 			Assert.assertEquals(rowSize-1, rowSizeInactive);
 			break;
