@@ -400,6 +400,7 @@ public class Program_SD {
 	@Then("Admin should be displayed with login screen from program {string}")
 	public void admin_should_be_displayed_with_login_screen_from_program(String string) {
 		programObj.validatelogout(string);
+		applicationData.setLoggedIn(false);
 
 	}
 
