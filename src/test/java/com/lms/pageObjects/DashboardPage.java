@@ -1,12 +1,15 @@
 package com.lms.pageObjects;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
-import java.util.List;
+import java.util.Arrays;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
@@ -23,10 +26,14 @@ import org.testng.Assert;
 
 public class DashboardPage extends BasePage{
 	private static final int DEFAULT_TIMEOUT_MS = 5000;
+	String LinkURL = "";
+	 HttpURLConnection huc = null;
+   int respCode = 200;
+
 	@FindBy(xpath = "//mat-toolbar[@class='mat-toolbar mat-primary mat-toolbar-single-row ng-star-inserted']") WebElement headerBar;
-	
 	@FindBy(xpath = "//span[text()=' LMS - Learning Management System ']") WebElement headerTitle;
-public boolean verifyHeaderTitle(String expected) {
+	
+	public boolean verifyHeaderTitle(String expected) {
 		
 		if (getText(headerTitle).equals(expected)) {
 			return true;
@@ -34,60 +41,91 @@ public boolean verifyHeaderTitle(String expected) {
 
 		return false;
 	}
-	public void isDashboardLoaded() {
-	    // Verify key elements on the dashboard
-	    //WebElement menuBar = driver.findElement(headerBar); // replace with actual ID or selector
+	public boolean isDashboardLoaded() {
 	    Assert.assertTrue(  headerBar.isDisplayed(), "Dashboard menu bar is not displayed as expected.");
+	    return true;
 	}
 
-public void navigateToUrl(String url, Integer timeoutMs) {
-    int timeout = (timeoutMs != null) ? timeoutMs : DEFAULT_TIMEOUT_MS;
+	public void navigateToUrlAndVerifyTitle(String url, String expectedTitle, Integer timeoutMs) {
+	    int timeout = (timeoutMs != null) ? timeoutMs : DEFAULT_TIMEOUT_MS;
 
-    try {
-        driver.navigate().to(url);
-        new WebDriverWait(driver, Duration.ofSeconds(timeout / 1000))
-        .until(ExpectedConditions.urlToBe(url));
-        System.out.println("Navigation to " + url + " completed successfully.");
-    } catch (TimeoutException e) {
-        System.out.println("Navigation to " + url + " failed after " + timeout + " milliseconds.");
-    }
-}
+	    try {
+	        // Navigate to the URL
+	        driver.navigate().to(url);
+	        
+	        // Create a WebDriverWait instance for the entire timeout period
+	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout / 1000));
 
-public void checkLink(String baseUrl, int statusCodeThreshold) {
-    
-   
-	 try {
-	        URI uri = URI.create(baseUrl);  // Create URI from the base URL string
-	        URL url = uri.toURL();          // Convert URI to URL
-
-	        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-	        httpURLConnection.setRequestMethod("GET");
-	        httpURLConnection.connect();
-
-	        int responseCode = httpURLConnection.getResponseCode();
-
-	        if (responseCode >= statusCodeThreshold) {
-	            System.out.println("The link is broken. Response code: " + responseCode);
-	        } else {
-	            System.out.println("The link is working fine. Response code: " + responseCode);
+	        // Wait until the URL is loaded
+	        boolean isUrlLoaded = wait.until(ExpectedConditions.urlToBe(url));
+	        if (!isUrlLoaded) {
+	            Assert.fail("Failed to load URL: " + url + " within " + timeout + " milliseconds.");
 	        }
 
-	        // Assert to fail if the link is broken
-	        Assert.assertTrue(responseCode < statusCodeThreshold, "The link is broken. Response code: " + responseCode);
+	        // Wait for the LMS title to be visible
+	        WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                By.xpath("//span[text()=' LMS - Learning Management System ']")));
 
-	    } catch (MalformedURLException e) {
-	        System.out.println("Invalid URL format: " + e.getMessage());
-	    } catch (IOException e) {
-	        System.out.println("An error occurred while checking the link: " + e.getMessage());
+	        // Check if the title matches the expected title
+	        Assert.assertEquals(titleElement.getText(), expectedTitle,
+	                "Expected title: '" + expectedTitle + "' but found: '" + titleElement.getText() + "'");
+
+	        System.out.println("Navigation to " + url + " and title verification completed successfully.");
+
+	    } catch (TimeoutException e) {
+	        // Log details about the failure
+	        Assert.fail("Navigation to " + url + " or visibility of LMS title failed within " + timeout + " milliseconds. " +
+	                    "Error: " + e.getMessage());
 	    }
 	}
-	public void titleCheck(String expectedTitle) {
-		//String actualTitle = headerTitle.getText(); 
-		 // Assert.assertEquals("Title does not match.", expectedTitle, actualTitle);
 
-		Point location = headerTitle.getLocation();
+
+
+	public void broken_links() {
+		//WebElement Link = driver.findElement(By.tagName("a"));
+        List<WebElement> links = driver.findElements(By.tagName("a"));
         
-        // Check if the title is positioned near the top left corner
+        Iterator<WebElement> it = links.iterator();
+        
+        while(it.hasNext()){
+            
+        	LinkURL = it.next().getAttribute("href");
+            
+            System.out.println(LinkURL);
+		//String LinkURL = Link.getAttribute("href");
+		
+		if (LinkURL==null || LinkURL.isEmpty()) {
+			System.out.println("URL is either not configurerd for anchor tag or it is empty");
+			//LoggerLoad.info("URL is either not configurerd for anchor tag or it is empty");
+		}
+		
+		try {
+            huc = (HttpURLConnection)(new URL(LinkURL).openConnection());
+            
+            huc.setRequestMethod("HEAD");
+            
+            huc.connect(); 
+            
+            respCode = huc.getResponseCode();
+            
+            if(respCode >= 400){
+                System.out.println(LinkURL+" is a broken link");
+            }
+            else{
+                System.out.println(LinkURL+" is a valid link");
+            }
+		} catch (MalformedURLException e) {
+          
+            e.printStackTrace();
+        } catch (IOException e) {
+            
+            e.printStackTrace();
+        }
+	}
+	}
+	
+	public void titleCheck(String expectedTitle) {
+		Point location = headerTitle.getLocation();
 		Assert.assertTrue(isNearTopLeftCorner(location), "Title is not in the top left corner.");
  
 	}
@@ -104,14 +142,10 @@ public void checkLink(String baseUrl, int statusCodeThreshold) {
 		
 	}
 	public void NavigationBarText() {
-        // Locate the navigation bar
+       
         
 		List<WebElement> buttons = headerBar.findElements(By.xpath("//div[@class='ng-star-inserted']//button"));
-
-		    // Verify that the navigation bar contains buttons
 		    Assert.assertTrue(buttons.size() > 0, "Navigation buttons are not present in the navbar");
-
-		    // Check that each button has non-empty text
 		    for (WebElement button : buttons) {
 		        String buttonText = button.getText().trim();
 		        Assert.assertFalse(buttonText.isEmpty(), "Navigation button text is missing for one of the buttons.");
@@ -119,34 +153,41 @@ public void checkLink(String baseUrl, int statusCodeThreshold) {
 		    }
 }
 	public void correctSpellingAndSpacingInTitle() {
-        // Locate the title element
-     //   WebElement titleElement = driver.findElement(By.cssSelector(".navbar-title"));
-
-        // Get the text of the title
         String actualTitle = headerTitle.getText();
-
-        // Expected title
         String expectedTitle = "LMS - Learning Management System";
-
-        // Assert to check if the actual title matches the expected title
-        Assert.assertEquals(actualTitle, expectedTitle, "The title does not match the expected spelling or spacing.");
+       Assert.assertEquals(actualTitle, expectedTitle, "The title does not match the expected spelling or spacing.");
     }
-	
-	 public void home() {
-		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	//Single button position checking
+//	 public void home() {
+//		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//		    List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+//		        By.xpath("//div[@class='ng-star-inserted']//button")));
+//		    
+//		    if (!buttons.isEmpty()) {
+//		        String firstButtonText = buttons.get(0).getText();
+//		        Assert.assertEquals(firstButtonText, "Program", "The first button is not 'Program'.");
+//		    } else {
+//		        System.out.println("No buttons found. Expected 'Program' button in the 1st position.");
+//		    }
+//		}
+//	 
+	 public void verifyButtonOrder() {
+		    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		    List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+		        By.xpath("//div[@class='ng-star-inserted']//button")));
 
-		 List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-				    By.xpath("//div[@class='ng-star-inserted']//button")));
+		   
+		    List<String> expectedOrder = Arrays.asList("Program", "Batch", "Class", "Logout");
 
-				String actualButtonText = buttons.get(0).getText();
-				String expectedButton = "Home";
-
-				//Assert.assertEquals(actualButtonText, expectedButton, "The first button is not 'Home'.");
-				if (!actualButtonText.equals(expectedButton)) {
-			        // If they are not equal, log a message or take other actions
-			        System.out.println("The first button is not 'Home'. Expected: " + expectedButton + ", but found: " + actualButtonText);
-			    } else {
-			        System.out.println("The first button is correctly labeled 'Home'.");
-			    }
-}
+		    
+		    for (int i = 0; i < expectedOrder.size(); i++) {
+		        if (i < buttons.size()) {
+		            String actualButtonText = buttons.get(i).getText();
+		            Assert.assertEquals(actualButtonText, expectedOrder.get(i), 
+		                "Button at position " + (i + 1) + " is not as expected.");
+		        } else {
+		            Assert.fail("Expected more buttons but found only " + buttons.size());
+		        }
+		    }
+		}
 }

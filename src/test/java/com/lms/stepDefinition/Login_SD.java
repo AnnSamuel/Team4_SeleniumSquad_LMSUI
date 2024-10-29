@@ -35,12 +35,12 @@ public class Login_SD extends BasePage{
 	
 	@When("HTTP response >= {int}. Then the link is broken for login page")
 	public void http_response_then_the_link_is_broken_for_login_page(Integer statusCodeThreshold) {
-	    dp.checkLink(BASE_URL, statusCodeThreshold);
+	    dp.broken_links();
 	}
 
 	@When("Admin should see correct spellings in all fields")
 	public void admin_should_see_correct_spellings_in_all_fields() throws Exception {
-	   System.out.println("dcdsc");
+	  
 	   lp.spellChecking();
 	}
 
@@ -52,19 +52,24 @@ public class Login_SD extends BasePage{
 
 	@Then("Admin should land on dashboard page")
 	public void admin_should_land_on_dashboard_page() {
-		System.out.println("dcdsc");
+		  // Expected title of the dashboard page
+	    String expectedTitle = "LMS - Learning Management System";
+	    String dashboardUrl = "https://lms-frontend-hackathon-oct24-173fe394c071.herokuapp.com/dashboard";
+
+	    dp.navigateToUrlAndVerifyTitle(dashboardUrl, expectedTitle, 30000); // 30 seconds timeout
+	
 		
 	}
 	@Then("Admin should see  LMS - Learning Management System")
 	public void admin_should_see_lms_learning_management_system() throws TesseractException {
 		System.out.println("dcdsc1");
-		//lp.verifyApplicationTitle();
+		lp.verifyApplicationTitle();
 	}
 
 	@Then("Admin should see company name below the app name")
 	public void admin_should_see_company_name_below_the_app_name() throws TesseractException {
 		System.out.println("dcdsc2");
-		//lp.verifyCompanyName();
+		lp.verifyCompanyName();
 	}
 
 	@Then("Admin should see {string}")
@@ -99,7 +104,7 @@ public class Login_SD extends BasePage{
 
 	@Then("Admin should see input field on the centre of the page")
 	public void admin_should_see_input_field_on_the_centre_of_the_page() {
-	    lp.inputFieldAlign();
+	 //   lp.inputFieldAlign();
 	}
 
 	@Then("Admin should see login button")

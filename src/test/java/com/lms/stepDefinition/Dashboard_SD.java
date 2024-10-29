@@ -34,15 +34,20 @@ public class Dashboard_SD extends BasePage {
 		
 	}
 	@When("Maximum navigation time in milliseconds, defaults to {int} seconds")
-	public void maximum_navigation_time_in_milliseconds_defaults_to_seconds(Integer int1) {
-	    dp.navigateToUrl(BASE_URL, int1);
+	public void maximum_navigation_time_in_milliseconds_defaults_to_seconds(Integer timeoutMs) {
+		String url ="https://lms-frontend-hackathon-oct24-173fe394c071.herokuapp.com/";
+		String expectedTitle=" LMS - Learning Management System ";
+		timeoutMs =30000; 
+		dp.navigateToUrlAndVerifyTitle(BASE_URL, expectedTitle, timeoutMs);
+
 	    System.out.println("Linkkkk1111");
 	}
 
 	@When("HTTP response >= {int}. Then the link is broken")
 	public void http_response_then_the_link_is_broken(Integer statusCodeThreshold) {
-	   dp.checkLink(BASE_URL, statusCodeThreshold);
+	   dp.broken_links();
 	   System.out.println("Linkkkk");
+	  
 	}
 
 	@When("Admin should see {string} as title")
@@ -74,9 +79,27 @@ public class Dashboard_SD extends BasePage {
 	@When("Admin should see Home in the 1st place")
 	public void admin_should_see_home_in_the_1st_place() {
 		 System.out.println("###");
-		 dp.home();
+		 dp.verifyButtonOrder();
+	}
+	@When("Admin should see program in the 2nd place")
+	public void admin_should_see_program_in_the_2nd_place() {
+		dp.verifyButtonOrder();
 	}
 
+	@When("Admin should see batch in the 3rd place")
+	public void admin_should_see_batch_in_the_3rd_place() {
+		dp.verifyButtonOrder();
+	}
+
+	@When("Admin should see class in the 4th place")
+	public void admin_should_see_class_in_the_4th_place() {
+		dp.verifyButtonOrder();
+	}
+
+	@When("Admin should see logout in the 5th place")
+	public void admin_should_see_logout_in_the_5th_place() {
+		dp.verifyButtonOrder();
+	}
 
 
 

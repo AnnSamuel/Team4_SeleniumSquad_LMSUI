@@ -4,8 +4,7 @@ Feature: Login Page
   @TC_Login_01
   Scenario Outline: Login page validation
     Given Admin is in login Page
-   # When Admin enter login credentials "<testcase>" and clicks login button          
-   # And HTTP response >= 400. Then the link is broken for login page
+    And HTTP response >= 400. Then the link is broken for login page
     And Admin should see correct spellings in all fields 
     And Admin should see logo on the left  side
     And Admin should see  LMS - Learning Management System

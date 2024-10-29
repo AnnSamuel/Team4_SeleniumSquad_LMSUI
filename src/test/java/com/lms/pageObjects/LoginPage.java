@@ -107,7 +107,7 @@ DashboardPage dp=new DashboardPage();
 	}
 	public void verifyApplicationTitle() throws TesseractException {
 		String Title = " LMS - Learning Management System";
-		File imageFile=new File ("C:\\Users\\sridh\\git\\Team4_SeleniumSquad_LMSUI\\src\\test\\resources\\testData\\LMS-logo (1).png");
+		File imageFile=new File ("C:\\Users\\sridh\\git\\Team4_SeleniumSquad_LMSUI\\src\\test\\resources\\testData\\Logo_Screen.png");
 		ITesseract image = new Tesseract();
 		String imageText = image.doOCR(imageFile);
 		System.out.println(imageText);
@@ -124,7 +124,7 @@ DashboardPage dp=new DashboardPage();
 	
 	public void verifyCompanyName() throws TesseractException {
 		String CompanyName = " NumpyNinja";
-		File imageFile=new File ("C:\\Users\\sridh\\git\\Team4_SeleniumSquad_LMSUI\\src\\test\\resources\\testData\\LMS-logo (1).png");
+		File imageFile=new File ("C:\\Users\\sridh\\git\\Team4_SeleniumSquad_LMSUI\\src\\test\\resources\\testData\\Logo_Screen.png");
 		ITesseract image = new Tesseract();
 		String imageText = image.doOCR(imageFile);
 		System.out.println(imageText);
