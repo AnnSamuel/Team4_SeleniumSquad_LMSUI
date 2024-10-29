@@ -20,7 +20,7 @@ public class BasePage {
 	protected WebDriver driver = WebDriverFactory.getInstance().getDriver();
 	protected String BASE_URL = ConfigReader.getProp("baseUrl");
 
-	private static final long IMPLICIT_WAIT = 10;
+	protected static final long IMPLICIT_WAIT = 10;
 
 	@FindBy(xpath = "//table/tbody/tr//div[@role='checkbox']")
 	List<WebElement> rows;
@@ -28,6 +28,15 @@ public class BasePage {
 	List<WebElement> editicons;
 	@FindBy(xpath = "//table/tbody/tr//button[contains(@icon, 'pi-trash')]")
 	List<WebElement> deleteIcons;
+	@FindBy(xpath="//button[contains(@class,'p-toast-icon-close')]")
+	WebElement closeToastIcon;
+
+	// success popup
+
+	@FindBy(xpath = "//div[contains(@class,'p-toast-summary')]")
+	WebElement successPopupTitle;
+	@FindBy(xpath = "//div[contains(@class,'p-toast-detail')]")
+	WebElement successPopupContent;
 
 	public BasePage() {
 		PageFactory.initElements(driver, this);
@@ -40,6 +49,27 @@ public class BasePage {
 	public void openPage(String pagename) {
 		driver.get(BASE_URL + pagename);
 
+	}
+
+	public boolean verifyPopup(String expmsg) {
+		boolean retVal = false;
+		retVal =  verifyText(expmsg, successPopupTitle);
+//		try {
+//			click(closeToastIcon);
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+		return retVal;
+		
+	}
+	
+	public void wait(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean dropDownSelect(WebElement element) {
@@ -62,6 +92,29 @@ public class BasePage {
 		return false;
 
 	}
+	
+	
+	public void dropDownSelect(WebElement dropdown, String desiredOption) {
+         click(dropdown);
+         
+         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(IMPLICIT_WAIT));
+         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("ul[role='listbox'] li")));
+
+         try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 List<WebElement> options = driver.findElements(By.cssSelector("ul[role='listbox'] li"));
+        
+        for (WebElement option : options) {
+            if (option.getText().equals(desiredOption)) {
+                click(option);
+                break;
+            }
+        }
+	 }
 
 	public boolean click(WebElement element) {
 		try {
@@ -111,6 +164,20 @@ public class BasePage {
 		}
 		return false;
 	}
+	
+	public boolean isViewable(WebElement element) {
+		try {
+			WebElement ele = new WebDriverWait(driver, Duration.ofSeconds(IMPLICIT_WAIT))
+					.until(ExpectedConditions.visibilityOf(element));
+
+			return ele.isDisplayed();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 	public String getText(WebElement element) {
 
@@ -153,11 +220,10 @@ public class BasePage {
 		return allCheckboxesDisplayed;
 	}
 
-	public void search(String text) {
-
-	}
 
 	public void singleDelete() {
+		
+		
 
 	}
 

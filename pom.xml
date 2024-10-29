@@ -60,12 +60,7 @@
     <artifactId>poi-ooxml</artifactId>
     <version>5.3.0</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/log4j/log4j -->
-<dependency>
-    <groupId>log4j</groupId>
-    <artifactId>log4j</artifactId>
-    <version>1.2.17</version>
-</dependency>
+
 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
 <dependency>
     <groupId>org.apache.maven.plugins</groupId>
@@ -85,20 +80,6 @@
     <artifactId>cucumber-picocontainer</artifactId>
     <version>7.20.1</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
-<dependency>
-    <groupId>net.sourceforge.tess4j</groupId>
-    <artifactId>tess4j</artifactId>
-    <version>5.13.0</version>
-</dependency>
 
-
-<!-- Jazzy is a Java library for spell checking. 
-		This could be used for text validation or spell-checking within our tests. -->	
-	<dependency>
-		<groupId>net.sf.jazzy</groupId>
-		<artifactId>jazzy</artifactId>
-		<version>0.5.2-rtext-1.4.1-2</version>
-	</dependency>
   </dependencies>
 </project>
