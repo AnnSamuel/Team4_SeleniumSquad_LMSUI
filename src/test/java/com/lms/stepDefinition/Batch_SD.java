@@ -138,9 +138,7 @@ public class Batch_SD {
 	@Given("Admin is on the Batch Details Pop Up WIndow - Batch")
 	public void admin_is_on_the_batch_details_pop_up_w_indow() {
 		if (!applicationData.isLoggedIn()) {
-
 			lp.login("ValidCredentials");
-
 		}
 
 		if (batchPage.isOnBatchPage() && batchPage.isPopupWindowDispalyed()) {
@@ -278,6 +276,47 @@ public class Batch_SD {
 	@Then("Admin should see the confirm alert box with yes and no button - Batch")
 	public void admin_should_see_the_confirm_alert_box_with_yes_and_no_button_batch() {
 	    batchPage.validateDeleteConfirmPopup();
+	}
+	
+	
+	@Given("Admin is on the batch {string} confirm popup page - Batch")
+	public void admin_is_on_the_batch_confirm_popup_page_batch(String string) {
+		if (!batchPage.isOnBatchPage()) {
+			batchPage.clickOnBatchBtn();
+			batchPage.closeSubMenu();
+		}
+		
+		String expectedatchNameTxt = batchPage.getBatchName(string);
+		batchPage.search(expectedatchNameTxt);
+		batchPage.clickDeleteBatch();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@When("Admin clicks on the delete icon and click {string} buttton - Batch")
+	public void admin_clicks_on_the_delete_icon_and_click_buttton_batch(String string) {
+		if("no".equalsIgnoreCase(string)) {
+			batchPage.clickNoBtn();
+		} if("close".equalsIgnoreCase(string)) {
+			batchPage.clickCloseIcon();
+		} if("yes".equalsIgnoreCase(string)) {
+			batchPage.clickYesBtn();
+		} 
+		
+	}
+	@Then("Admin should see the alert box closed and the batch is {string} - Batch")
+	public void admin_should_see_the_alert_box_closed_and_the_batch_is_batch(String string) {
+		if("not deleted".equals(string)) {
+			Assert.assertEquals(batchPage.validateDeleteConfirmPopup(),false);
+		} else {
+			Assert.assertEquals(batchPage.saveActionPopup(), "Successful");
+		}
+		
 	}
 	
 	

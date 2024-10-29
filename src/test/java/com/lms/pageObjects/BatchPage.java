@@ -88,7 +88,15 @@ public class BatchPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@role, 'alert')]") WebElement saveBatchPopup; 
 	@FindBy(xpath = "//div[contains(@class, 'p-toast-summary')]") WebElement saveBatchPopupTitle;
 	@FindBy(xpath = "//div[contains(@class, 'p-toast-detail')]") WebElement saveBatchPopupMessage;
+	
+	
+	//delete program
+	@FindBy(xpath="//*[text()='No']/..") WebElement noBtn;
+	@FindBy(xpath="//*[text()='Yes']/..") WebElement yesBtn;
+	@FindBy(xpath="//button[contains(@class, 'p-dialog-header-close')]") WebElement deleteCloseBtn;
+	@FindBy(id="deleteProgram") WebElement firstProgDeleteBtn;
 	@FindBy (xpath="//span[text()='Confirm']") WebElement deleteConfirmPopup;
+		
 
 	
 	public void openHomePage() {
@@ -369,6 +377,19 @@ public class BatchPage extends BasePage {
     	Map<String, String> batchTestData = LMSUIConstants.applicationData.getData("Batch", testData);
 		System.out.println("batchTestData:"+ batchTestData);
 		return batchTestData.get("BatchName");
+    }
+    
+    public void clickNoBtn() {
+    	click(noBtn);
+    }
+    
+    public void clickYesBtn() {
+    	System.out.println("YEssss");
+    	click(yesBtn);
+    }
+    
+    public void clickCloseIcon() {
+    	click(deleteCloseBtn);
     }
 }
 

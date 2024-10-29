@@ -1,4 +1,4 @@
-	Feature: This feature file contain scenario for the Batch module
+Feature: This feature file contain scenario for the Batch module
 
   Background: Admin logged on the Dashboard page
     Given Admin is on the Dashboard Page - Batch
@@ -58,7 +58,7 @@
     Given Admin is on batch page - Batch
     When Admin clicks "Batch" on the navigation bar - Batch
     Then Admin should see sub menu in menu bar as "Add New Batch" - Batch
-    
+
   @TC_Batch_13
   Scenario: Validate Admin able to click on the Add new Batch Option
     When Admin clicks on "Add New batch" under the "batch" menu bar - Batch
@@ -118,82 +118,83 @@
     When Admin enters the "MissingNoOfClass" data and clicks "save" button - Batch
     Then Admin should get error message below the text box of respective field for "MissingNoOfClass" - Batch
 
-  @TC_Batch_21 
+  @TC_Batch_21
   Scenario: validate cancel button in Batch details pop up
     Given Admin is on the Batch Details Pop Up WIndow - Batch
     When Admin enters the "Mandatory" data and clicks "cancel" button - Batch
     Then Admin can see the batch details popup closes without creating any batch - Batch
 
-  @TC_Batch_22 
+  @TC_Batch_22
   Scenario: validate close icon on the batch details pop up
     Given Admin is on the Batch Details Pop Up WIndow - Batch
     When Admin enters the "Mandatory" data and clicks "close" button - Batch
     Then Admin can see the batch details popup closes without creating any batch - Batch
-    
-  @TC_Batch_23 
+
+  @TC_Batch_23
   Scenario: Validate Edit icon feature in any row
     Given Admin is on batch page - Batch
     When Admin clicks edit batch button for a batch "ValidSearch" - Batch
     Then Admin should see the Batch Details pop up window - Batch
-    
-    @TC_Batch_24 
+
+  @TC_Batch_24
   Scenario: Validate program name  value is disabled to edit
     Given Admin is on batch page - Batch
     When Admin clicks edit batch button for a batch "ValidSearch" - Batch
     Then Admin should see "Program name" value field is disabled for editing - Batch
-    
-    @TC_Batch_25 
+
+  @TC_Batch_25
   Scenario: Validate batch name  value is disabled to edit
     Given Admin is on batch page - Batch
     When Admin clicks edit batch button for a batch "ValidSearch" - Batch
     Then Admin should see "Batch name" value field is disabled for editing - Batch
-    
-    @TC_Batch_26 
+
+  @TC_Batch_26
   Scenario: Validate editing description and No. of classes fields with invalid data in the pop up
     Given Admin is on batch page - Batch
     And Admin clicks edit batch button for a batch "ValidSearch" - Batch
     When Admin enters the "InvalidDescriptionEdit" data and clicks "save" button - Batch
     Then Admin should get error message below the text box of respective field for "InvalidDescriptionEdit" - Batch
-    
-    @TC_Batch_27 
+
+  @TC_Batch_27
   Scenario: Validate editing description and No. of classes fields with invalid data in the pop up
     Given Admin is on batch page - Batch
     And Admin clicks edit batch button for a batch "ValidSearch" - Batch
     When Admin enters the "ValidEdit" data and clicks "save" button - Batch
     Then Admin should get a successful message - Batch
-    
-     @TC_Batch_28 
+
+  @TC_Batch_28
   Scenario: validate cancel button in Batch details pop up
     Given Admin is on batch page - Batch
     And Admin clicks edit batch button for a batch "ValidSearch" - Batch
     When Admin enters the "ValidEdit" data and clicks "cancel" button - Batch
     Then Admin can see the batch details popup closes without creating any batch - Batch
-    
-    @TC_Batch_29 
+
+  @TC_Batch_29
   Scenario: validate delete Icon on any row
-   	Given Admin is on batch page - Batch
+    Given Admin is on batch page - Batch
     When Admin clicks delete button for a batch "ValidSearch" - Batch
     Then Admin should see the confirm alert box with yes and no button - Batch
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @TC_Batch_39 @TC_Batch_40 @TC_Batch_41 
+
+  @TC_Batch_39 @TC_Batch_40 @TC_Batch_41
   Scenario: validate serach box functionality
     Given Admin is on batch page - Batch
     When Admin enters the batch name "ValidSearch" in the search text box - Batch
     Then Admin should see the filtered "ValidSearch" batches in the data table - Batch
-  
-    
-    
-    
+
+  @TC_Batch_31
+  Scenario: validate no button on the confirm alert box
+    Given Admin is on the batch "ValidSearch" confirm popup page - Batch
+    When Admin clicks on the delete icon and click "no" buttton - Batch
+    Then Admin should see the alert box closed and the batch is "not deleted" - Batch
+
+  @TC_Batch_32
+  Scenario: validate close Icon on the alert box
+    Given Admin is on the batch "ValidSearch" confirm popup page - Batch
+    When Admin clicks on the delete icon and click "close" buttton - Batch
+    Then Admin should see the alert box closed and the batch is "not deleted" - Batch
+
+  @TC_Batch_30
+  Scenario: validate no button on the confirm alert box
+    Given Admin is on the batch "ValidSearch" confirm popup page - Batch
+    When Admin clicks on the delete icon and click "yes" buttton - Batch
+    Then Admin should see the alert box closed and the batch is "deleted" - Batch
