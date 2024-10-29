@@ -251,6 +251,12 @@ public class Batch_SD {
 	public void admin_enters_the_batch_name_in_the_search_text_box(String string) {
 		String expectedatchNameTxt = batchPage.getBatchName(string);
 		batchPage.search(expectedatchNameTxt);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Then("Admin should see the filtered {string} batches in the data table - Batch")
@@ -260,8 +266,9 @@ public class Batch_SD {
 		
 		List<String> list = batchPage.getBatchNamesForAllRows();
 		Assert.assertTrue(list.size()>0);
-		System.out.println("SIZE=" + list.size());
+		System.out.println("SIZE=" + list.size() + "expectedatchNameTxt="+expectedatchNameTxt);
 		for(String batchName: list) {
+			System.out.println("BatchName=" + batchName);
 			Assert.assertTrue(batchName.startsWith(expectedatchNameTxt));
 		}
 	}
